@@ -12,6 +12,8 @@ class User(models.Model):
     avatar = models.CharField(max_length=255, blank=True)
     account_type = models.CharField(
         max_length=1, choices=ACCOUNT_TYPES)
+    # cart_quantity = len(Cart.objects.get(products))
+    cart_quantity = '1'
 
 
 class Product(models.Model):

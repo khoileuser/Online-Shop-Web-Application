@@ -1,4 +1,48 @@
 body {
     font-family: system, -apple-system, ".SFNSText-Regular", "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", sans-serif;
     scroll-behavior: smooth;
+    background-color: #f8f9fa;
+}
+
+.auth-page {
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+    .auth-nav {
+        backdrop-filter: saturate(200%) blur(30px);
+        background-color: rgba(255, 255, 255, 0.8);
+        z-index: 1;
+    }
+
+    .auth-coll {
+        margin: 10px;
+    }
+
+    .nav .active {
+        background-image: linear-gradient(310deg, #141727 0%, #3A416F 100%) !important;
+    }
+
+    .oblique-r {
+        overflow: hidden;
+        transform-origin: bottom;
+        -ms-transform: skew(-10deg, 0deg);
+        -webkit-transform: skew(-10deg, 0deg);
+        transform: skew(-10deg, 0deg);
+        z-index: -1;
+    }
+
+    .oblique-l {
+        overflow: hidden;
+        transform-origin: bottom;
+        -ms-transform: skew(10deg, 0deg);
+        -webkit-transform: skew(10deg, 0deg);
+        transform: skew(10deg, 0deg);
+        z-index: -1;
+    }
+
+    .oblique-img {
+        height: 100vh;
+        width: 100%;
+        object-fit: cover;
+    }
 }
