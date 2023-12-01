@@ -6,5 +6,5 @@ urlpatterns = [
     path('signin/', authentication.sign_in),
     path('signup/', authentication.sign_up),
     path('signout/', authentication.sign_out),
-    path('myaccount/', account.my_account),
+    path('my-account/', account.my_account),
 ]
