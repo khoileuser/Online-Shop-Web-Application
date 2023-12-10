@@ -4,7 +4,7 @@ from django.template import loader
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
-from web_app.models import User
+from web_app.models import User, Cart
 from django.contrib.auth.hashers import make_password, check_password
 
 
@@ -42,9 +42,11 @@ def sign_up(request):
         password = request.POST["password"]
         hashed_pwd = make_password(password)
         account_type = "V" if request.POST["accounttype"] == "vendor" else "C"
+        avatar = None
         user = User(name=name, username=username,
-                    password=hashed_pwd, account_type=account_type)
+                    password=hashed_pwd, account_type=account_type, avatar=avatar)
         user.save()
+        Cart(owner=user).save
         return_session(request, user)
         return redirect("/")
 

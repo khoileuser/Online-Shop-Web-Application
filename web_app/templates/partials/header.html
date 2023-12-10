@@ -20,7 +20,7 @@
 
 <body>
     <!-- Navigation -->
-    <header>
+    <header class="header-section">
         <nav class="navbar navbar-expand-lg bg-body-tertiary" style="--bs-bg-opacity: .0;">
             <div class="container-fluid rounded-pill">
                 <div class="collapse navbar-collapse d-flex justify-content-between auth-coll"
@@ -38,14 +38,12 @@
                                 <button class="btn btn-outline-success" type="submit">Search</button>
                             </form>
                         </li>
-                        {% if cart_quantity %}
+                        {% if cart_quantity is not None %}
                         <li class="nav-item">
                             <a href="/cart" class="nav-link">
                                 <div class="cart">
-                                    <i class="bi bi-cart cart-icon"></i>
-                                    <span class="cart-count">
-                                        {{ cart_quantity }}
-                                    </span>
+                                    <span class="count">{{ cart_quantity }}</span>
+                                    <i class="bi bi-cart cart-icon material-icons"></i>
                                 </div>
                             </a>
                         </li>

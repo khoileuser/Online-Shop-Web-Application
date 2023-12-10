@@ -12,3 +12,11 @@ def index(request):
         "cart_quantity": request.session.get("cart_quantity")
     }
     return HttpResponse(template.render(context, request))
+
+
+def execute(request):
+    print('1')
+    from web_app.models import User
+    print('2')
+    print(User.objects.all().values())
+    return HttpResponse('ok')
