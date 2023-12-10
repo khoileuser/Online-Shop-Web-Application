@@ -6,7 +6,7 @@ from web_app.models import Cart, User
 
 
 def cart_(request):
-    if request.session.get("user_id"):
+    if request.user == "guest":
         template = loader.get_template("cart.html")
         return HttpResponse(template.render())
     else:
@@ -14,7 +14,7 @@ def cart_(request):
 
 
 def add_to_cart(request):
-    if request.session.get("user_id"):
+    if request.user == "guest":
         cart = Cart.objects.filter(owner=User.objects.get(
             id=request.session["user_id"])).first()
         print(cart)
