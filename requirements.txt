@@ -1,1 +1,2 @@
-Django
+Django==4.2.8
+fuzzywuzzy

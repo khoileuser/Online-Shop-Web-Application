@@ -6,17 +6,25 @@ from web_app.models import Cart, User
 
 
 def cart_(request):
-    if request.user == "guest":
-        template = loader.get_template("cart.html")
-        return HttpResponse(template.render())
-    else:
+    if request.method != "GET":
+        return HttpResponse("Invalid method")
+    elif request.user == "guest":
         return redirect("/signin")
+
+    template = loader.get_template("cart.html")
+    context = {
+        "username": request.user.username,
+        "cart_quantity": request.user.cart_quantity,
+        "products": Cart.objects().get(owner=request.user).products
+    }
+    return HttpResponse(template.render(context, request))
 
 
 def add_to_cart(request):
-    if request.user == "guest":
-        cart = Cart.objects.filter(owner=User.objects.get(
-            id=request.session["user_id"])).first()
-        print(cart)
-    else:
+    if request.method != "POST":
+        return HttpResponse("Invalid method")
+    elif request.user == "guest":
         return redirect("/signin")
+
+    cart = Cart.objects.filter(owner=request.user).first()
+    print(cart)

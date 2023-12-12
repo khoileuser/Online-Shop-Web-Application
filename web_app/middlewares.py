@@ -9,7 +9,6 @@ class Authentication:
         self.get_response = get_response
 
     def __call__(self, request):
-        print("This is demo middleware in Django")
 
         if request.method == "POST":
             response = self.get_response(request)

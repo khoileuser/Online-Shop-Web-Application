@@ -20,8 +20,9 @@ class Product(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     price = models.IntegerField()
-    images = []
+    images = models.JSONField(default=list, null=True)
     description = models.TextField(blank=True)
+    category = models.CharField(max_length=255, null=True)
 
 
 class Cart(models.Model):
