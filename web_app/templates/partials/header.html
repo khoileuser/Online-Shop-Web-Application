@@ -2,111 +2,83 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Online Web Shop Application</title>
-    <link rel="icon" type="image/x-icon" href="" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Including Boostrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
-    />
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-  </head>
+  <title>Online Web Shop Application</title>
+  <link rel="icon" type="image/x-icon" href="" />
 
-  <body>
-    <!-- Navigation -->
-    <header>
-      <nav
-        class="navbar navbar-expand-lg bg-body-tertiary"
-        style="--bs-bg-opacity: 0"
-      >
-        <div class="container-fluid rounded-pill">
-          <div
-            class="collapse navbar-collapse d-flex justify-content-between auth-coll"
-            id="navbarSupportedContent"
-          >
-            <a class="navbar-brand" href="/">
-              <img
-                src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg"
-                alt="Logo"
-                width="30"
-                height="24"
-                class="mb-1"
-              />
-              Bootstrap
-            </a>
+  <!-- Including Boostrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+</head>
 
-            <ul class="nav nav-pills">
-              <li class="nav-item">
-                <form class="d-flex" role="search">
-                  <input
-                    class="form-control me-2"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                  />
-                  <button class="btn btn-outline-success" type="submit">
-                    Search
-                  </button>
-                </form>
-              </li>
-              {% if cart_quantity %}
-              <li class="nav-item">
-                <a href="/cart" class="nav-link">
-                  <div class="cart">
-                    <i class="bi bi-cart cart-icon"></i>
-                    <span class="cart-count"> {{ cart_quantity }} </span>
-                  </div>
-                </a>
-              </li>
-              {% endif %}
-            </ul>
+<body>
+  <!-- Navigation -->
+  <header class="header-section">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary" style="--bs-bg-opacity: .0;">
+      <div class="container-fluid rounded-pill">
+        <div class="collapse navbar-collapse d-flex justify-content-between auth-coll" id="navbarSupportedContent">
+          <a class="navbar-brand" href="/">
+            <img src="https://getbootstrap.com/docs/5.3/assets/brand/bootstrap-logo.svg" alt="Logo" width="30"
+              height="24" class="mb-1">
+            Bootstrap
+          </a>
 
-            <ul class="nav nav-pills">
-              {% if not username %}
-              <li class="nav-item">
-                <a class="nav-link" href="/signin">Log in</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/signup">Sign up</a>
-              </li>
-              {% else %}
-              <li class="nav-item">
-                <div class="dropdown">
-                  <a
-                    class="btn btn-secondary dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <span class="user"> {{ username }} </span>
-                  </a>
-
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/me">My Account</a></li>
-                    <li>
-                      <a class="dropdown-item" href="/signout">Sign out</a>
-                    </li>
-                  </ul>
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+            </li>
+            {% if cart_quantity is not None %}
+            <li class="nav-item">
+              <a href="/cart" class="nav-link">
+                <div class="cart">
+                  <span class="count">{{ cart_quantity }}</span>
+                  <i class="bi bi-cart cart-icon material-icons"></i>
                 </div>
-              </li>
-              {% endif %}
-            </ul>
-          </div>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+
+          <ul class="nav nav-pills">
+            {% if not username %}
+            <li class="nav-item">
+              <a class="nav-link" href="/signin">Log in</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/signup">Sign up</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <div class="dropdown">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <span class="user"> {{ username }} </span>
+                </a>
+
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/me">My Account</a></li>
+                  <li>
+                    <a class="dropdown-item" href="/signout">Sign out</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            {% endif %}
+          </ul>
         </div>
-      </nav>
-    </header>
-  </body>
+      </div>
+    </nav>
+  </header>
+</body>
+
 </html>

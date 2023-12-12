@@ -6,22 +6,23 @@ class User(models.Model):
         ("V", "Vendor"),
         ("C", "Customer")
     ]
+    tokens = models.JSONField(default=list, null=True)
     username = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=20)
     name = models.CharField(max_length=255)
-    avatar = models.CharField(max_length=255, blank=True)
+    avatar = models.CharField(max_length=255, null=True)
     account_type = models.CharField(
         max_length=1, choices=ACCOUNT_TYPES)
-    # cart_quantity = len(Cart.objects.get(products))
-    cart_quantity = '1'
+    cart_quantity = models.IntegerField(default=0)
 
 
 class Product(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     price = models.IntegerField()
-    images = []
+    images = models.JSONField(default=list, null=True)
     description = models.TextField(blank=True)
+    category = models.CharField(max_length=255, null=True)
 
 
 class Cart(models.Model):
