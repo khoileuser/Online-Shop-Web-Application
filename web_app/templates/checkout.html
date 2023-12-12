@@ -1,5 +1,116 @@
 {% include "partials/header.html" %}
-
-<p>This is checkout page</p>
-
+<div
+  class="container-fluid p-5 text-light"
+  style="background-image: linear-gradient(to bottom, #7ce8ff, #0080bf)"
+>
+  <h1>Checkout</h1>
+  <br />
+  <!-- Address -->
+  <div class="address">
+    <h3>Address</h3>
+    <div class="container p-3 border border-light rounded">
+      <form action="/">
+        <label for="address">Enter the address:</label>
+        <input type="text" id="address" name="address" />
+        <input type="submit" value="Save" />
+      </form>
+    </div>
+  </div>
+  <br />
+  <!-- Phone Number -->
+  <div class="phone">
+    <h3>Phone number</h3>
+    <div class="container p-3 border border-light rounded">
+      <form action="/">
+        <label for="phone">Enter the phone number:</label>
+        <input type="text" id="phone" name="phone" />
+        <input type="submit" value="Save" />
+      </form>
+    </div>
+  </div>
+  <br />
+  <!-- Product -->
+  <div class="product">
+    <h3>Product</h3>
+    <div class="container">
+      <div class="row">
+        <div
+          class="col-8 col-sm-6 bg-secondary text-light d-flex align-items-center justify-content-left border border-light border-left"
+        >
+          Name
+        </div>
+        <div
+          class="col-1 col-sm-2 bg-secondary text-light d-flex align-items-center justify-content-center border border-light border-left"
+        >
+          Price
+        </div>
+        <div
+          class="col-1 col-sm-2 bg-secondary text-light d-flex align-items-center justify-content-center border border-light border-left"
+        >
+          Quantity
+        </div>
+        <div
+          class="col-2 col-sm-2 bg-secondary text-light d-flex align-items-center justify-content-center border border-light border-left"
+        >
+          Total
+        </div>
+      </div>
+      <div class="row">
+        <div
+          class="col-8 col-sm-6 bg-white text-dark d-flex align-items-center justify-content-left border border-light border-left"
+        >
+          1
+        </div>
+        <div
+          class="col-1 col-sm-2 bg-white text-dark d-flex align-items-center justify-content-center border border-light border-left"
+        >
+          2
+        </div>
+        <div
+          class="col-1 col-sm-2 bg-white text-dark d-flex align-items-center justify-content-center border border-light border-left"
+        >
+          3
+        </div>
+        <div
+          class="col-2 col-sm-2 bg-white text-dark d-flex align-items-center justify-content-center border border-light border-left"
+        >
+          4
+        </div>
+      </div>
+    </div>
+  </div>
+  <br />
+  <!-- Voucher -->
+  <div class="voucher">
+    <h3>Voucher</h3>
+    <div class="container p-3 border border-light rounded">
+      <form action="/">
+        <label for="coupon">Enter the coupon:</label>
+        <input type="text" id="coupon" name="coupon" />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  </div>
+  <br />
+  <!-- Payment Methods -->
+  <div class="methods">
+    <h3>Payment methods</h3>
+    <div class="container p-3 border border-light rounded">
+      <label for="payment">Choose a payment methods:</label>
+      <select id="payment">
+        <option value="cash">On cash</option>
+        <option value="credit">Credit card</option>
+      </select>
+    </div>
+  </div>
+  <br />
+  <!-- Set order button -->
+  <div class="container">
+    <div class="row justify-content-end">
+      <div class="col-2">
+        <input type="submit" value="Set order" />
+      </div>
+    </div>
+  </div>
+</div>
 {% include "partials/footer.html" %}
