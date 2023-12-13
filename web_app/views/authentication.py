@@ -8,6 +8,8 @@ from web_app.models import User, Cart
 from django.contrib.auth.hashers import make_password, check_password
 from secrets import token_urlsafe
 
+import re
+
 
 @csrf_exempt
 def sign_in(request):
@@ -41,24 +43,28 @@ def sign_up(request):
             return redirect("/")
     elif request.method == "POST":
         name = request.POST["name"]
-        if len(name) > 255:
-            return HttpResponse("Name must be lower than 255 characters.")
+        if len(name) > 255 or len(name) == 0:
+            return HttpResponse("Name must be lower than 255 characters and not empty.")
+
         username = request.POST["username"]
-        if len(username) < 4 or len(username) > 25:
-            return HttpResponse("Usernames must be between 4 and 25 characters.")
+        if len(username) < 4 or len(username) > 25 or re.match(r'^[a-zA-Z0-9]+$', username) is None:
+            return HttpResponse("Usernames must contain only letters and digits and between 4 and 25 characters.")
+
         password = request.POST["password"]
-        if len(password) < 8:
-            return HttpResponse("Passwords must be at least 8 characters long.")
+        if re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,255}$', password) is None:
+            return HttpResponse("Passwords must contain at least one uppercase, one lowercase, one digit, one special character and at least 8 characters long.")
         hashed_pwd = make_password(password)
+
         account_type = "V" if request.POST["accounttype"] == "vendor" else "C"
-        avatar = None
+
         try:
             user = User(name=name, username=username, password=hashed_pwd,
-                        account_type=account_type, avatar=avatar)
+                        account_type=account_type, avatar=None)
         except:
             return HttpResponse("Invalid credentials")
         user.save()
         Cart(owner=user).save
+
         return_session(request, user)
         return redirect("/")
 

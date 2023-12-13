@@ -62,44 +62,38 @@
           <h1 class="mb-3">SIGN UP</h1>
           <div class="form-outline mb-3">
             <label for="username">Name</label>
-            <input type="text" id="name" name="name" class="form-control name" placeholder="Name" required />
+            <input type="text" id="name" name="name" class="form-control name" placeholder="Name"
+              onchange="signInEditName()" required />
+            <i class="name-danger caution text-danger">*Name must be lower than 255 characters and not empty.</i>
           </div>
 
           <div class="form-outline mb-3">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" class="form-control username" placeholder="Username"
-              required />
+              onchange="signInEditUsername()" required />
+            <i class="username-danger caution text-danger">*Usernames must contain only letters and digits and between 4
+              and 25 characters.</i>
           </div>
 
           <div class="form-outline mb-4">
             <label for="password">Password</label>
             <input type="password" id="password" name="password" class="form-control password" placeholder="Password"
-              required />
-          </div>
-
-          <div class="mb-4">
-            <input class="form-control profile" type="file" id="formFile" name="profile" onchange="preview()"
-              accept="image/*" />
-            <div class="d-grid mb-3">
-              <button type="button" onclick="clearImage()" class="btn btn-primary mt-3">
-                Remove avatar
-              </button>
-            </div>
-            <div class="d-flex justify-content-center">
-              <img id="frame" class="img-fuild rounded-circle" alt="profile"
-                src="{% static 'images/avatar/default.jpg' %}" height="200" width="200" style="object-fit: cover" />
-            </div>
+              onchange="signInEditPassword()" required />
+            <i class="password-danger caution text-danger">*Passwords must contain at least one uppercase, one
+              lowercase, one digit, one special character and at least 8 characters long.</i>
           </div>
 
           <div class="container row check-boxes align-items-center mb-3">
             <div class="col form-check d-flex justify-content-center gap-2">
-              <input class="form-check-input" type="radio" value="vendor" name="accounttype" id="vendorCheck" />
+              <input class="form-check-input" type="radio" value="vendor" name="accounttype" id="vendorCheck"
+                onchange="signInEditType()" />
               <label class="form-check-label" for="vendorCheck">
                 Vendor
               </label>
             </div>
             <div class="col form-check d-flex justify-content-center gap-2">
-              <input class="form-check-input" type="radio" value="customer" name="accounttype" id="customerCheck" />
+              <input class="form-check-input" type="radio" value="customer" name="accounttype" id="customerCheck"
+                onchange="signInEditType()" />
               <label class="form-check-label" for="customerCheck">
                 Customer
               </label>
@@ -107,7 +101,7 @@
           </div>
 
           <div class="d-grid mb-3">
-            <button type="button" class="btn btn-primary anm-btn signin-btn" onclick="signIn()">
+            <button type="submit" class="btn btn-primary anm-btn signin-btn" disabled>
               <span>Sign up</span>
             </button>
           </div>

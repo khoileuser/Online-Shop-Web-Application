@@ -97,6 +97,10 @@ body {
     width: 100%;
     object-fit: cover;
   }
+
+  .caution {
+    display: none;
+  }
 }
 
 .checkout-page {
