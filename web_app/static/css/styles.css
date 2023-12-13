@@ -5,6 +5,8 @@
   --box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
   --border-radius: 1rem;
   --border-color: rgba(0, 0, 0, 0.125);
+  --pink-gradient: linear-gradient(90deg, rgba(253, 1, 130, 1) 0%, rgba(131, 37, 196, 1) 100%);
+  --blue-gradient: linear-gradient(90deg, rgba(58, 65, 110, 1) 0%, rgba(21, 24, 41, 1) 100%);
 }
 
 body {
