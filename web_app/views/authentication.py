@@ -41,8 +41,14 @@ def sign_up(request):
             return redirect("/")
     elif request.method == "POST":
         name = request.POST["name"]
+        if len(name) > 255:
+            return HttpResponse("Name must be lower than 255 characters.")
         username = request.POST["username"]
+        if len(username) < 4 or len(username) > 25:
+            return HttpResponse("Usernames must be between 4 and 25 characters.")
         password = request.POST["password"]
+        if len(password) < 8:
+            return HttpResponse("Passwords must be at least 8 characters long.")
         hashed_pwd = make_password(password)
         account_type = "V" if request.POST["accounttype"] == "vendor" else "C"
         avatar = None

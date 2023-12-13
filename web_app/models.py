@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinLengthValidator
 
 
 class User(models.Model):
@@ -7,8 +8,10 @@ class User(models.Model):
         ("C", "Customer")
     ]
     tokens = models.JSONField(default=list, null=True)
-    username = models.CharField(max_length=20, unique=True)
-    password = models.CharField(max_length=20)
+    username = models.CharField(max_length=25, unique=True, validators=[
+                                MinLengthValidator(4, "Usernames must be between 4 and 25 characters.")])
+    password = models.CharField(max_length=255, validators=[
+                                MinLengthValidator(8, "Passwords must be at least 8 characters long.")])
     name = models.CharField(max_length=255)
     avatar = models.CharField(max_length=255, null=True)
     account_type = models.CharField(
@@ -19,7 +22,7 @@ class User(models.Model):
 class Product(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    price = models.IntegerField()
+    price = models.FloatField()
     images = models.JSONField(default=list, null=True)
     description = models.TextField(blank=True)
     category = models.CharField(max_length=255, null=True)
@@ -31,7 +34,7 @@ class Cart(models.Model):
         'product': models.ManyToManyField(Product),
         'quantity': models.IntegerField()
     }]
-    total_price = models.IntegerField()
+    total_price = models.FloatField()
 
 
 class Order(models.Model):
