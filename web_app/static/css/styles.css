@@ -1,3 +1,12 @@
+:root {
+  --text-header: #344767;
+  --text-sub-header: #67748e;
+  --text-normal: #67748e;
+  --box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
+  --border-radius: 1rem;
+  --border-color: rgba(0, 0, 0, 0.125);
+}
+
 body {
   font-family: system, -apple-system, ".SFNSText-Regular", "San Francisco",
     "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", sans-serif;
@@ -90,4 +99,7 @@ body {
 
 .checkout-page {
   background-color: white;
+  box-shadow: var(--box-shadow);
+  border-radius: var(--border-radius);
+  border-color: var(--border-color);
 }
