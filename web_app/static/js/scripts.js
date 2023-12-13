@@ -8,3 +8,14 @@ function clearImage() {
     document.getElementById('formFile').value = "";
     frame.src = "/images/profiles/default.jpg";
 }
+
+function toggleCreditCardFields() {
+    var paymentMethod = document.getElementById('payment');
+    var creditCardFields = document.getElementById('creditCardFields');
+
+    if (paymentMethod.value === 'credit') {
+      creditCardFields.style.display = 'block';
+    } else {
+      creditCardFields.style.display = 'none';
+    }
+  }

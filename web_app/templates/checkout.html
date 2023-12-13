@@ -97,13 +97,24 @@
     <h3>Payment methods</h3>
     <div class="container p-3 border border-light rounded">
       <label for="payment">Choose a payment methods:</label>
-      <select id="payment">
+      <select id="payment" onchange="toggleCreditCardFields()">
         <option value="cash">On cash</option>
         <option value="credit">Credit card</option>
       </select>
     </div>
   </div>
   <br />
+  <!-- Optional Credit Card Input -->
+  <div id="creditCardFields" class="credit-card-fields">
+    <label for="cardNumber">Card Number:</label>
+    <input type="text" id="cardNumber" name="cardNumber" required>
+
+    <label for="expirationDate">Expiration Date:</label>
+    <input type="text" id="expirationDate" name="expirationDate" placeholder="MM/YY" required>
+
+    <label for="cvv">CVV:</label>
+    <input type="text" id="cvv" name="cvv" required>
+  </div>
   <!-- Set order button -->
   <div class="container">
     <div class="row justify-content-end">
@@ -113,4 +124,6 @@
     </div>
   </div>
 </div>
+
+
 {% include "partials/footer.html" %}
