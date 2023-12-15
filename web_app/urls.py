@@ -30,5 +30,4 @@ urlpatterns = [
 
     # testing
     path('execute/', views.execute),
-    path('seed/', views.seed),
 ]
