@@ -10,8 +10,7 @@ class User(models.Model):
     tokens = models.JSONField(default=list, null=True)
     username = models.CharField(max_length=25, unique=True, validators=[
                                 MinLengthValidator(4, "Usernames must be between 4 and 25 characters.")])
-    password = models.CharField(max_length=255, validators=[
-                                MinLengthValidator(8, "Passwords must be at least 8 characters long.")])
+    password = models.TextField()
     name = models.CharField(max_length=255)
     avatar = models.CharField(max_length=255, null=True)
     account_type = models.CharField(
@@ -49,4 +48,5 @@ class Order(models.Model):
         'quantity': models.IntegerField()
     }]
     total_price = models.IntegerField()
-    status = []
+    status = models.CharField(
+        max_length=1, choices=ORDER_STATUSES, default="A")

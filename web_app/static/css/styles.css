@@ -114,7 +114,8 @@ body {
     object-fit: cover;
   }
 
-  .caution {
+  .caution,
+  .spinner {
     display: none;
   }
 

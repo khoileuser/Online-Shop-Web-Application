@@ -67,7 +67,7 @@ def sign_up(request):
             return HttpResponse("Usernames must contain only letters and digits and between 4 and 25 characters.")
 
         password = request.POST["password"]
-        if re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,255}$', password) is None:
+        if re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,4096}$', password) is None:
             return HttpResponse("Passwords must contain at least one uppercase, one lowercase, one digit, one special character and at least 8 characters long.")
         hashed_pwd = make_password(password)
 

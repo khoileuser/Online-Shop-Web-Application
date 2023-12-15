@@ -26,6 +26,8 @@ function customAlert(message) {
  * are valid, it submits the sign-in form.
  */
 function signIn() {
+  document.querySelector('.signin-btn').setAttribute("disabled", "");
+  document.querySelector('.spinner').style.display = "flex";
   const username = document.querySelector('.username').value;
   const password = document.querySelector('.password').value;
   fetch('/check/signin/', {
@@ -42,6 +44,8 @@ function signIn() {
     .then(data => {
       if (data == "false") {
         customAlert("Login failed! Please check your credentials.");
+        document.querySelector('.signin-btn').removeAttribute("disabled");
+        document.querySelector('.spinner').style.display = "none";
       }
       else {
         // submit form if all is passed
@@ -125,6 +129,8 @@ function signInEdit() {
 }
 
 function signUp() {
+  document.querySelector('.signup-btn').setAttribute("disabled", "");
+  document.querySelector('.spinner').style.display = "flex";
   const username = document.querySelector('.username').value;
   fetch('/check/signup/', {
     method: 'POST',
@@ -139,6 +145,8 @@ function signUp() {
     .then(data => {
       if (data == "true") {
         customAlert("Username is already used, please try another username.");
+        document.querySelector('.signup-btn').removeAttribute("disabled");
+        document.querySelector('.spinner').style.display = "none";
       }
       else {
         // submit form if all is passed
