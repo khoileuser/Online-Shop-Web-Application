@@ -80,18 +80,18 @@ WSGI_APPLICATION = 'shop_web.wsgi.application'
 
 # comment the unused databases
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
     # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'postgres',
-    #     'USER': getenv("POSTGRES_USER"),
-    #     'PASSWORD': getenv("POSTGRES_PASSWORD"),
-    #     'HOST': getenv("POSTGRES_HOST"),
-    #     'PORT': getenv("POSTGRES_PORT")
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': getenv("POSTGRES_USER"),
+        'PASSWORD': getenv("POSTGRES_PASSWORD"),
+        'HOST': getenv("POSTGRES_HOST"),
+        'PORT': getenv("POSTGRES_PORT")
+    }
 }
 
 
