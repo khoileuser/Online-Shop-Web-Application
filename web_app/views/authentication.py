@@ -34,6 +34,22 @@ def sign_in(request):
 
 
 @csrf_exempt
+def check_sign_in(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        try:
+            user = User.objects.get(username=username)
+            if check_password(password, user.password):
+                return_session(request, user)
+                return HttpResponse("true")
+            else:
+                return HttpResponse("false")
+        except:
+            return HttpResponse("false")
+
+
+@csrf_exempt
 def sign_up(request):
     if request.method == "GET":
         if request.user == "guest":
@@ -67,6 +83,20 @@ def sign_up(request):
 
         return_session(request, user)
         return redirect("/")
+
+
+@csrf_exempt
+def check_sign_up(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        try:
+            user = User.objects.get(username=username)
+            if user:
+                return HttpResponse("true")
+            else:
+                return HttpResponse("false")
+        except:
+            return HttpResponse("false")
 
 
 def token_generator():

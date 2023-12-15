@@ -49,28 +49,34 @@
     </nav>
   </header>
 
+  <div class="container col-8 alert alert-warning alert-dismissible alert-container fade show position-fixed fixed-top">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <span class="alert-msg"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
   <div class="container-fluid">
     <div class="row">
-      <div class="col p-0">
+      <div class="col p-0 d-none d-md-block">
         <div class="oblique-l">
           <img src="{% static 'images/curved-6.71ee1d1c.jpg' %}" alt="oblique-image" class="oblique-img" />
         </div>
       </div>
 
       <div class="col d-flex align-items-center justify-content-center">
-        <form class="w-50" method="POST" action="/signup/">
-          <h1 class="mb-3">SIGN UP</h1>
+        <form class="w-50 signup-form" method="POST" action="/signup/">
+          <h1 class="mb-3 heading">SIGN UP</h1>
           <div class="form-outline mb-3">
             <label for="username">Name</label>
             <input type="text" id="name" name="name" class="form-control name" placeholder="Name"
-              onchange="signInEditName()" required />
+              onchange="signUpEditName()" required />
             <i class="name-danger caution text-danger">*Name must be lower than 255 characters and not empty.</i>
           </div>
 
           <div class="form-outline mb-3">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" class="form-control username" placeholder="Username"
-              onchange="signInEditUsername()" required />
+              onchange="signUpEditUsername()" required />
             <i class="username-danger caution text-danger">*Usernames must contain only letters and digits and between 4
               and 25 characters.</i>
           </div>
@@ -78,7 +84,7 @@
           <div class="form-outline mb-4">
             <label for="password">Password</label>
             <input type="password" id="password" name="password" class="form-control password" placeholder="Password"
-              onchange="signInEditPassword()" required />
+              onchange="signUpEditPassword()" required />
             <i class="password-danger caution text-danger">*Passwords must contain at least one uppercase, one
               lowercase, one digit, one special character and at least 8 characters long.</i>
           </div>
@@ -86,14 +92,14 @@
           <div class="container row check-boxes align-items-center mb-3">
             <div class="col form-check d-flex justify-content-center gap-2">
               <input class="form-check-input" type="radio" value="vendor" name="accounttype" id="vendorCheck"
-                onchange="signInEditType()" />
+                onchange="signUpEditType()" />
               <label class="form-check-label" for="vendorCheck">
                 Vendor
               </label>
             </div>
             <div class="col form-check d-flex justify-content-center gap-2">
               <input class="form-check-input" type="radio" value="customer" name="accounttype" id="customerCheck"
-                onchange="signInEditType()" />
+                onchange="signUpEditType()" />
               <label class="form-check-label" for="customerCheck">
                 Customer
               </label>
@@ -101,7 +107,7 @@
           </div>
 
           <div class="d-grid mb-3">
-            <button type="submit" class="btn btn-primary anm-btn signin-btn" disabled>
+            <button type="button" class="btn btn-primary anm-btn signup-btn" onclick="signUp()" disabled>
               <span>Sign up</span>
             </button>
           </div>
@@ -113,6 +119,3 @@
   </div>
 
   {% include "partials/footer.html" %}
-</body>
-
-</html>

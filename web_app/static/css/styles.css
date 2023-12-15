@@ -16,47 +16,63 @@ body {
   background-color: #f8f9fa;
 }
 
-/* .header-section { */
-.cart {
-  position: relative;
-  display: block;
-  width: 28px;
-  height: 28px;
-  height: auto;
-  overflow: hidden;
-
-  .material-icons {
-    position: relative;
-    top: 4px;
-    z-index: 1;
-    font-size: 24px;
-    color: white;
-  }
-
-  .count {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 2;
-    font-size: 11px;
-    border-radius: 50%;
-    background: #d60b28;
-    width: 16px;
-    height: 16px;
-    line-height: 16px;
-    display: block;
-    text-align: center;
-    color: white;
-    font-family: 'Roboto', sans-serif;
-    font-weight: bold;
-  }
+.alert-container {
+  display: none;
+  position: absolute;
+  top: 80px;
+  left: 0;
+  right: 0;
+  z-index: 999;
 }
 
-/* } */
+.header-section {
+  .cart {
+    position: relative;
+    display: block;
+    width: 28px;
+    height: 28px;
+    height: auto;
+    overflow: hidden;
+
+    .material-icons {
+      position: relative;
+      top: 4px;
+      z-index: 1;
+      font-size: 24px;
+      color: white;
+    }
+
+    .count {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 2;
+      font-size: 11px;
+      border-radius: 50%;
+      background: #d60b28;
+      width: 16px;
+      height: 16px;
+      line-height: 16px;
+      display: block;
+      text-align: center;
+      color: white;
+      font-family: 'Roboto', sans-serif;
+      font-weight: bold;
+    }
+  }
+}
 
 .auth-page {
   overflow-x: hidden;
   overflow-y: hidden;
+
+  .heading {
+    font-weight: bold;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-image: linear-gradient(135deg, rgba(253, 1, 130, 1), rgba(131, 37, 196, 1))
+  }
 
   .auth-nav {
     backdrop-filter: saturate(200%) blur(30px);
@@ -100,6 +116,42 @@ body {
 
   .caution {
     display: none;
+  }
+
+  .anm-btn {
+    background-image: var(--blue-gradient);
+    border-color: var(--blue-gradient);
+    transition: all 0.25s;
+  }
+
+  .anm-btn:hover {
+    background-image: var(--pink-gradient);
+    border-color: var(--pink-gradient);
+  }
+
+  .anm-btn span {
+    cursor: pointer;
+    position: relative;
+    transition: 0.5s;
+  }
+
+  .anm-btn:hover span:after {
+    opacity: 1;
+    right: 0;
+  }
+
+  .anm-btn:hover span {
+    padding-right: 20px;
+  }
+
+  .anm-btn span:after {
+    position: absolute;
+    opacity: 0;
+    right: -20px;
+    bottom: -4px;
+    transition: 0.5s;
+    font-family: "bootstrap-icons";
+    content: "\F234";
   }
 }
 

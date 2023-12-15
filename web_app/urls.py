@@ -16,6 +16,9 @@ urlpatterns = [
     path('sign-out/', authentication.sign_out),
     path('logout/', authentication.sign_out),
     path('log-out/', authentication.sign_out),
+    # check authentication
+    path('check/signin/', authentication.check_sign_in),
+    path('check/signup/', authentication.check_sign_up),
 
     # consumer
     path('cart/', cart.cart_),

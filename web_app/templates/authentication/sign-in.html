@@ -49,25 +49,31 @@
     </nav>
   </header>
 
+  <div class="container col-8 alert alert-warning alert-dismissible alert-container fade show position-fixed fixed-top">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <span class="alert-msg"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
   <div class="container-fluid">
     <div class="row">
       <div class="col d-flex align-items-center justify-content-center">
-        <form class="w-50" method="POST" action="/signin/">
-          <h1 class="mb-3">SIGN IN</h1>
+        <form class="w-50 signin-form" method="POST" action="/signin/">
+          <h1 class="mb-3 heading">SIGN IN</h1>
           <div class="form-outline mb-3">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" class="form-control username" placeholder="Username"
-              required />
+              onchange="signInEdit()" required />
           </div>
 
           <div class="form-outline mb-4">
             <label for="password">Password</label>
             <input type="password" id="password" name="password" class="form-control password" placeholder="Password"
-              required />
+              onchange="signInEdit()" required />
           </div>
 
           <div class="d-grid mb-3">
-            <button type="submit" class="btn btn-primary anm-btn signin-btn" onclick="signIn()">
+            <button type="button" class="btn btn-primary anm-btn signin-btn" onclick="signIn()" disabled>
               <span>Sign in</span>
             </button>
           </div>
@@ -78,7 +84,7 @@
         </form>
       </div>
 
-      <div class="col p-0">
+      <div class="col p-0 d-none d-md-block">
         <div class="oblique-r">
           <img src="{% static 'images/curved-6.71ee1d1c.jpg' %}" alt="oblique-image" class="oblique-img" />
         </div>
@@ -87,6 +93,3 @@
   </div>
 
   {% include "partials/footer.html" %}
-</body>
-
-</html>
