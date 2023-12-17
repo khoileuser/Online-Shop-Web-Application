@@ -330,6 +330,18 @@ body {
     font-family: "bootstrap-icons";
     content: "\F234";
   }
+
+  @media (max-width: 768px) {
+    .slides {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .row {
+      width: 100%;
+    }
+  }
 }
 
 .checkout-page {
