@@ -29,12 +29,32 @@
             <img src="{% static 'images/logo-nt.png' %}" alt="logo" class="mb-1" width="30" height="30" />
             ShopHub
           </a>
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn border border-dark" type="submit">
-              Search
-            </button>
-          </form>
+
+          <ul class="nav nav-pills">
+            <li class="nav-item search-top">
+              <form class="d-flex gap-2" role="search">
+                <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn border border-dark" type="submit">Search</button>
+              </form>
+            </li>
+
+            <li class="nav-item search-mobile">
+              <div class="dropdown">
+                <a class="btn dropdown-toggle border-dark" href="#" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  <i class="bi bi-search"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-center p-0">
+                  <form class="d-flex gap-2" role="search">
+                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn border border-dark" type="submit">Search</button>
+                  </form>
+                </ul>
+              </div>
+            </li>
+          </ul>
+
           <ul class="nav nav-pills">
             <li class="nav-item">
               <a class="nav-link text-black" href="/signin">Log in</a>
