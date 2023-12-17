@@ -10,6 +10,17 @@ function customAlert(message) {
   }, 10000);
 }
 
+window.onscroll = function () {
+  var navbar = document.querySelector('.navbar')
+  if (window.scrollY > 100) {
+    navbar.classList.add('navbar-scrolled')
+  }
+  else {
+    navbar.classList.remove('navbar-scrolled')
+  }
+}
+
+
 /**
  * The `signIn` function sends a POST request to the server to check the user's credentials and if they
  * are valid, it submits the sign-in form.

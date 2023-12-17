@@ -127,6 +127,13 @@ body {
     border-color: var(--hover-from-dark) !important;
     color: var(--hover-from-dark) !important;
   }
+
+  .navbar-scrolled {
+    background-color: #f8f9fa;
+    --bs-bg-opacity: .9 !important;
+    /* padding: 15px 0; */
+    box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
+  }
 }
 
 .hero {
@@ -137,11 +144,11 @@ body {
   h1 {
     font-size: 48px;
     font-weight: 500;
-    color: rgba(21, 24, 41, 1);
+    color: var(--text-header);
   }
 
   h2 {
-    color: #444444;
+    color: var(--text-normal);
     margin: 15px 0 0 0;
     font-size: 26px;
   }

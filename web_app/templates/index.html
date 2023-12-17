@@ -1,10 +1,11 @@
 {% load static %}
+{% load custom_tags %}
 
 {% include "partials/header.html" %}
 
 <!-- hero -->
 <section class="hero d-flex align-items-center"
-    style="background: url({% static 'images/hero-bg.png' %}) top center no-repeat;">
+    style="background-image: url({% static 'images/hero-bg.png' %}); background-size: cover;">
 
     <div class="container">
         <div class="row">
@@ -31,8 +32,199 @@
 </section>
 
 <!-- carousel-->
-<section class="carousel">
+<div class="container home-products mt-5 mb-5">
+    <div class="row mb-5">
+        <div class="col-6">
+            <h3 class="mb-3">Trending</h3>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn mb-3 mr-1 carousel-btn" data-bs-target="#carouselExampleIndicators1" data-bs-slide="prev">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <a class="btn mb-3 carousel-btn" data-bs-target="#carouselExampleIndicators1" data-bs-slide="next">
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+        <div class="col-12">
+            <div id="carouselExampleIndicators1" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row d-flex justify-content-center pd-row">
+                            {% for product in trending1 %}
+                            <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
+                                <div class="card pd-card">
+                                    <a href="/product/{{ product.id }}" class="pd-img">
+                                        <img class="img-fluid" alt="pd-img"
+                                            src="{% static 'images/products/' %}{{ product.images.0 }}">
+                                    </a>
+                                    <div class="card-body pd-info d-flex flex-column justify-content-end">
+                                        <h4 class="card-title pd-name">
+                                            <a href="/product/{{ product.id }}" class="text-decoration-none text-reset">
+                                                {{ product.name }}
+                                            </a>
+                                        </h4>
+                                        <p class="card-text pd-price">
+                                            {{ product.price }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
 
-</section>
+                    <!-- <div class="carousel-item">
+                        <div class="row d-flex justify-content-center pd-row">
+                            <% if (data.products.length> 0) { for (i = 3; i < 6; i++) { %>
+                                    <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
+                                        <div class="card pd-card">
+                                            <a href="/product/<%= data.products[i]._id %>" class="pd-img">
+                                                <img class="img-fluid" alt="pd-img"
+                                                    src="/images/products/<%= data.products[i].owner %>/<%= data.products[i]._id %>/<%= data.products[i].images[0] %>">
+                                            </a>
+                                            <div class="card-body pd-info d-flex flex-column justify-content-end">
+                                                <h4 class="card-title pd-name">
+                                                    <a href="/product/<%= data.products[i]._id %>"
+                                                        class="text-decoration-none text-reset">
+                                                        <%= data.products[i].name %>
+                                                    </a>
+                                                </h4>
+                                                <p class="card-text pd-price">
+                                                    $ <%= data.products[i].price %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }} %>
+                        </div>
+                    </div>
 
-{% include "partials/footer.html" %}
+                    <div class="carousel-item">
+                        <div class="row d-flex justify-content-center pd-row">
+                            <% if (data.products.length> 0) { for (i = 6; i < 9; i++) { %>
+                                    <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
+                                        <div class="card pd-card">
+                                            <a href="/product/<%= data.products[i]._id %>" class="pd-img">
+                                                <img class="img-fluid" alt="pd-img"
+                                                    src="/images/products/<%= data.products[i].owner %>/<%= data.products[i]._id %>/<%= data.products[i].images[0] %>">
+                                            </a>
+                                            <div class="card-body pd-info d-flex flex-column justify-content-end">
+                                                <h4 class="card-title pd-name">
+                                                    <a href="/product/<%= data.products[i]._id %>"
+                                                        class="text-decoration-none text-reset">
+                                                        <%= data.products[i].name %>
+                                                    </a>
+                                                </h4>
+                                                <p class="card-text pd-price">
+                                                    $ <%= data.products[i].price %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }} %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-6">
+            <h3 class="mb-3">New Arrival</h3>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn mb-3 mr-1 carousel-btn" data-bs-target="#carouselExampleIndicators2" data-bs-slide="prev">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <a class="btn mb-3 carousel-btn" data-bs-target="#carouselExampleIndicators2" data-bs-slide="next">
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+        <div class="col-12">
+            <div id="carouselExampleIndicators2" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row d-flex justify-content-center pd-row">
+                            <% if (data.products.length> 0) { for (i = 9; i < 12; i++) { %>
+                                    <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
+                                        <div class="card pd-card">
+                                            <a href="/product/<%= data.products[i]._id %>" class="pd-img">
+                                                <img class="img-fluid pd-img" alt="pd-img"
+                                                    src="/images/products/<%= data.products[i].owner %>/<%= data.products[i]._id %>/<%= data.products[i].images[0] %>">
+                                            </a>
+                                            <div class="card-body pd-info d-flex flex-column justify-content-end">
+                                                <h4 class="card-title pd-name">
+                                                    <a href="/product/<%= data.products[i]._id %>"
+                                                        class="text-decoration-none text-reset">
+                                                        <%= data.products[i].name %>
+                                                    </a>
+                                                </h4>
+                                                <p class="card-text pd-price">
+                                                    $ <%= data.products[i].price %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }} %>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="row d-flex justify-content-center pd-row">
+                            <% if (data.products.length> 0) { for (i = 12; i < 15; i++) { %>
+                                    <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
+                                        <div class="card pd-card">
+                                            <a href="/product/<%= data.products[i]._id %>" class="pd-img">
+                                                <img class="img-fluid pd-img" alt="pd-img"
+                                                    src="/images/products/<%= data.products[i].owner %>/<%= data.products[i]._id %>/<%= data.products[i].images[0] %>">
+                                            </a>
+                                            <div class="card-body pd-info d-flex flex-column justify-content-end">
+                                                <h4 class="card-title pd-name">
+                                                    <a href="/product/<%= data.products[i]._id %>"
+                                                        class="text-decoration-none text-reset">
+                                                        <%= data.products[i].name %>
+                                                    </a>
+                                                </h4>
+                                                <p class="card-text pd-price">
+                                                    $ <%= data.products[i].price %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }} %>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="row d-flex justify-content-center pd-row">
+                            <% if (data.products.length> 0) { for (i = 15; i < 18; i++) { %>
+                                    <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
+                                        <div class="card pd-card">
+                                            <a href="/product/<%= data.products[i]._id %>" class="pd-img">
+                                                <img class="img-fluid pd-img" alt="pd-img"
+                                                    src="/images/products/<%= data.products[i].owner %>/<%= data.products[i]._id %>/<%= data.products[i].images[0] %>">
+                                            </a>
+                                            <div class="card-body pd-info d-flex flex-column justify-content-end">
+                                                <h4 class="card-title pd-name">
+                                                    <a href="/product/<%= data.products[i]._id %>"
+                                                        class="text-decoration-none text-reset">
+                                                        <%= data.products[i].name %>
+                                                    </a>
+                                                </h4>
+                                                <p class="card-text pd-price">
+                                                    $ <%= data.products[i].price %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }} %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+                    {% include "partials/footer.html" %}
