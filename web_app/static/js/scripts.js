@@ -1,3 +1,8 @@
+/**
+ * The customAlert function displays a message in an alert container for a specified duration of time.
+ * @param message - The message parameter is a string that represents the message you want to display
+ * in the alert.
+ */
 function customAlert(message) {
   var alertContainer = document.querySelector('.alert-container');
   var alertMsg = document.querySelector('.alert-msg');
@@ -10,6 +15,8 @@ function customAlert(message) {
   }, 10000);
 }
 
+/* The code is adding an event listener to the window object for the scroll event. When the user
+scrolls the page, the function is triggered. */
 window.onscroll = function () {
   var navbar = document.querySelector('.navbar')
   if (window.scrollY > 100) {
@@ -54,6 +61,11 @@ function signIn() {
     });
 }
 
+/**
+ * The function checks if any account type is selected in a form.
+ * @returns a boolean value. It returns true if at least one of the radio buttons with the name
+ * 'accounttype' is checked, and false otherwise.
+ */
 function accountTypeCheck() {
   const accounttype = document.getElementsByName('accounttype');
   for (i = 0; i < accounttype.length; i++) {
@@ -64,6 +76,10 @@ function accountTypeCheck() {
   return false;
 }
 
+/**
+ * The function checks if the length of the name input is empty or exceeds 255 characters, and displays
+ * an error message and disables the signup button if it does.
+ */
 function signUpEditName() {
   const _name = document.querySelector('.name');
   if (_name.value.length == "" || _name.value.length > 255) {
@@ -80,6 +96,10 @@ function signUpEditName() {
   }
 }
 
+/**
+ * The function checks if the username input meets certain criteria and enables or disables the signup
+ * button accordingly.
+ */
 function signUpEditUsername() {
   const username = document.querySelector('.username');
   if (username.value.length < 4 || username.value.length > 25 || ! /^[a-zA-Z0-9]+$/.test(username.value)) {
@@ -96,6 +116,10 @@ function signUpEditUsername() {
   }
 }
 
+/**
+ * The function checks if the password entered meets certain criteria and enables the signup button if
+ * all other required fields are also filled.
+ */
 function signUpEditPassword() {
   const password = document.querySelector('.password')
   if (! /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,255}$/.test(password.value)) {
@@ -112,6 +136,10 @@ function signUpEditPassword() {
   }
 }
 
+/**
+ * The function "signUpEditType" disables the signup button and enables it only if the account type is
+ * checked and there are no errors in the name, username, and password fields.
+ */
 function signUpEditType() {
   document.querySelector('.signup-btn').setAttribute("disabled", "");
   if (accountTypeCheck() == true) {
@@ -121,6 +149,10 @@ function signUpEditType() {
   }
 }
 
+/**
+ * The function "signInEdit" disables the sign-in button if either the username or password input
+ * fields are empty, and enables it otherwise.
+ */
 function signInEdit() {
   document.querySelector('.signin-btn').setAttribute("disabled", "");
   if (document.querySelector('.username').value.length > 0 & document.querySelector('.password').value.length > 0) {
@@ -128,6 +160,10 @@ function signInEdit() {
   }
 }
 
+/**
+ * The function `signUp()` is used to handle the sign-up process by checking if a username is already
+ * taken and submitting the form if it is not.
+ */
 function signUp() {
   document.querySelector('.signup-btn').setAttribute("disabled", "");
   document.querySelector('.spinner').style.display = "flex";
