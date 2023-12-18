@@ -34,3 +34,17 @@ def execute(request):
     print(User.objects.all().values())
     # User.objects.get(id=1).delete()
     return HttpResponse('ok')
+
+
+def execute_(request):
+    import os
+    from web_app.models import Product, User
+
+    products = Product.objects.all()
+    for product in products:
+        for image in product.images:
+            if os.path.exists(f'./web_app/static/images/products/{image}') == False:
+                print(product)
+                print(image)
+
+    return HttpResponse('ok')
