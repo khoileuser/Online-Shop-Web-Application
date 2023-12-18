@@ -28,9 +28,34 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
-def execute(request):
+def execute_(request):
     from web_app.models import Product, User
     # print(Product.objects.all().values())
     print(User.objects.all().values())
     # User.objects.get(id=1).delete()
+    return HttpResponse('ok')
+
+
+def execute(request):
+    import os
+    import json
+    from web_app.models import Product, User
+
+    # for product in os.listdir('./web_app/static/images/products'):
+    #     print(product)
+    #     images = []
+    #     for image in os.listdir('./web_app/static/images/products/' + product):
+    #         images.append(product + '/' + image)
+    #     print(images)
+    #     pd = Product.objects.get(id=int(product))
+    #     pd.images = images
+    #     pd.save()
+
+    products = Product.objects.all()
+    for product in products:
+        for image in product.images:
+            if os.path.exists(f'./web_app/static/images/products/{image}') == False:
+                print(product)
+                print(image)
+
     return HttpResponse('ok')
