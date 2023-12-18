@@ -130,7 +130,7 @@ body {
 
   .navbar-scrolled {
     background-color: #f8f9fa;
-    --bs-bg-opacity: .9 !important;
+    --bs-bg-opacity: .99 !important;
     /* padding: 15px 0; */
     box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
   }
