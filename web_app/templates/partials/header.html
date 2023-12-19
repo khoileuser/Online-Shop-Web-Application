@@ -55,7 +55,7 @@
               </div>
             </li>
 
-            {% if cart_quantity is not None %}
+            {% if type == "C" %}
             <li class="nav-item">
               <a href="/cart" class="nav-link">
                 <div class="cart">
@@ -104,5 +104,3 @@
     <span class="alert-msg"></span>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-
-  <div class="dummy"></div>

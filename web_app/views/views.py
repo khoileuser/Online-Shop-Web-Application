@@ -11,12 +11,14 @@ def index(request):
     if request.user != "guest":
         context = {
             "username": request.user.username,
-            "cart_quantity": request.user.cart_quantity
+            "cart_quantity": request.user.cart_quantity,
+            "type": request.user.account_type
         }
     else:
         context = {
             "username": None,
-            "cart_quantity": None
+            "cart_quantity": None,
+            "type": None
         }
     products = Product.objects.all().order_by('?')[:18]
     context['trending1'] = list(products.values())[:3]
@@ -29,22 +31,9 @@ def index(request):
 
 
 def execute(request):
-    from web_app.models import Product, User
-    # print(Product.objects.all().values())
-    print(User.objects.all().values())
-    # User.objects.get(id=1).delete()
-    return HttpResponse('ok')
-
-
-def execute_(request):
-    import os
-    from web_app.models import Product, User
-
-    products = Product.objects.all()
-    for product in products:
-        for image in product.images:
-            if os.path.exists(f'./web_app/static/images/products/{image}') == False:
-                print(product)
-                print(image)
-
+    from web_app.models import Product, User, Cart
+    user = User.objects.get(id=454)
+    cart = Cart.objects.get(owner=user)
+    print(cart.products)
+    # User.objects.get(id=453).delete()
     return HttpResponse('ok')

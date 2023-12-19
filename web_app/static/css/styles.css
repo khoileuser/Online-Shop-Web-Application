@@ -412,3 +412,49 @@ body {
   border-radius: var(--border-radius);
   border-color: var(--border-color);
 }
+
+.product-container,
+.related-products {
+  background-color: white;
+
+  .pd-quantity-input {
+    .btn-number {
+      border: 1px solid rgba(21, 24, 41, 1) !important;
+    }
+
+    .quantity-text {
+      margin-right: 20px;
+    }
+  }
+
+  .quantity-text {
+    font-size: 20px;
+  }
+
+  img {
+    border-radius: 0.25rem;
+    width: 600px;
+    height: 600px;
+  }
+
+  .single-product,
+  .small-container {
+    padding: 30px;
+  }
+
+  .name {
+    color: var(--text-header);
+  }
+
+  .breadcrumb {
+    color: var(--text-sub-header);
+  }
+
+  .price {
+    color: var(--text-normal);
+    background-color: #fafafa;
+    border-radius: 0.25rem;
+    padding: 15px;
+    font-size: 35px;
+  }
+}

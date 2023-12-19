@@ -16,18 +16,19 @@ urlpatterns = [
     path('sign-out/', authentication.sign_out),
     path('logout/', authentication.sign_out),
     path('log-out/', authentication.sign_out),
+
     # check authentication
     path('check/signin/', authentication.check_sign_in),
     path('check/signup/', authentication.check_sign_up),
 
     # consumer
-    path('cart/', cart.cart_),
-    path('addtocart/<int:id>/<int:quantity>', cart.add_to_cart),
-    path('add-to-cart/<int:id>/<int:quantity>', cart.add_to_cart),
+    path('cart/', cart.view_cart),
+    path('cart/add/<int:product_id>/quantity/<int:quantity>', cart.add_to_cart),
 
     # product
-    path('listing/', products.listing),
-    path('product/', product.product_),
+    path('products/', products.listing),
+    path('products/<int:product_id>', products.product),
+    path('product/<int:product_id>', products.product),
 
     # testing
     path('execute/', views.execute),

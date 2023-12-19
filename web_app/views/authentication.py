@@ -79,7 +79,9 @@ def sign_up(request):
         except:
             return HttpResponse("Invalid credentials")
         user.save()
-        Cart(owner=user).save
+
+        cart = Cart(owner=user, total_price=0)
+        cart.save()
 
         return_session(request, user)
         return redirect("/")

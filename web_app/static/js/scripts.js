@@ -201,3 +201,98 @@ function toggleCreditCardFields() {
     creditCardFields.style.display = 'none';
   }
 }
+
+
+var ProductImg = document.getElementById("ProductImg");
+var SmallImg = document.getElementsByClassName("smallimg");
+
+SmallImg[0].onclick = function () {
+  ProductImg.src = SmallImg[0].src;
+}
+SmallImg[1].onclick = function () {
+  ProductImg.src = SmallImg[1].src;
+}
+SmallImg[2].onclick = function () {
+  ProductImg.src = SmallImg[2].src;
+}
+SmallImg[3].onclick = function () {
+  ProductImg.src = SmallImg[3].src;
+}
+
+function editQuantity(productid, action, _quantity, noUpdate = false, limit = false) {
+  var quantity = document.querySelector('.pd-quantity-input-box-' + productid);
+  if (action == 'add') {
+    if (!noUpdate) { doFetch(action, productid, _quantity) }
+    quantity.value = parseInt(quantity.value) + parseInt(_quantity);
+  }
+  else if (action == 'remove') {
+    if (!noUpdate) { doFetch(action, productid, _quantity) }
+    if (_quantity == 'all') {
+      location.reload();
+      return;
+    }
+    else {
+      if (!limit & quantity.value == '1') {
+        var cartQuantity = document.querySelector('.cart-count');
+        cartQuantity.innerHTML = parseInt(cartQuantity.innerHTML.trim()) - 1;
+        location.reload();
+      }
+      if (limit & quantity.value == '1') {
+        return;
+      }
+      quantity.value = parseInt(quantity.value) - parseInt(_quantity);
+    }
+  }
+  else if (action == 'edit') {
+    if (parseInt(quantity.value) > parseInt(quantity.oldvalue)) {
+      const calcQuantity = (parseInt(quantity.value) - parseInt(quantity.oldvalue))
+      action = 'add';
+      if (!noUpdate) { console.log('huh'); doFetch(action, productid, calcQuantity) }
+    }
+    else if (parseInt(quantity.value) < parseInt(quantity.oldvalue)) {
+      const calcQuantity = (parseInt(quantity.oldvalue) - parseInt(quantity.value))
+      action = 'remove';
+      if (!noUpdate) { console.log('huh'); doFetch(action, productid, calcQuantity) }
+      if (calcQuantity <= 0) {
+        var cartQuantity = document.querySelector('.cart-count');
+        cartQuantity.innerHTML = parseInt(cartQuantity.innerHTML.trim()) - 1;
+        location.reload();
+      }
+    }
+  }
+
+  try {
+    const pdPrice = parseFloat(document.querySelector('.pd-price-' + productid).innerHTML.trim());
+    const totalPrice = parseFloat(quantity.value) * pdPrice;
+    document.querySelector('.pd-total-price-' + productid).innerHTML = totalPrice.toFixed(2);
+
+    var cartPrice = document.querySelector('.total-price');
+    if (action == 'add') {
+      cartPrice.innerHTML = (parseFloat(cartPrice.innerHTML.trim()) + _quantity * pdPrice).toFixed(2);
+    }
+    else if (action == 'remove') {
+      cartPrice.innerHTML = (parseFloat(cartPrice.innerHTML.trim()) - _quantity * pdPrice).toFixed(2);
+    }
+  }
+  catch (error) {
+    if (error.name != "TypeError") {
+      console.log(error);
+    }
+  }
+}
+
+function addToCart(productid, getQuantity = false) {
+  var _quantity = 1;
+  if (getQuantity) {
+    _quantity = document.querySelector('.pd-quantity-input-box-' + productid).value;
+  }
+  fetch('/cart/add/' + productid + '/quantity/' + _quantity, {
+    method: 'POST'
+  });
+  var quantity = document.querySelector('.cart-count');
+  quantity.innerHTML = parseInt(quantity.innerHTML.trim()) + 1;
+}
+
+function checkOut() {
+
+}
