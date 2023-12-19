@@ -19,6 +19,12 @@ body {
   padding: 0;
 }
 
+.dummy {
+  height: 100px;
+  width: 100%;
+  clear: both;
+}
+
 /* scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
