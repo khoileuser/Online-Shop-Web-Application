@@ -8,3 +8,7 @@ function clearImage() {
     document.getElementById('formFile').value = "";
     frame.src = "/images/profiles/default.jpg";
 }
+
+function showProvinces() {
+    
+}
