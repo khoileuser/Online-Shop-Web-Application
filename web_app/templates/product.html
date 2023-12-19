@@ -1,0 +1,91 @@
+{% include "partials/header.html" %}
+
+<body>
+        <div class="single-product">
+            <div class="row">
+                <div class="col-6 img-fluid">
+                    <img src="https://vcdn-vnexpress.vnecdn.net/2021/07/07/Aventador-Ultimae-Coupe-1-3961-1625659942.jpg" style="max-width: 100%; height: auto;" id="ProductImg">
+                    <div class="small-img row">
+                        <div class="small-img col-3 img-fluid">
+                            <img src="https://vcdn-vnexpress.vnecdn.net/2021/07/07/Aventador-Ultimae-Coupe-1-3961-1625659942.jpg" style="max-width: 100%; height: auto" class="smallimg">
+                        </div>
+                        <div class="small-img col-3 img-fluid">
+                            <img src="https://static-images.vnncdn.net/files/publish/2023/8/23/aventador-svj-1-713.jpg" style="max-width: 100%; height: auto" class="smallimg">
+                        </div>
+                        <div class="small-img col-3 img-fluid">
+                            <img src="https://media.ed.edmunds-media.com/lamborghini/aventador/2022/oem/2022_lamborghini_aventador_convertible_ultimae-roadster_fq_oem_1_1600.jpg" style="max-width: 100%; height: auto" class="smallimg">
+                        </div>
+                        <div class="small-img col-3 img-fluid">
+                            <img src="https://cms-i.autodaily.vn/du-lieu/2019/03/04/lamborghini-aventador-svj-2.jpg" style="max-width: 100%; height: auto" class="smallimg">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <p>Home / Lamborghini</p>
+                    <h1>Lamborghini aventador</h1>
+                    <h4>$50.00</h4>
+                    <input type="number" value="1">
+                    <a href=""><button type="button" class="btn btn-secondary">Add To Cart</button></a>
+                    <h3>Product Information <i class="fa-solid fa-indent"></i></h3>
+                    <br>
+                    <p>Infomation input</p>
+                </div>
+            </div>
+        </div>
+    
+    <div class="small-container">
+        <div class="row row-2">
+            <h2>Related Products</h2>
+            <p>View more</p>
+        </div>
+    </div>
+    
+        <div class="small-container img-fluid">
+            <div class="row">
+                <div class="col-3">
+                    <img src="https://vcdn-vnexpress.vnecdn.net/2021/07/07/Aventador-Ultimae-Coupe-1-3961-1625659942.jpg" style="max-width: 100%; height: auto">
+                    <h4>Red Printed T-Shirt</h4>
+                    <p>$50.00</p>
+                </div>
+                <div class="col-3">
+                    <img src="https://static-images.vnncdn.net/files/publish/2023/8/23/aventador-svj-1-713.jpg" style="max-width: 100%; height: auto">
+                    <h4>Red Printed T-Shirt</h4>
+                    <p>$50.00</p>
+                </div>
+                <div class="col-3">
+                    <img src="https://cms-i.autodaily.vn/du-lieu/2019/03/04/lamborghini-aventador-svj-2.jpg" style="max-width: 100%; height: auto">
+                    <h4>Red Printed T-Shirt</h4>
+                    <p>$50.00</p>
+                </div>
+                <div class="col-3">
+                    <img src="https://media.ed.edmunds-media.com/lamborghini/aventador/2022/oem/2022_lamborghini_aventador_convertible_ultimae-roadster_fq_oem_1_1600.jpg" style="max-width: 100%; height: auto">
+                    <h4>Red Printed T-Shirt</h4>
+                    <p>$50.00</p>
+                </div>
+            </div>
+        </div>
+        <script>
+            var ProductImg = document.getElementById("ProductImg");
+            var SmallImg = document.getElementsByClassName("smallimg");
+    
+            SmallImg[0].onclick = function()
+            {
+                ProductImg.src = SmallImg[0].src;
+            }
+            SmallImg[1].onclick = function()
+            {
+                ProductImg.src = SmallImg[1].src;
+            }
+            SmallImg[2].onclick = function()
+            {
+                ProductImg.src = SmallImg[2].src;
+            }
+            SmallImg[3].onclick = function()
+            {
+                ProductImg.src = SmallImg[3].src;
+            }
+    
+        </script>
+</body>
+
+{% include "partials/footer.html" %}
