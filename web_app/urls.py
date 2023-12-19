@@ -27,7 +27,7 @@ urlpatterns = [
 
     # product
     path('listing/', products.listing),
-    path('product/', product.product_)
+    path('product/', product.product_),
 
     # testing
     path('execute/', views.execute),
