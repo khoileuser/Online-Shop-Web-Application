@@ -35,7 +35,6 @@ class CartProduct(models.Model):
 class Cart(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     products = models.ManyToManyField(CartProduct)
-    total_price = models.FloatField()
 
 
 class Order(models.Model):
