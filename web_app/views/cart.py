@@ -13,11 +13,13 @@ def view_cart(request):
         return redirect("/signin")
 
     template = loader.get_template("cart.html")
+    cart = Cart.objects().get(owner=request.user)
     context = {
         "username": request.user.username,
         "cart_quantity": request.user.cart_quantity,
         "type": request.user.account_type,
-        "products": Cart.objects().get(owner=request.user).products
+        "products": cart.products.all().values(),
+        "total_price": cart.total_price
     }
     return HttpResponse(template.render(context, request))
 
@@ -29,10 +31,9 @@ def add_to_cart(request, product_id, quantity):
     elif request.user == "guest":
         return redirect("/signin")
 
+    product = Product.objects.get(id=product_id)
     cart = Cart.objects.get(owner=request.user)
-    cart.products.append({
-        'product': Product.objects.get(id=product_id),
-        'quantity': int(quantity)
-    })
+    cart.products.create(product=product, quantity=quantity)
+    cart.total_price = cart.total_price + (product.price * quantity)
     cart.save()
     return HttpResponse(200)

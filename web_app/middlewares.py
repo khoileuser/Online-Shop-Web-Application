@@ -9,11 +9,6 @@ class Authentication:
         self.get_response = get_response
 
     def __call__(self, request):
-
-        # if request.method == "POST":
-        #     response = self.get_response(request)
-        #     return response
-
         try:
             user_id = request.session.get("user_id")
             if user_id:

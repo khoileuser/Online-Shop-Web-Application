@@ -27,12 +27,14 @@ class Product(models.Model):
     category = models.CharField(max_length=255, null=True)
 
 
+class CartProduct(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+
+
 class Cart(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    products = [{
-        'product': models.ManyToManyField(Product),
-        'quantity': models.IntegerField()
-    }]
+    products = models.ManyToManyField(CartProduct)
     total_price = models.FloatField()
 
 
@@ -43,10 +45,7 @@ class Order(models.Model):
         ("C", "Canceled")
     ]
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    products = [{
-        'product': models.ManyToManyField(Product),
-        'quantity': models.IntegerField()
-    }]
+    products = models.ManyToManyField(CartProduct)
     total_price = models.IntegerField()
     status = models.CharField(
         max_length=1, choices=ORDER_STATUSES, default="A")

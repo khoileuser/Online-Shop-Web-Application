@@ -32,8 +32,11 @@ def index(request):
 
 def execute(request):
     from web_app.models import Product, User, Cart
-    user = User.objects.get(id=454)
-    cart = Cart.objects.get(owner=user)
-    print(cart.products)
-    # User.objects.get(id=453).delete()
+    user = User.objects.get(name="Test Customer 1")
+    print(user)
+    cart = Cart.objects.all().values()
+    print(cart)
+    # Cart.objects.get(id=9).delete()
+    # cart = Cart(owner=user, total_price=0)
+    # cart.save()
     return HttpResponse('ok')
