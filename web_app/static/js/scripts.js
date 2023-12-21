@@ -202,21 +202,9 @@ function toggleCreditCardFields() {
   }
 }
 
-
-var ProductImg = document.getElementById("ProductImg");
-var SmallImg = document.getElementsByClassName("smallimg");
-
-SmallImg[0].onclick = function () {
-  ProductImg.src = SmallImg[0].src;
-}
-SmallImg[1].onclick = function () {
-  ProductImg.src = SmallImg[1].src;
-}
-SmallImg[2].onclick = function () {
-  ProductImg.src = SmallImg[2].src;
-}
-SmallImg[3].onclick = function () {
-  ProductImg.src = SmallImg[3].src;
+function changeLargeImg(image) {
+  largeImage = document.querySelector('.large-image');
+  largeImage.src = image.src;
 }
 
 function editQuantity(productid, action, _quantity, noUpdate = false, limit = false) {

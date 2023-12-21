@@ -4,11 +4,13 @@
 
 {% include "partials/header.html" %}
 
-<div class="container cart-page mt-4 mb-4">
+<div class="dummy"></div>
+
+<div class="container cart-page mb-5">
     {% if products_by_vendor is not None %}
     {% for vendor_id, vendor in products_by_vendor.items %}
     <div class="row rounded cart-container mb-4 shadow-sm">
-        <div class="vendorname mb-3 border-bottom">
+        <div class="vendorname border-bottom p-3">
             <a href="/products/vendor/{{ vendor.vendor.username }}" class="text-decoration-none text-reset">
                 <span class="text">
                     <i class="bi bi-shop-window"></i>
@@ -19,15 +21,17 @@
         </div>
 
         {% for cart_product in vendor.cart_products %}
-        <div class="row vendor-products">
+        <div class="row vendor-products p-3">
             <div class="col pd-img d-flex justify-content-center align-items-center mb-3">
                 <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
-                    <img class="img-fluid" src="{% static 'images/products/' %}{{ cart_product.product.images.0 }}"
-                        alt="product-img">
+                    <div class="image">
+                        <img class="img-fluid" src="{% static 'images/products/' %}{{ cart_product.product.images.0 }}"
+                            alt="product-img">
+                    </div>
                 </a>
             </div>
 
-            <div class="col-8 col-md-9 pd-info d-flex justify-content-center mb-3">
+            <div class="col-8 col-md-9 pd-info d-flex align-items-center mb-3">
                 <div class="col pd-name text-start">
                     <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
                         {{ cart_product.product.name }}
@@ -78,11 +82,10 @@
                 <button class="btn anm-btn pd-remove-btn"
                     onclick="editQuantity('{{ cart_product.product.id }}', 'remove', 'all')">Remove</button>
             </div>
-            <hr>
         </div>
-        {% endfor %}
-        {% endfor %}
     </div>
+    {% endfor %}
+    {% endfor %}
     {% else %}
     <div class="row rounded cart-container empty-cart text-center">
         <h1>You haven't add any products to your cart yet.</h1>
@@ -90,9 +93,9 @@
     {% endif %}
 </div>
 
-<div class="container place-order-container shadow-sm mb-4">
+<div class="container place-order-container shadow-sm rounded">
     <form action="/checkout" method="GET">
-        <div class="row place-order-wrapper rounded d-flex justify-content-center">
+        <div class="row place-order-wrapper d-flex justify-content-center">
             <div class="col"></div>
 
             <div class="col d-flex flex-row justify-content-center align-items-center gap-4">

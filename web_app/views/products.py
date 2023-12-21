@@ -42,4 +42,5 @@ def product(request, product_id):
     context["name"] = product.name
     context["price"] = product.price
     context["description"] = product.description
+    context["images"] = product.images
     return HttpResponse(template.render(context, request))
