@@ -12,7 +12,7 @@ def view_cart(request):
     elif request.user == "guest":
         return redirect("/signin")
 
-    template = loader.get_template("cart.html")
+    template = loader.get_template("cart/cart.html")
 
     # get user's cart
     cart = Cart.objects.get(owner=request.user)
@@ -61,3 +61,8 @@ def add_to_cart(request, product_id, quantity):
     cart = Cart.objects.get(owner=request.user)
     cart.products.create(product=product, quantity=quantity)
     return HttpResponse(200)
+
+
+def checkout(request):
+    template = loader.get_template("cart/checkout.html")
+    return HttpResponse(template.render())

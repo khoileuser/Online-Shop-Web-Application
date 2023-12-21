@@ -10,7 +10,6 @@ urlpatterns = [
     path('login/', authentication.sign_in),
     path('log-in/', authentication.sign_in),
     path('signup/', authentication.sign_up),
-    path('checkout/', checkout.checkout_),
     path('sign-up/', authentication.sign_up),
     path('signout/', authentication.sign_out),
     path('sign-out/', authentication.sign_out),
@@ -21,9 +20,10 @@ urlpatterns = [
     path('check/signin/', authentication.check_sign_in),
     path('check/signup/', authentication.check_sign_up),
 
-    # consumer
+    # cart
     path('cart/', cart.view_cart),
     path('cart/add/<int:product_id>/quantity/<int:quantity>', cart.add_to_cart),
+    path('checkout/', cart.checkout),
 
     # product
     path('products/', products.listing),
