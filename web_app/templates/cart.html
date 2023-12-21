@@ -1,5 +1,7 @@
 {% load static %}
 
+{% load math %}
+
 {% include "partials/header.html" %}
 
 <div class="container cart-page mt-4 mb-4">
@@ -67,7 +69,7 @@
                 <div class="col pd-total-price d-none d-lg-block text-center">
                     $
                     <span class="pd-total-price-{{ cart_product.product.id }}">
-                        {% widthratio cart_product.product.price 1 cart_product.quantity %}
+                        {{ cart_product.product.price|products_price:cart_product.quantity }}
                     </span>
                 </div>
             </div>
