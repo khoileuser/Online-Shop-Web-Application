@@ -207,47 +207,66 @@ function changeLargeImg(image) {
   largeImage.src = image.src;
 }
 
+function doFetch(action, productid, quantity, reload = false) {
+  return fetch('/cart/' + action + '/' + productid + '/quantity/' + quantity, {
+    method: 'POST'
+  }).then(function (response) {
+    if (reload == true) {
+      location.reload()
+    }
+  }).catch(function (err) {
+    console.log(`Error: ${err}`)
+  });
+}
+
+function updateCartCount() {
+  var cartQuantity = document.querySelector('.cart-count');
+  if (parseInt(cartQuantity.innerHTML.trim()) - 1 >= 0) {
+    cartQuantity.innerHTML = parseInt(cartQuantity.innerHTML.trim()) - 1;
+  }
+}
+
 function editQuantity(productid, action, _quantity, noUpdate = false, limit = false) {
   var quantity = document.querySelector('.pd-quantity-input-box-' + productid);
+  var updateQuantity = null;
+  var reload = false;
+
   if (action == 'add') {
-    if (!noUpdate) { doFetch(action, productid, _quantity) }
     quantity.value = parseInt(quantity.value) + parseInt(_quantity);
+    updateQuantity = _quantity
   }
   else if (action == 'remove') {
-    if (!noUpdate) { doFetch(action, productid, _quantity) }
     if (_quantity == 'all') {
-      location.reload();
-      return;
+      reload = true;
     }
     else {
       if (!limit & quantity.value == '1') {
-        var cartQuantity = document.querySelector('.cart-count');
-        cartQuantity.innerHTML = parseInt(cartQuantity.innerHTML.trim()) - 1;
-        location.reload();
+        updateCartCount();
+        reload = true;
       }
       if (limit & quantity.value == '1') {
         return;
       }
       quantity.value = parseInt(quantity.value) - parseInt(_quantity);
     }
+    updateQuantity = _quantity
   }
   else if (action == 'edit') {
     if (parseInt(quantity.value) > parseInt(quantity.oldvalue)) {
       const calcQuantity = (parseInt(quantity.value) - parseInt(quantity.oldvalue))
-      action = 'add';
-      if (!noUpdate) { console.log('huh'); doFetch(action, productid, calcQuantity) }
+      var action = 'add';
+      updateQuantity = calcQuantity
     }
     else if (parseInt(quantity.value) < parseInt(quantity.oldvalue)) {
       const calcQuantity = (parseInt(quantity.oldvalue) - parseInt(quantity.value))
-      action = 'remove';
-      if (!noUpdate) { console.log('huh'); doFetch(action, productid, calcQuantity) }
-      if (calcQuantity <= 0) {
-        var cartQuantity = document.querySelector('.cart-count');
-        cartQuantity.innerHTML = parseInt(cartQuantity.innerHTML.trim()) - 1;
-        location.reload();
-      }
+      var action = 'remove';
+      updateCartCount();
+      reload = true;
+      updateQuantity = calcQuantity
     }
   }
+
+  if (!noUpdate) { doFetch(action, productid, updateQuantity, reload) }
 
   try {
     const pdPrice = parseFloat(document.querySelector('.pd-price-' + productid).innerHTML.trim());
@@ -256,10 +275,16 @@ function editQuantity(productid, action, _quantity, noUpdate = false, limit = fa
 
     var cartPrice = document.querySelector('.total-price');
     if (action == 'add') {
-      cartPrice.innerHTML = (parseFloat(cartPrice.innerHTML.trim()) + _quantity * pdPrice).toFixed(2);
+      cartPrice.innerHTML = (parseFloat(cartPrice.innerHTML.trim()) + updateQuantity * pdPrice).toFixed(2);
     }
     else if (action == 'remove') {
-      cartPrice.innerHTML = (parseFloat(cartPrice.innerHTML.trim()) - _quantity * pdPrice).toFixed(2);
+      const calced = (parseFloat(cartPrice.innerHTML.trim()) - updateQuantity * pdPrice).toFixed(2)
+      if (calced <= 0 || calced == 'NaN') {
+        cartPrice.innerHTML = 0;
+      }
+      else {
+        cartPrice.innerHTML = calced;
+      }
     }
   }
   catch (error) {

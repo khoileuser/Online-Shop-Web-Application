@@ -23,6 +23,8 @@ urlpatterns = [
     # cart
     path('cart/', cart.view_cart),
     path('cart/add/<int:product_id>/quantity/<int:quantity>', cart.add_to_cart),
+    path('cart/remove/<int:product_id>/quantity/<str:quantity>',
+         cart.remove_from_cart),
     path('checkout/', cart.checkout),
 
     # product

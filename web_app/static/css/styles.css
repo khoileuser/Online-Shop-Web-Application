@@ -477,16 +477,23 @@ body {
     height: 20vh;
     width: 20vw;
   }
-}
 
-.place-order-container {
-  background-color: white;
+  .place-order-container {
+    background-color: white;
 
-  .place-order-wrapper {
-    height: 75px;
+    .place-order-wrapper {
+      height: 75px;
+    }
+
+    .cart-total-price {
+      font-size: large;
+    }
   }
 
-  .cart-total-price {
-    font-size: large;
+  .empty-cart {
+    margin-top: 100px;
+    margin-bottom: 100px;
+    padding-top: 200px;
+    padding-bottom: 200px;
   }
 }

@@ -7,7 +7,7 @@
 <div class="dummy"></div>
 
 <div class="container cart-page mb-5">
-    {% if products_by_vendor is not None %}
+    {% if products_by_vendor %}
     {% for vendor_id, vendor in products_by_vendor.items %}
     <div class="row rounded cart-container mb-4 shadow-sm">
         <div class="vendorname border-bottom p-3">
@@ -86,34 +86,33 @@
     </div>
     {% endfor %}
     {% endfor %}
+    <div class="container place-order-container shadow-sm rounded">
+        <form action="/checkout" method="GET">
+            <div class="row place-order-wrapper d-flex justify-content-center">
+                <div class="col"></div>
+
+                <div class="col d-flex flex-row justify-content-center align-items-center gap-4">
+                    <div class="cart-total-price">
+                        Total: <span class="dolar">$</span>
+                        <span class="total-price">
+                            {{ total_price }}
+                        </span>
+                    </div>
+
+                    <div class="place-order">
+                        <button type="submit" class="btn btn-primary anm-btn place-order-btn">
+                            <span>Place Order</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
     {% else %}
     <div class="row rounded cart-container empty-cart text-center">
         <h1>You haven't add any products to your cart yet.</h1>
     </div>
     {% endif %}
-</div>
-
-<div class="container place-order-container shadow-sm rounded">
-    <form action="/checkout" method="GET">
-        <div class="row place-order-wrapper d-flex justify-content-center">
-            <div class="col"></div>
-
-            <div class="col d-flex flex-row justify-content-center align-items-center gap-4">
-                <div class="cart-total-price">
-                    Total: <span class="dolar">$</span>
-                    <span class="total-price">
-                        {{ total_price }}
-                    </span>
-                </div>
-
-                <div class="place-order">
-                    <button type="submit" class="btn btn-primary anm-btn place-order-btn">
-                        <span>Place Order</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </form>
 </div>
 
 {% include "partials/footer.html" %}
