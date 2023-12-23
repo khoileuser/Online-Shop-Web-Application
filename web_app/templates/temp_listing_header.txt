@@ -1,0 +1,25 @@
+<div class = "navigation_bar">
+  <a href ="#" class = "category-header-link">All categories</a>
+  <ul>
+    <li><a class = "list_sub_category" href ="#">Cat A</a></li>
+    <li><a class = "list_sub_category" href ="#">Cat B</a></li>
+    <li><a class = "list_sub_category" href ="#">Cat C</a></li>
+    <li><a class = "list_sub_category" href ="#">Cat D</a></li>
+  </ul>
+</div>
+
+<div class = "product_listing">
+
+</div>
+
+
+    
+.card{
+      width: 18%; /* Set width to fit 5 cards per row with some spacing */
+      margin-bottom: 20px; /* Add margin for spacing between rows */
+      box-sizing: border-box; /* Include padding and border in the width */
+      border: 1px solid #ccc; /* Add a border for card separation */
+    }
+
+    flex-basis: calc(19.6% - 10px); /* Adjust the width and margin accordingly */
+        margin-bottom: 20px; /* Add margin to create space between the cards */

@@ -24,6 +24,6 @@ urlpatterns = [
     
     # product
     path('listing/', products.listing),
-
+    path('listing_2/', products.listing_2),
     path('execute/', views.execute),
 ]
