@@ -407,10 +407,20 @@ body {
 }
 
 .checkout-page {
-  background-color: white;
-  box-shadow: var(--box-shadow);
-  border-radius: var(--border-radius);
-  border-color: var(--border-color);
+  .child-container {
+    background-color: white;
+    border-color: var(--border-color);
+  }
+
+  .cart-container {
+    background-color: white;
+
+    .image img {
+      object-fit: contain;
+      height: 20vh;
+      width: 20vw;
+    }
+  }
 }
 
 .product-container,
@@ -470,12 +480,12 @@ body {
 .cart-page {
   .cart-container {
     background-color: white;
-  }
 
-  .image img {
-    object-fit: contain;
-    height: 20vh;
-    width: 20vw;
+    .image img {
+      object-fit: contain;
+      height: 20vh;
+      width: 20vw;
+    }
   }
 
   .place-order-container {
@@ -487,6 +497,10 @@ body {
 
     .cart-total-price {
       font-size: large;
+    }
+
+    .form-check {
+      padding: 100px;
     }
   }
 

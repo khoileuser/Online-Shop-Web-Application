@@ -57,14 +57,19 @@
 
                     <div class="row buttons mt-5">
                         <div class="col-6 col-md-5">
-                            <button onclick="addToCart('{{ product_id }}', true)"
+                            <button type="button" onclick="addToCart('{{ product_id }}', true)"
                                 class="btn btn-primary add-cart-btn anm-btn w-100">
                                 <span>Add to Cart</span></button>
                         </div>
                         <div class="col-6 col-md-5">
-                            <button onclick="checkOut('{{ product_id }}')"
-                                class="btn btn-primary add-cart-btn anm-btn w-100">
-                                <span>Buy Now</span></button>
+                            <form class="checkout-form" method="POST" action="/checkout/">
+                                <input type="hidden" id="mode" name="mode" value="buy_now">
+                                <input type="hidden" id="product_id" name="product_id" value="{{ product_id }}">
+                                <input type="hidden" class="checkout-quantity" id="quantity" name="quantity">
+                                <button type="button" onclick="checkOutProduct('{{ product_id }}')"
+                                    class="btn btn-primary buy-now-btn anm-btn w-100">
+                                    <span>Buy Now</span></button>
+                            </form>
                         </div>
                     </div>
                 </div>

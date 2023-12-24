@@ -306,6 +306,93 @@ function addToCart(productid, getQuantity = false) {
   quantity.innerHTML = parseInt(quantity.innerHTML.trim()) + 1;
 }
 
-function checkOut() {
+function checkOutProduct(product_id) {
+  const quantity = document.querySelector('.pd-quantity-input-box-' + product_id).value;
+  document.querySelector('.checkout-quantity').value = quantity;
+  document.querySelector('.checkout-form').submit();
+}
 
+function selectOne(product_id) {
+  const calledCheckbox = document.querySelector('.pd-checkbox-' + product_id);
+  var productIds = document.querySelector('.checkout-pd-ids');
+
+  if (calledCheckbox.checked) {
+    if (!productIds.value.includes(product_id)) {
+      productIds.value = productIds.value + product_id + ',';
+    }
+    document.querySelector('.checkout-btn').removeAttribute("disabled");
+
+    // check if all product checkboxes is checked, check select all
+    var allChecked = false;
+    var pdCheckboxes = document.querySelectorAll('.product-checkbox');
+    for (i = 0; i < pdCheckboxes.length; i++) {
+      if (!pdCheckboxes[i].checked) {
+        break;
+      }
+      if (i == pdCheckboxes.length - 1) {
+        allChecked = true;
+      }
+    }
+    if (allChecked) {
+      document.querySelector('.select-all').checked = true;
+      document.querySelector('.checkout-mode').value = 'all';
+    }
+    else {
+      document.querySelector('.checkout-mode').value = 'selected';
+    }
+  }
+  else {
+    productIds.value = productIds.value.replace(product_id + ',', '');
+
+    // check if there is no checked checkboxes, disable checkout button
+    var anyChecked = false;
+    var pdCheckboxes = document.querySelectorAll('.product-checkbox');
+    for (i = 0; i < pdCheckboxes.length; i++) {
+      if (pdCheckboxes[i].checked) {
+        anyChecked = true;
+        break;
+      }
+    }
+    if (!anyChecked) {
+      document.querySelector('.checkout-btn').setAttribute("disabled", "");
+      document.querySelector('.checkout-mode').value = 'none';
+    }
+    else {
+      document.querySelector('.checkout-mode').value = 'selected';
+    }
+    document.querySelector('.select-all').checked = false;
+  }
+}
+
+function selectAll() {
+  const selectAllCheckbox = document.querySelector('.select-all');
+  var pdCheckboxes = document.querySelectorAll('.product-checkbox');
+  var productIds = document.querySelector('.checkout-pd-ids');
+
+  if (selectAllCheckbox.checked) {
+    pdCheckboxes.forEach(function checkCheckbox(checkbox) {
+      checkbox.checked = true;
+    })
+    document.querySelector('.checkout-btn').removeAttribute("disabled");
+    document.querySelector('.checkout-mode').value = 'all';
+  }
+  else {
+    productIds.value = "";
+    pdCheckboxes.forEach(function uncheckCheckbox(checkbox) {
+      checkbox.checked = false;
+    })
+    document.querySelector('.checkout-btn').setAttribute("disabled", "");
+    document.querySelector('.checkout-mode').value = 'none';
+  }
+}
+
+function checkOutCart() {
+  const selectAllCheckbox = document.querySelector('.select-all');
+  if (selectAllCheckbox.checked) {
+    document.querySelector('.checkout-mode').value = 'all';
+  }
+  else {
+    document.querySelector('.checkout-mode').value = 'selected';
+  }
+  document.querySelector('.checkout-form').submit();
 }

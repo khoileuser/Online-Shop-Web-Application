@@ -12,8 +12,6 @@ def view_cart(request):
     elif request.user == "guest":
         return redirect("/signin")
 
-    template = loader.get_template("cart/cart.html")
-
     # get user's cart
     cart = Cart.objects.get(owner=request.user)
     cart_products = cart.products.all()
@@ -40,6 +38,7 @@ def view_cart(request):
         total_price = total_price + \
             (cart_product.product.price * cart_product.quantity)
 
+    template = loader.get_template("cart.html")
     context = {
         "username": request.user.username,
         "cart_quantity": request.user.cart_quantity,
@@ -109,10 +108,3 @@ def remove_from_cart(request, product_id, quantity):
             else:
                 exist.save()
     return HttpResponse(200)
-
-
-def checkout(request):
-    products_by_vendor = request.POST["products_by_vendor"]
-
-    template = loader.get_template("cart/checkout.html")
-    return HttpResponse(template.render())
