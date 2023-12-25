@@ -2,6 +2,34 @@ from django.db import models
 from django.core.validators import MinLengthValidator
 
 
+class Address(models.Model):
+    phone_number_code = models.CharField(max_length=5)
+    phone_number = models.CharField(max_length=15)
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=100)
+    is_default = models.BooleanField(default=False)
+
+
+class Cart(models.Model):
+    CARD_TYPE_CHOICES = (
+        ('VISA', 'Visa'),
+        ('MC', 'Mastercard')
+    )
+
+    card_number = models.CharField(max_length=16)
+    cardholder_name = models.CharField(max_length=255)
+    expiration_date = models.DateField()
+    card_type = models.CharField(max_length=4, choices=CARD_TYPE_CHOICES)
+    cvc = models.CharField(max_length=4)
+    is_default = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.card_type} ending in {self.card_number[-4:]}"
+
+
 class User(models.Model):
     ACCOUNT_TYPES = [
         ("V", "Vendor"),
@@ -16,6 +44,8 @@ class User(models.Model):
     account_type = models.CharField(
         max_length=1, choices=ACCOUNT_TYPES)
     cart_quantity = models.IntegerField(default=0)
+    address = models.ManyToManyField(Address)
+    card = models.ManyToManyField(Cart)
 
 
 class Product(models.Model):
