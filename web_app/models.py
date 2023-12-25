@@ -13,7 +13,7 @@ class Address(models.Model):
     is_default = models.BooleanField(default=False)
 
 
-class Cart(models.Model):
+class Card(models.Model):
     CARD_TYPE_CHOICES = (
         ('VISA', 'Visa'),
         ('MC', 'Mastercard')
@@ -44,8 +44,8 @@ class User(models.Model):
     account_type = models.CharField(
         max_length=1, choices=ACCOUNT_TYPES)
     cart_quantity = models.IntegerField(default=0)
-    address = models.ManyToManyField(Address)
-    card = models.ManyToManyField(Cart)
+    addresses = models.ManyToManyField(Address)
+    cards = models.ManyToManyField(Cart)
 
 
 class Product(models.Model):
