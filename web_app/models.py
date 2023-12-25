@@ -45,7 +45,7 @@ class User(models.Model):
         max_length=1, choices=ACCOUNT_TYPES)
     cart_quantity = models.IntegerField(default=0)
     addresses = models.ManyToManyField(Address)
-    cards = models.ManyToManyField(Cart)
+    cards = models.ManyToManyField(Card)
 
 
 class Product(models.Model):
