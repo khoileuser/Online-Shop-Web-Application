@@ -1,0 +1,138 @@
+{% load static %}
+
+{% load math %}
+
+{% include "partials/header.html" %}
+
+<div class="dummy"></div>
+
+<div class="container checkout-page">
+  <div class="row child-container rounded shadow-sm p-4">
+    <div class="d-flex justify-content-center">
+      <h1>Checkout</h1>
+    </div>
+
+    <!-- Address -->
+    <div class="address mt-4">
+      <h3>Address</h3>
+      <div class="container p-3 border border-light rounded">
+        <form action="/">
+          <label for="address">Enter the address:</label>
+          <input type="text" id="address" name="address" />
+          <input type="submit" value="Save" />
+        </form>
+      </div>
+    </div>
+
+    <!-- Phone Number -->
+    <div class="phone mt-4">
+      <h3>Phone number</h3>
+      <div class="container p-3 border border-light rounded">
+        <form action="/">
+          <label for="phone">Enter the phone number:</label>
+          <input type="text" id="phone" name="phone" />
+          <input type="submit" value="Save" />
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product -->
+  {% for vendor_id, vendor in products_by_vendor.items %}
+  <div class="row rounded cart-container mt-4 shadow-sm">
+    <div class="vendorname border-bottom p-3">
+      <a href="/products/vendor/{{ vendor.vendor.username }}" class="text-decoration-none text-reset">
+        <span class="text">
+          <i class="bi bi-shop-window"></i>
+          {{ vendor.vendor.name }}
+          <i class="bi bi-chevron-right"></i>
+        </span>
+      </a>
+    </div>
+
+    {% for cart_product in vendor.cart_products %}
+    <div class="row vendor-products p-3">
+      <div class="col pd-img d-flex justify-content-center align-items-center mb-3">
+        <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
+          <div class="image">
+            <img class="img-fluid" src="{% static 'images/products/' %}{{ cart_product.product.images.0 }}"
+              alt="product-img">
+          </div>
+        </a>
+      </div>
+
+      <div class="col-8 col-md-9 pd-info d-flex align-items-center mb-3">
+        <div class="col pd-name text-start">
+          <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
+            {{ cart_product.product.name }}
+          </a>
+        </div>
+
+        <div class="col pd-price text-center">
+          $
+          <span class="pd-price-{{ cart_product.product.id }}">
+            {{ cart_product.product.price }}
+          </span>
+        </div>
+
+        <div class="col-8 col-md-4 col-lg-3 pd-quantity">
+          <div class="pd-quantity-input">
+            <div class="input-group"><input type="number" step="any" name="quant[1]"
+                class="form-control input-number pd-quantity-input-box-{{ cart_product.product.id }}"
+                value="{{ cart_product.quantity }}" disabled>
+            </div>
+          </div>
+        </div>
+
+        <div class="col pd-total-price d-none d-lg-block text-center">
+          $
+          <span class="pd-total-price-{{ cart_product.product.id }}">
+            {{ cart_product.product.price|products_price:cart_product.quantity }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% endfor %}
+
+  <div class="row child-container rounded shadow-sm mt-4 p-4">
+    <!-- Voucher -->
+    <div class="voucher mt-4">
+      <h3>Voucher</h3>
+      <div class="container p-3 border border-light rounded">
+        <form action="/">
+          <label for="coupon">Enter the coupon:</label>
+          <input type="text" id="coupon" name="coupon" />
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
+    </div>
+
+    <!-- Payment Methods -->
+    <div class="methods mt-4">
+      <h3>Payment methods</h3>
+      <div class="container p-3 border border-light rounded">
+        <label for="payment">Choose a payment methods:</label>
+        <select id="payment">
+          <option value="cash">On cash</option>
+          <option value="credit">Credit card</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Set order button -->
+    <div class="container mt-4">
+      <div class="row justify-content-end">
+        <div class="col-2">
+          <button type="submit" class="btn btn-primary anm-btn place-order-btn">
+            <span>Place Order</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% include "partials/footer.html" %}
