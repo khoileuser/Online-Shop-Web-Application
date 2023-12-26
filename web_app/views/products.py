@@ -23,6 +23,17 @@ def listing(request):
 
 
 def product(request, product_id):
+    """
+    The function "product" retrieves information about a specific product and renders it in a template,
+    along with additional context data such as the user's username, cart quantity, and account type.
+
+    :param request: The request parameter is an object that represents the HTTP request made by the
+    user. It contains information such as the user's session, cookies, headers, and other data related
+    to the request
+    :param product_id: The product_id parameter is the unique identifier of the product that is being
+    requested. It is used to retrieve the specific product from the database
+    :return: an HttpResponse object.
+    """
     template = loader.get_template("products/product.html")
     if request.user != "guest":
         context = {

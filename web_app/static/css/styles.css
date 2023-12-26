@@ -431,10 +431,6 @@ body {
     .btn-number {
       border: 1px solid rgba(21, 24, 41, 1) !important;
     }
-
-    .quantity-text {
-      margin-right: 20px;
-    }
   }
 
   .quantity-text {
@@ -475,6 +471,10 @@ body {
     padding: 15px;
     font-size: 35px;
   }
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 }
 
 .cart-page {
@@ -488,12 +488,8 @@ body {
     }
   }
 
-  .place-order-container {
+  .checkout-container {
     background-color: white;
-
-    .place-order-wrapper {
-      height: 75px;
-    }
 
     .cart-total-price {
       font-size: large;
@@ -502,13 +498,21 @@ body {
     .form-check {
       padding: 100px;
     }
+
+    .select-all-wrapper {
+      margin-left: 12.5px;
+    }
   }
 
   .empty-cart {
-    margin-top: 100px;
-    margin-bottom: 100px;
+    margin-top: 25px;
+    margin-bottom: 25px;
     padding-top: 200px;
     padding-bottom: 200px;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 100%;
   }
 }
 

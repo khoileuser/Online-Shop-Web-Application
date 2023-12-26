@@ -19,8 +19,32 @@ with open(os.getcwd() + "/data/phones.json", "r", encoding="utf-8") as f:
 with open(os.getcwd() + "/data/states.json", "r", encoding="utf-8") as f:
     states_data = json.load(f)
 
+month_map = {
+    '01': 'Jan',
+    '02': 'Feb',
+    '03': 'Mar',
+    '04': 'Apr',
+    '05': 'May',
+    '06': 'Jun',
+    '07': 'Jul',
+    '08': 'Aug',
+    '09': 'Sep',
+    '10': 'Oct',
+    '11': 'Nov',
+    '12': 'Dec'
+}
+
 
 def my_account(request):
+    """
+    The `my_account` function retrieves user account information and renders it in a template for
+    display.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the request method (GET, POST, etc.), user information, and
+    any data sent with the request
+    :return: an HttpResponse object.
+    """
     if request.method != "GET":
         return HttpResponse("Invalid method")
     elif request.user == "guest":
@@ -32,20 +56,6 @@ def my_account(request):
             "type": request.user.account_type
         }
 
-    month_map = {
-        '01': 'Jan',
-        '02': 'Feb',
-        '03': 'Mar',
-        '04': 'Apr',
-        '05': 'May',
-        '06': 'Jun',
-        '07': 'Jul',
-        '08': 'Aug',
-        '09': 'Sep',
-        '10': 'Oct',
-        '11': 'Nov',
-        '12': 'Dec'
-    }
     cards = []
     for card in request.user.cards.all():
         expiration_date = month_map[card.expiration_date[:2]
@@ -72,6 +82,17 @@ def my_account(request):
 
 @csrf_exempt
 def update(request, field):
+    """
+    The function updates the name or password of a user based on the request and field provided.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the request method (GET, POST, etc.), user information, and
+    any data sent with the request
+    :param field: The "field" parameter is used to determine which field of the user object needs to be
+    updated. It can have two possible values: "name" or "password"
+    :return: a redirect response to the previous page (referenced by `request.META['HTTP_REFERER']`)
+    after updating the specified field in the user object.
+    """
     if request.method != "POST":
         return HttpResponse("Invalid method")
     elif request.user == "guest":
@@ -94,6 +115,17 @@ def update(request, field):
 
 @csrf_exempt
 def get_states(request, country):
+    """
+    The function `get_states` returns a JSON response containing the states data for a given country,
+    but only if the request method is POST and the user is not a guest.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the HTTP method used (e.g., GET, POST), user authentication
+    details, and any data sent with the request
+    :param country: The country parameter is the name of the country for which you want to retrieve the
+    states
+    :return: a JSON response containing the states data for the specified country.
+    """
     if request.method != "POST":
         return HttpResponse("Invalid method")
     elif request.user == "guest":
@@ -104,6 +136,16 @@ def get_states(request, country):
 
 @csrf_exempt
 def address_add(request):
+    """
+    The function `address_add` adds a new address to a user's profile if the request method is POST and
+    the user is not a guest.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the HTTP method used (GET, POST, etc.), user information,
+    and data sent in the request
+    :return: a redirect to the previous page (HTTP_REFERER) after adding an address to the user's
+    addresses.
+    """
     if request.method != "POST":
         return HttpResponse("Invalid method")
     elif request.user == "guest":
@@ -129,6 +171,17 @@ def address_add(request):
 
 @csrf_exempt
 def address_set_default(request, address_id):
+    """
+    The function sets a specific address as the default address for a user and redirects to the previous
+    page.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the method used (GET, POST, etc.), user information, and
+    other metadata
+    :param address_id: The `address_id` parameter is the ID of the address that the user wants to set as
+    the default address
+    :return: a redirect to the previous page (the referer) in the request's META data.
+    """
     if request.method != "POST":
         return HttpResponse("Invalid method")
     elif request.user == "guest":
@@ -148,6 +201,17 @@ def address_set_default(request, address_id):
 
 @csrf_exempt
 def address_remove(request, address_id):
+    """
+    The function `address_remove` removes a user's address and sets a new default address if the deleted
+    address was the previous default.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the request method (GET, POST, etc.), user information, and
+    other data related to the request
+    :param address_id: The `address_id` parameter is the unique identifier of the address that needs to
+    be removed
+    :return: a redirect to the previous page (HTTP_REFERER) after deleting an address.
+    """
     if request.method != "POST":
         return HttpResponse("Invalid method")
     elif request.user == "guest":
@@ -168,6 +232,16 @@ def address_remove(request, address_id):
 
 @csrf_exempt
 def card_add(request):
+    """
+    The `card_add` function adds a new card to a user's account if the request method is POST and the
+    user is authenticated, otherwise it redirects to the sign-in page.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the request method (e.g., GET, POST), user information, and
+    data sent in the request
+    :return: a redirect to the previous page (the referer page) after adding a card to the user's
+    account.
+    """
     if request.method != "POST":
         return HttpResponse("Invalid method")
     elif request.user == "guest":
@@ -191,6 +265,18 @@ def card_add(request):
 
 @csrf_exempt
 def card_set_default(request, card_id):
+    """
+    The function sets a specific card as the default card for a user and redirects the user to the
+    previous page.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the method used (GET, POST, etc.), user information, and
+    other metadata
+    :param card_id: The `card_id` parameter is the ID of the card that the user wants to set as the
+    default card
+    :return: a redirect to the previous page (request.META['HTTP_REFERER']) after setting the
+    "is_default" attribute of the specified card to True and all other cards to False.
+    """
     if request.method != "POST":
         return HttpResponse("Invalid method")
     elif request.user == "guest":
@@ -210,6 +296,17 @@ def card_set_default(request, card_id):
 
 @csrf_exempt
 def card_remove(request, card_id):
+    """
+    The `card_remove` function removes a card from a user's account and sets a new default card if the
+    removed card was the previous default.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the request method (e.g., GET, POST), user information, and
+    other metadata
+    :param card_id: The `card_id` parameter is the unique identifier of the card that needs to be
+    removed
+    :return: a redirect to the previous page (the referer) after deleting a card.
+    """
     if request.method != "POST":
         return HttpResponse("Invalid method")
     elif request.user == "guest":

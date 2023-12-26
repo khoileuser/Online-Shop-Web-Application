@@ -93,42 +93,40 @@
     {% endfor %}
     {% endfor %}
 
-    <div class="container place-order-container shadow-sm rounded">
-        <div class="row place-order-wrapper">
-            <div class="col d-flex justify-content-start align-items-center">
-                <div calss="form-check ml-5">
-                    <input type="checkbox" class="form-check-input select-all" id="select-all" onchange="selectAll()">
-                    <label class="form-check-label" for="select-all">Select All</label>
-                </div>
+    {% else %}
+    <div class="row rounded cart-container empty-cart text-center shadow-sm">
+        <h2>You haven't add any products to your cart yet.</h2>
+    </div>
+    {% endif %}
+
+    <div class="row checkout-container rounded shadow-sm p-3">
+        <div class="col d-flex align-items-center select-all-wrapper">
+            <div calss="form-check">
+                <input type="checkbox" class="form-check-input select-all" id="select-all" onchange="selectAll()">
+                <label class="form-check-label" for="select-all">Select All</label>
+            </div>
+        </div>
+
+        <div class="col d-flex justify-content-center align-items-center gap-4">
+            <div class="cart-total-price">
+                Total: <span class="dolar">$</span>
+                <span class="total-price">
+                    {{ total_price }}
+                </span>
             </div>
 
-            <div class="col d-flex justify-content-center align-items-center gap-4">
-                <div class="cart-total-price">
-                    Total: <span class="dolar">$</span>
-                    <span class="total-price">
-                        {{ total_price }}
-                    </span>
-                </div>
-
-                <div class="checkout">
-                    <form class="checkout-form" method="POST" action="/checkout/">
-                        <input type="hidden" class="checkout-mode" id="mode" name="mode">
-                        <input type="hidden" class="checkout-pd-ids" id="product_ids" name="product_ids">
-                        <button type="button" onclick="checkOutCart()" disabled
-                            class="btn btn-primary checkout-btn anm-btn">
-                            <span>Checkout</span></button>
-                    </form>
-                </div>
+            <div class="checkout">
+                <form class="checkout-form" method="POST" action="/checkout/">
+                    <input type="hidden" class="checkout-mode" id="mode" name="mode">
+                    <input type="hidden" class="checkout-pd-ids" id="product_ids" name="product_ids">
+                    <button type="button" onclick="checkOutCart()" disabled
+                        class="btn btn-primary checkout-btn anm-btn">
+                        <span>Checkout</span></button>
+                </form>
             </div>
-
         </div>
     </div>
 
-    {% else %}
-    <div class="row rounded cart-container empty-cart text-center">
-        <h1>You haven't add any products to your cart yet.</h1>
-    </div>
-    {% endif %}
 </div>
 
 {% include "partials/footer.html" %}

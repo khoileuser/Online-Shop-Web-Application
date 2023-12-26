@@ -2,6 +2,8 @@ from django.db import models
 from django.core.validators import MinLengthValidator
 
 
+# The Address class represents a model with fields for phone number code, phone number, address, city,
+# state, postal code, country, and a boolean field for default address.
 class Address(models.Model):
     phone_number_code = models.CharField(max_length=20)
     phone_number = models.CharField(max_length=15)
@@ -13,6 +15,8 @@ class Address(models.Model):
     is_default = models.BooleanField(default=False)
 
 
+# The `Card` class represents a credit card with attributes such as card number, cardholder name,
+# expiration date, card type, cvc, and a flag indicating if it is the default card.
 class Card(models.Model):
     CARD_TYPE_CHOICES = (
         ('VISA', 'Visa'),
@@ -30,6 +34,8 @@ class Card(models.Model):
         return f"{self.card_type} ending in {self.card_number[-4:]}"
 
 
+# The User class represents a user in a system with attributes such as tokens, username, password,
+# name, avatar, account type, cart quantity, addresses, and cards.
 class User(models.Model):
     ACCOUNT_TYPES = [
         ("V", "Vendor"),
@@ -48,6 +54,8 @@ class User(models.Model):
     cards = models.ManyToManyField(Card)
 
 
+# The above class represents a Product model with fields for owner, name, price, images, description,
+# and category.
 class Product(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
@@ -57,16 +65,22 @@ class Product(models.Model):
     category = models.CharField(max_length=255, null=True)
 
 
+# The `CartProduct` class represents a product in a shopping cart with a reference to the product and
+# the quantity of that product.
 class CartProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
 
+# The Cart class represents a shopping cart owned by a user and contains a collection of CartProduct
+# objects.
 class Cart(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     products = models.ManyToManyField(CartProduct)
 
 
+# The `Order` class represents an order made by a user, containing information such as the owner,
+# products, address, card, total price, and status.
 class Order(models.Model):
     ORDER_STATUSES = [
         ("A", "Active"),

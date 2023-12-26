@@ -68,15 +68,14 @@ def add_to_cart(request, product_id, quantity):
         exist.save()
     else:
         cart.products.create(product=product, quantity=quantity)
-        user = User.objects.get(id=request.user.id)
+        user = request.user
         user.cart_quantity += 1
         user.save()
     return HttpResponse(200)
 
 
-def del_product(product, user_id):
+def del_product(product, user):
     product.delete()
-    user = User.objects.get(id=user_id)
     user.cart_quantity -= 1
     if user.cart_quantity <= 0:
         user.cart_quantity = 0
@@ -99,12 +98,12 @@ def remove_from_cart(request, product_id, quantity):
         pass
     if exist:
         if quantity == 'all':
-            del_product(exist, request.user.id)
+            del_product(exist, request.user)
         else:
             quantity = int(quantity)
             exist.quantity -= quantity
             if exist.quantity <= 0:
-                del_product(exist, request.user.id)
+                del_product(exist, request.user)
             else:
                 exist.save()
     return HttpResponse(200)

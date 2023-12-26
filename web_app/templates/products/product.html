@@ -29,11 +29,13 @@
                 <h4 class="price mt-5">$ {{ price }}</h4>
 
                 {% if type != "V" %}
-                <div class="row mt-5 d-flex flex-column pd-action">
-                    <div class="col-6 col-md-5 pd-quantity-input">
-                        <div class="input-group">
-                            <span class="quantity-text">Quantity: </span>
-
+                <div class="row mt-5 pd-action">
+                    <div class="col-3 pt-1 text-end">
+                        <span class="quantity-text">Quantity: </span>
+                    </div>
+                    <div
+                        class="col-9 col-sm-6 col-lg-5 col-xl-4 pd-quantity-input d-flex flex-row justify-content-center align-items-center">
+                        <div class="input-group d-flex flex-row">
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-default btn-number"
                                     onclick="editQuantity('{{ product_id }}', 'remove', 1, true, true)">
@@ -55,21 +57,23 @@
                         </div>
                     </div>
 
-                    <div class="row buttons mt-5">
-                        <div class="col-6 col-md-5">
-                            <button type="button" onclick="addToCart('{{ product_id }}', true)"
-                                class="btn btn-primary add-cart-btn anm-btn w-100">
-                                <span>Add to Cart</span></button>
-                        </div>
-                        <div class="col-6 col-md-5">
-                            <form class="checkout-form" method="POST" action="/checkout/">
-                                <input type="hidden" id="mode" name="mode" value="buy_now">
-                                <input type="hidden" id="product_id" name="product_id" value="{{ product_id }}">
-                                <input type="hidden" class="checkout-quantity" id="quantity" name="quantity">
-                                <button type="button" onclick="checkOutProduct('{{ product_id }}')"
-                                    class="btn btn-primary buy-now-btn anm-btn w-100">
-                                    <span>Buy Now</span></button>
-                            </form>
+                    <div class="col-12">
+                        <div class="row buttons mt-5">
+                            <div class="col-6 col-md-5">
+                                <button type="button" onclick="addToCart('{{ product_id }}', true)"
+                                    class="btn btn-primary add-cart-btn anm-btn w-100">
+                                    <span>Add to Cart</span></button>
+                            </div>
+                            <div class="col-6 col-md-5">
+                                <form class="checkout-form" method="POST" action="/checkout/">
+                                    <input type="hidden" id="mode" name="mode" value="buy_now">
+                                    <input type="hidden" id="product_id" name="product_id" value="{{ product_id }}">
+                                    <input type="hidden" class="checkout-quantity" id="quantity" name="quantity">
+                                    <button type="button" onclick="checkOutProduct('{{ product_id }}')"
+                                        class="btn btn-primary buy-now-btn anm-btn w-100">
+                                        <span>Buy Now</span></button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
