@@ -1,0 +1,506 @@
+{% load js %}
+
+{% load static %}
+
+{% include "partials/header.html" %}
+
+<div class="dummy"></div>
+
+<div class="container me-container d-flex flex-wrap align-items-center justify-content-center gap-3">
+    <!-- Profile -->
+    <input type="radio" class="tab-radio" id="tab1" name="me-tabs" checked>
+    <label for="tab1" class="tab-label btn rounded">Profile</label>
+    <div class="container rounded shadow-sm p-5 tab-content info-tab">
+        <div class="row">
+            <div class="title text-center">
+                <h2>Profile</h2>
+                <p>Manage profile information for account security</p>
+            </div>
+
+            <div class="col-1 d-none d-lg-block"></div>
+
+            <div class="user-info col-8 col-lg-6 mt-5">
+                <div class="private-info">
+                    <div class="row p-2">
+                        <div class="col-4 text-end pt-1">Name</div>
+                        <div class="col-7">
+                            <form method="POST" action="/me/update/name">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="{{ name }}" name="name">
+                                    <button class="btn btn-outline-secondary" type="submit" disabled>Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-4 text-end pt-1">Username</div>
+                        <div class="col-7">
+                            <input type="text" class="form-control" value="{{ username }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-4 text-end pt-1">Account type</div>
+                        <div class="col-7">
+                            {% if type == 'C' %}
+                            <input class="form-control" type="text" value="Customer" readonly>
+                            {% elif type == 'V' %}
+                            <input class="form-control" type="text" value="Vendor" readonly>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row p-2">
+                        <div class="col-4 text-end p-1 mt-4"><b>Change password</b></div>
+                        <div class="col-7"></div>
+
+                        <div class="col-4 text-end p-1 mt-3">Old password</div>
+                        <div class="col-7 mt-3">
+                            <input class="form-control old-password" type="password">
+                        </div>
+
+                        <div class="col-4 text-end pt-1 mt-3">New password</div>
+                        <div class="col-7 mt-3">
+                            <input class="form-control password" type="password" oninput="profileEditPassword()">
+                            <i class="password-danger caution text-danger">*Passwords must contain at least one
+                                uppercase, one lowercase, one digit, one special character and at least 8 characters
+                                long.</i>
+                        </div>
+
+                        <div class="col-4 text-end pt-1 mt-3">Confirm new password</div>
+                        <div class="col-7 mt-3">
+                            <div class="input-group">
+                                <input type="password" class="form-control confirm-password new-password"
+                                    oninput="profileConfirmPassword()">
+                                <button class="btn btn-outline-secondary password-save-btn" type="button"
+                                    onclick="profileSavePassword()" disabled>Save</button>
+                            </div>
+                            <i class="confirm-password-danger caution text-danger">*Password confirmation doesn't
+                                match the password</i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-1 d-none d-lg-block"></div>
+
+            <div class="avatar col-4 col-lg-3 d-flex flex-column justify-content-center align-items-center">
+                <div class="image">
+                    {% if avatar %}
+                    <img src="{% static 'images/avatar/' %}{{ avatar }}" alt="user-image">
+                    {% else %}
+                    <img src="{% static 'images/avatar/default.jpg' %}" alt="user-image">
+                    {% endif %}
+                </div>
+                <div class="mt-4">
+                    <button class="btn btn-primary">Upload avatar</button>
+                </div>
+            </div>
+
+            <div class="col-1 d-none d-lg-block"></div>
+
+        </div>
+    </div>
+
+    <!-- Addresses -->
+    <div class="modal fade" id="addAddress" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="addAddressLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="POST" action="/me/address/add/">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="addAddressLabel">Add new address</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="container">
+                        <div class="row p-2 pt-4">
+                            <div class="col-12">Country</div>
+                            <div class="col-12">
+                                <div class="dropdown w-100">
+                                    <input class="form-control country_input" type="hidden" name="country">
+                                    <button class="btn dropdown-btn dropdown-toggle w-100 country-btn text-start"
+                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Country
+                                    </button>
+                                    <ul class="dropdown-menu country-dropdown">
+                                        <li>
+                                            <input class="form-control country" type="text" onkeyup="filterCountry()">
+                                        </li>
+                                        {% for country, name in names.items %}
+                                        <li>
+                                            <a class="dropdown-item" href="#"
+                                                onclick="choseCountry('{{ country }}', '{{ name }}')">
+                                                ({{ country }}) {{ name }}</a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row p-2">
+                            <div class="col-12">Phone number</div>
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="dropdown-center w-100">
+                                            <input class="form-control phone_number_code_input" type="hidden"
+                                                name="phone_number_code">
+                                            <button class="btn dropdown-btn dropdown-toggle w-100 phone_number_code-btn"
+                                                type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Code
+                                            </button>
+                                            <ul class="dropdown-menu number-code-dropdown">
+                                                <li>
+                                                    <input class="form-control phone_number_code" type="text"
+                                                        onkeyup="filterNumberCode()">
+                                                </li>
+                                                {% for country, phone in phones.items %}
+                                                <li>
+                                                    <a class="dropdown-item" href="#"
+                                                        onclick="choseNumberCode('{{ country }}', '{{ phone }}')">
+                                                        ({{ country }}) {{ phone }}</a>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <input class="form-control" type="tel" pattern="[0-9]+" maxlength="15"
+                                            name="phone_number" placeholder="Phone number" inputmode="numeric"
+                                            oninput="this.value = this.value.replace(/\D+/g, '')" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row p-2">
+                            <div class="col-12">Address</div>
+                            <div class="col-12">
+                                <input class="form-control" type="text" name="address" placeholder="Address" required>
+                            </div>
+                        </div>
+
+                        <div class="row p-2">
+                            <div class="col-12">City</div>
+                            <div class="col-12">
+                                <input class="form-control" type="text" name="city" placeholder="City" required>
+                            </div>
+                        </div>
+
+                        <div class="row p-2 pb-4">
+                            <div class="col-6">State/Province/Region</div>
+                            <div class="col-6">Postal code</div>
+
+                            <div class="col-6">
+                                <div class="dropdown-center w-100">
+                                    <input class="form-control state_input" type="hidden" name="state">
+                                    <button class="btn dropdown-btn dropdown-toggle w-100 state-btn" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false" disabled>
+                                        State
+                                    </button>
+                                    <ul class="dropdown-menu state-dropdown">
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <input class="form-control" pattern="[0-9]+" maxlength="12" name="postal_code"
+                                    placeholder="Postal code" inputmode="numeric"
+                                    oninput="this.value = this.value.replace(/\D+/g, '')" required>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary w-25">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <input type="radio" class="tab-radio" id="tab2" name="me-tabs">
+    <label for="tab2" class="tab-label btn rounded">Addresses</label>
+    <div class="container rounded shadow-sm tab-content address-tab">
+        {% if addresses %}
+        {% for address in addresses %}
+        <div class="row p-4 m-2 border-bottom">
+            <div class="col-10">
+                <div class="row p-2">
+                    <div class="col-2 text-end pt-1">Phone number</div>
+                    <div class="col-4">
+                        {% if '+' not in address.phone_number_code %}
+                        <input class="form-control" type="text"
+                            value="(+{{ address.phone_number_code }}) {{ address.phone_number }}" readonly>
+                        {% else %}
+                        <input class="form-control" type="text"
+                            value="({{ address.phone_number_code }}) {{ address.phone_number }}" readonly>
+                        {% endif %}
+                    </div>
+                    <div class="col-2 text-end pt-1">Country</div>
+                    <div class="col-4">
+                        <input class="form-control" type="text" value="{{ address.country }}" readonly>
+                    </div>
+                </div>
+
+                <div class="row p-2">
+                    <div class="col-2 text-end pt-1">Address</div>
+                    <div class="col-4">
+                        <input class="form-control" type="text" value="{{ address.address }}" readonly>
+                    </div>
+                    <div class="col-2 text-end pt-1">City</div>
+                    <div class="col-4">
+                        <input class="form-control" type="text" value="{{ address.city }}" readonly>
+                    </div>
+                </div>
+
+                <div class="row p-2">
+                    <div class="col-2 text-end pt-1">State</div>
+                    <div class="col-4">
+                        <input class="form-control" type="text" value="{{ address.state }}" readonly>
+                    </div>
+                    <div class="col-2 text-end pt-1">Postal code</div>
+                    <div class="col-4">
+                        <input class="form-control" type="text" value="{{ address.postal_code }}" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-2 text-center d-flex flex-column justify-content-center align-items-center gap-2">
+                {% if address.is_default %}
+                <button class="btn btn-danger w-75" type="submit" disabled>Default</button>
+                {% else %}
+                <form class="w-100" method="POST" action="/me/address/set/default/{{ address.id }}">
+                    <button class="btn btn-primary w-75" type="submit">Set default</button>
+                </form>
+                {% endif %}
+                <form class="w-100" method="POST" action="/me/address/remove/{{ address.id }}">
+                    <button class="btn btn-secondary w-75" type="submit">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="text-center d-flex justify-content-center align-items-center p-5 m-5">
+            <h2>You haven't added any addresses yet.</h2>
+        </div>
+        {% endif %}
+        <div class="text-center">
+            <button type="button" class="btn btn-primary m-3 mb-4" data-bs-toggle="modal" data-bs-target="#addAddress">
+                Add new address
+            </button>
+        </div>
+    </div>
+
+    <!-- Billing -->
+    <div class="modal fade" id="addCard" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="addCardLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form method="POST" action="/me/card/add/">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="addCardLabel">Add new payment method</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="container">
+                        <div class="row p-2 pt-4">
+                            <div class="col-8">
+                                Card number
+                                <span class="text-danger d-none wrong-card-alert position-absolute">
+                                    <small>
+                                        <i>*We only accept Visa or
+                                            Mastercard</i>
+                                    </small>
+                                </span>
+                            </div>
+                            <div class="col-4"></div>
+                            <div class="col-8">
+                                <input class="form-control" pattern="[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}"
+                                    name="card_number" placeholder="1234 1234 1234 1234" inputmode="numeric"
+                                    oninput="editCardNumber(this)" maxlength="19" required>
+                            </div>
+                            <div class="col-4">
+                                <div class="row">
+                                    <div
+                                        class="col-6 visa-logo rounded d-flex align-items-center justify-content-center">
+                                        <img src="{% static 'images/Visa_Brandmark_Blue_RGB_2021.png' %}"
+                                            class="img-fluid p-1" alt="visa-logo">
+                                    </div>
+                                    <div
+                                        class="col-6 mastercard-logo rounded d-flex align-items-center justify-content-center">
+                                        <img src="{% static 'images/mc_symbol_opt_73_3x.png' %}" class="img-fluid"
+                                            alt="mastercard-logo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row p-2">
+                            <div class="col-7">Expiration date</div>
+                            <div class="col-5">CVV/CVC</div>
+
+                            <div class="col-7">
+                                <input class="form-control" name="expiration_date" placeholder="MM/YY" maxlength="5"
+                                    inputmode="numeric" oninput="editExpireDate(this)" required>
+                            </div>
+
+                            <div class="col-5">
+                                <input class="form-control" name="cvc" placeholder="Security code" maxlength="4"
+                                    placeholder="Postal code" inputmode="numeric"
+                                    oninput="this.value = this.value.replace(/\D+/g, '')" required>
+                            </div>
+                        </div>
+
+                        <div class="row p-2 pb-4">
+                            <div class="col-12">Name on the card</div>
+                            <div class="col-12">
+                                <input class="form-control" type="text" name="cardholder_name" placeholder="Name"
+                                    required>
+                            </div>
+                        </div>
+
+                        <input type="hidden" class="form-control card_type" name="card_type">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary w-25 add-card-btn" disabled>Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <input type="radio" class="tab-radio" id="tab3" name="me-tabs">
+    <label for="tab3" class="tab-label btn rounded">Billing</label>
+    <div class="container rounded shadow-sm tab-content billing-tab">
+        {% if cards %}
+        {% for card in cards %}
+        <div class="row p-4 m-2 border-bottom">
+            <div class="col-10">
+                <div class="row p-2">
+                    {% if card.card_type == "VISA" %}
+                    <div class="col-2 visa-logo rounded d-flex align-items-center justify-content-center">
+                        <img src="{% static 'images/Visa_Brandmark_Blue_RGB_2021.png' %}" class="img-fluid p-1"
+                            alt="visa-logo">
+                    </div>
+                    <div class="col-10 d-flex align-items-center">
+                        <div class="row">
+                            <div class="col-12">Visa ending in {{ card.card_number }}</div>
+                            <div class="col-12">Expires {{ card.expiration_date }}</div>
+                        </div>
+                    </div>
+
+                    {% elif card.card_type == "MC" %}
+                    <div class="col-2 mastercard-logo rounded d-flex align-items-center justify-content-center">
+                        <img src="{% static 'images/mc_symbol_opt_73_3x.png' %}" class="img-fluid"
+                            alt="mastercard-logo">
+                    </div>
+                    <div class="col-10 d-flex align-items-center">
+                        <div class="row">
+                            <div class="col-12">Mastercard ending in {{ card.card_number }}</div>
+                            <div class="col-12">Expires {{ card.expiration_date }}</div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <div class="col-2 text-center d-flex flex-column justify-content-center align-items-center gap-2">
+                {% if card.is_default %}
+                <button class="btn btn-danger w-75" disabled>Default</button>
+                {% else %}
+                <form class="w-100" method="POST" action="/me/card/set/default/{{ card.id }}">
+                    <button class="btn btn-primary w-75" type="submit">Set default</button>
+                </form>
+                {% endif %}
+                <form class="w-100" method="POST" action="/me/card/remove/{{ card.id }}">
+                    <button class="btn btn-secondary w-75" type="submit">Delete</button>
+                </form>
+            </div>
+
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="text-center d-flex justify-content-center align-items-center p-5 m-5">
+            <h2>You haven't added any card yet.</h2>
+        </div>
+        {% endif %}
+        <div class="text-center">
+            <button type="button" class="btn btn-primary m-3 mb-4" data-bs-toggle="modal" data-bs-target="#addCard">
+                Add new card
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    var phones = {{ phones| js }};
+    var names = {{ names| js }};
+
+    function enableState(country) {
+        var stateBtn = document.querySelector(".state-btn");
+        stateBtn.setAttribute("disabled", "");
+        stateBtn.innerHTML = "State";
+        allowStateSelect(country);
+    }
+
+    function choseCountry(country, name) {
+        document.querySelector(".country-btn").innerHTML = name;
+        document.querySelector(".country_input").value = name;
+
+        document.querySelector(".phone_number_code-btn").innerHTML = phones[country];
+        document.querySelector(".phone_number_code_input").value = phones[country];
+
+        enableState(country);
+
+    }
+
+    function choseNumberCode(country, code) {
+        document.querySelector(".phone_number_code-btn").innerHTML = code;
+        document.querySelector(".phone_number_code_input").value = code;
+
+        document.querySelector(".country-btn").innerHTML = names[country];
+        document.querySelector(".country_input").value = names[country];
+
+        enableState(country);
+    }
+
+    function allowStateSelect(country) {
+        fetch('/states/get/' + country, {
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(states => {
+                var dropDown = document.querySelector(".state-dropdown");
+                dropDown.innerHTML = '';
+
+                var inputli = document.createElement("li");
+                var inputFilter = document.createElement("input");
+                inputFilter.classList.add("form-control");
+                inputFilter.classList.add("state");
+                inputFilter.type = "text";
+                inputFilter.setAttribute("onkeyup", "filterState()");
+                inputli.appendChild(inputFilter);
+                dropDown.appendChild(inputli);
+
+                states.sort().forEach(state => {
+                    var liTag = document.createElement("li");
+                    var aTag = document.createElement("a");
+                    aTag.classList.add("dropdown-item");
+                    aTag.href = "#";
+                    aTag.setAttribute("onclick", "choseState('" + state + "')");
+                    aTag.innerHTML = state
+                    liTag.appendChild(aTag);
+                    dropDown.appendChild(liTag);
+                })
+
+                document.querySelector(".state-btn").removeAttribute("disabled");
+            })
+    }
+</script>
+
+{% include "partials/footer.html" %}

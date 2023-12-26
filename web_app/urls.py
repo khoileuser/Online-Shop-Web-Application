@@ -17,8 +17,16 @@ urlpatterns = [
     path('log-out/', authentication.sign_out),
 
     # my account
-    path('my-account/', views.my_account),
-    path('me/', views.my_account),
+    path('my-account/', me.my_account),
+    path('me/', me.my_account),
+    path('me/update/<str:field>', me.update),
+    path('me/address/add/', me.address_add),
+    path('me/address/set/default/<int:address_id>', me.address_set_default),
+    path('me/address/remove/<int:address_id>', me.address_remove),
+    path('me/card/add/', me.card_add),
+    path('me/card/set/default/<int:card_id>', me.card_set_default),
+    path('me/card/remove/<int:card_id>', me.card_remove),
+    path('states/get/<str:country>', me.get_states),
 
     # check authentication
     path('check/signin/', authentication.check_sign_in),

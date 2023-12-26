@@ -68,7 +68,7 @@
     </nav>
   </header>
 
-  <div class="container col-8 alert alert-warning alert-dismissible alert-container fade show position-fixed fixed-top">
+  <div class="container col-8 alert alert-dismissible alert-container fade show position-fixed fixed-top">
     <i class="bi bi-exclamation-triangle-fill"></i>
     <span class="alert-msg"></span>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -83,13 +83,13 @@
             <div class="form-outline mb-3">
               <label for="username">Username</label>
               <input type="text" id="username" name="username" class="form-control username" placeholder="Username"
-                onchange="signInEdit()" required />
+                oninput="signInEdit()" required />
             </div>
 
             <div class="form-outline mb-4">
               <label for="password">Password</label>
               <input type="password" id="password" name="password" class="form-control password" placeholder="Password"
-                onchange="signInEdit()" required />
+                oninput="signInEdit()" required />
             </div>
 
             <div class="d-grid mb-3">

@@ -3,12 +3,12 @@ from django.core.validators import MinLengthValidator
 
 
 class Address(models.Model):
-    phone_number_code = models.CharField(max_length=5)
+    phone_number_code = models.CharField(max_length=20)
     phone_number = models.CharField(max_length=15)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=20)
+    postal_code = models.CharField(max_length=12)
     country = models.CharField(max_length=100)
     is_default = models.BooleanField(default=False)
 
@@ -21,7 +21,7 @@ class Card(models.Model):
 
     card_number = models.CharField(max_length=16)
     cardholder_name = models.CharField(max_length=255)
-    expiration_date = models.DateField()
+    expiration_date = models.CharField(max_length=5)
     card_type = models.CharField(max_length=4, choices=CARD_TYPE_CHOICES)
     cvc = models.CharField(max_length=4)
     is_default = models.BooleanField(default=False)
@@ -75,6 +75,8 @@ class Order(models.Model):
     ]
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     products = models.ManyToManyField(CartProduct)
-    total_price = models.IntegerField()
+    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
+    card = models.ForeignKey(Card, on_delete=models.SET_NULL, null=True)
+    total_price = models.FloatField()
     status = models.CharField(
         max_length=1, choices=ORDER_STATUSES, default="A")

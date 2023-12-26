@@ -511,3 +511,77 @@ body {
     padding-bottom: 200px;
   }
 }
+
+.me-container {
+  font-size: large;
+
+  .tab-label {
+    padding: 10px 16px;
+    cursor: pointer;
+    color: var(--text-normal)
+  }
+
+  .tab-radio {
+    display: none;
+  }
+
+  .tab-content {
+    background-color: white;
+    order: 1;
+    border-bottom: 3px solid #dddddd;
+    line-height: 1.5;
+    font-size: 0.9em;
+    display: none;
+  }
+
+  .tab-radio:checked+.tab-label {
+    font-weight: bold;
+    color: var(--text-header);
+    border-bottom: 2px solid rgba(21, 24, 41, 1);
+  }
+
+  .tab-radio:checked+.tab-label+.tab-content {
+    display: initial;
+  }
+
+  .info-tab {
+    .image img {
+      object-fit: contain;
+      max-height: 40vh;
+      max-width: 40vw;
+      border-radius: 50%;
+    }
+  }
+
+  .dropdown-btn {
+    border-color: var(--border-color);
+  }
+
+  .wrong-card-alert {
+    left: 135px;
+  }
+
+  .caution {
+    display: none;
+  }
+
+  @media (max-width: 991px) {
+    font-size: small;
+
+    .info-tab {
+      .image img {
+        max-width: 20w;
+        max-height: 20vh;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .info-tab {
+      .image img {
+        max-width: 10w;
+        max-height: 10vh;
+      }
+    }
+  }
+}
