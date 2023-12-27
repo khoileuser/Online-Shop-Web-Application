@@ -6,33 +6,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from web_app.models import User
 from django.contrib.auth.hashers import make_password, check_password
+from django.forms.models import model_to_dict
 
-import json
-import os
 
-with open(os.getcwd() + "/data/names.json", "r", encoding="utf-8") as f:
-    names_data = json.load(f)
-
-with open(os.getcwd() + "/data/phones.json", "r", encoding="utf-8") as f:
-    phones_data = json.load(f)
-
-with open(os.getcwd() + "/data/states.json", "r", encoding="utf-8") as f:
-    states_data = json.load(f)
-
-month_map = {
-    '01': 'Jan',
-    '02': 'Feb',
-    '03': 'Mar',
-    '04': 'Apr',
-    '05': 'May',
-    '06': 'Jun',
-    '07': 'Jul',
-    '08': 'Aug',
-    '09': 'Sep',
-    '10': 'Oct',
-    '11': 'Nov',
-    '12': 'Dec'
-}
+from web_app.data import *
 
 
 def my_account(request):
@@ -155,7 +132,7 @@ def address_add(request):
     is_empty = False
     if not user.addresses.all():
         is_empty = True
-    user.addresses.create(
+    address = user.addresses.create(
         phone_number_code=request.POST['phone_number_code'],
         phone_number=request.POST['phone_number'],
         address=request.POST['address'],
@@ -166,7 +143,13 @@ def address_add(request):
         is_default=is_empty,
     )
 
-    return redirect(request.META['HTTP_REFERER'])
+    try:
+        context = request.session.get("context")
+        context["address"] = model_to_dict(address)
+        request.session["context"] = context
+        return redirect('/checkout/')
+    except:
+        return redirect(request.META['HTTP_REFERER'])
 
 
 @csrf_exempt
@@ -251,7 +234,7 @@ def card_add(request):
     is_empty = False
     if not user.cards.all():
         is_empty = True
-    user.cards.create(
+    card = user.cards.create(
         card_number=request.POST['card_number'].replace(' ', ''),
         cardholder_name=request.POST['cardholder_name'],
         expiration_date=request.POST['expiration_date'],
@@ -260,7 +243,21 @@ def card_add(request):
         is_default=is_empty,
     )
 
-    return redirect(request.META['HTTP_REFERER'])
+    try:
+        context = request.session.get("context")
+        expiration_date = month_map[card.expiration_date[:2]
+                                    ] + ' 20' + card.expiration_date[-2:]
+        context["card"] = {
+            'id': card.id,
+            'card_type': card.card_type,
+            'card_number': card.card_number[-4:],
+            'expiration_date': expiration_date,
+            'is_default': card.is_default
+        }
+        request.session["context"] = context
+        return redirect('/checkout/')
+    except:
+        return redirect(request.META['HTTP_REFERER'])
 
 
 @csrf_exempt

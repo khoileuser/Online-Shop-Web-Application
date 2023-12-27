@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
-from web_app.models import Cart, User, Product
+from web_app.models import Cart, Product
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -27,8 +27,12 @@ def view_cart(request):
         # group products by vendor
         _cart_products = [
             cart_product for cart_product in cart_products if cart_product.product.owner == vendor]
+        _vendor = {
+            "name": vendor.name,
+            "username": vendor.username
+        }
         products_by_vendor[vendor.id] = {
-            'vendor': vendor,
+            'vendor': _vendor,
             'cart_products': _cart_products,
         }
 
