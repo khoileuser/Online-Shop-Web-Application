@@ -40,7 +40,7 @@ urlpatterns = [
 
     # order
     path('checkout/', order.checkout),
-    path('place_order/', order.place_order),
+    path('order/place/', order.place_order),
     path('order/<int:order_id>', order.view_order),
     path('orders/<int:order_id>', order.view_order),
     path('orders/', order.view_orders),

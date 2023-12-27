@@ -47,6 +47,19 @@ def get_vendors(cart_products, product_ids=None):
 
 
 def get_products_by_vendor(vendors, cart_products):
+    """
+    The function `get_products_by_vendor` groups cart products by vendor and returns a dictionary with
+    vendor information and their respective cart products.
+
+    :param vendors: A list of vendor objects. Each vendor object has attributes like id, name, and
+    username
+    :param cart_products: The `cart_products` parameter is a list of products in the user's shopping
+    cart. Each product in the list is an object that has a `product` attribute, which represents the
+    actual product being sold, and an `owner` attribute, which represents the vendor who owns the
+    product
+    :return: a dictionary where the keys are the IDs of the vendors and the values are dictionaries
+    containing information about the vendor and their associated products in the cart.
+    """
     # group vendor
     products_by_vendor = {}
     for vendor in vendors:
@@ -85,6 +98,20 @@ def calc_total_price(cart_products):
 
 
 def parse_checkout_context(request, mode):
+    """
+    The function `parse_checkout_context` takes in a request and a mode, and returns a context
+    dictionary containing user details, mode, total price, products by vendor, and default address and
+    card information.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    user. It contains information such as the user making the request, the POST data sent with the
+    request, and other metadata
+    :param mode: The "mode" parameter is a string that determines the calculation mode for the checkout
+    context. It can have one of the following values:
+    :return: a context dictionary containing various information related to the checkout process, such
+    as user details, mode, total price, products by vendor, default address, and default card.
+    """
+    # Initialize the context with user details and mode
     context = {
         "username": request.user.username,
         "cart_quantity": request.user.cart_quantity,
@@ -92,22 +119,24 @@ def parse_checkout_context(request, mode):
         "mode": mode
     }
 
+    # If mode is 'all', calculate total price for all products in the cart
     if mode == 'all':
         cart_products = get_cart_products(request.user)
         vendors = get_vendors(cart_products)
         products_by_vendor = get_products_by_vendor(vendors, cart_products)
         total_price = calc_total_price(cart_products)
+
+    # If mode is 'selected', calculate total price for selected products in the cart
     elif mode == 'selected':
         context["product_ids"] = request.POST["product_ids"]
-        try:
-            product_ids = [
-                int(product_id) for product_id in request.POST["product_ids"].split(",") if product_id != ""]
-        except:
-            return HttpResponse("Invalid request")
+        product_ids = [int(product_id) for product_id in request.POST["product_ids"].split(
+            ",") if product_id != ""]
         cart_products = get_cart_products(request.user)
         vendors = get_vendors(cart_products, product_ids)
         products_by_vendor = get_products_by_vendor(vendors, cart_products)
         total_price = calc_total_price(cart_products)
+
+    # If mode is 'buy_now', calculate total price for the single product being bought now
     elif mode == 'buy_now':
         context["product_id"] = request.POST["product_id"]
         context["quantity"] = request.POST["quantity"]
@@ -164,6 +193,16 @@ def parse_checkout_context(request, mode):
 
 @csrf_exempt
 def checkout(request):
+    """
+    The `checkout` function handles the checkout process for a user, redirecting them to sign in if they
+    are a guest, parsing the checkout context from the request, and rendering the checkout template with
+    the context.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information about the request, such as the method (GET, POST, etc.), headers,
+    user information, and any data sent with the request
+    :return: an HttpResponse object.
+    """
     if request.user == "guest":
         return redirect("/signin")
 
@@ -173,9 +212,6 @@ def checkout(request):
         request.session['context'] = context
     elif request.method == "GET":
         context = request.session.get('context')
-        if context['from_add'] == True:
-            mode = context['mode']
-        del request.session['context']
     else:
         return HttpResponse('Invalid request')
 
@@ -189,15 +225,13 @@ def place_order(request):
     elif request.user == "guest":
         return redirect("/signin")
 
-    try:
-        mode = request.POST['mode']
-    except:
-        return HttpResponse('Invalid request')
+    context = request.session.get('context')
+    del request.session['context']
 
-    address = Address.objects.get(id=request.POST["address_id"])
-    card = Card.objects.get(id=request.POST["card_id"])
+    address = Address.objects.get(id=context["address_id"])
+    card = Card.objects.get(id=context["card_id"])
 
-    if mode == 'all':
+    if context["mode"] == 'all':
         checkout_products = get_cart_products(request.user)
         total_price = calc_total_price(checkout_products)
 
@@ -205,14 +239,11 @@ def place_order(request):
                       card=card, total_price=total_price, status="A")
 
         # clear all products from user cart
-        # cart = Cart.objects.get(owner=request.user)
-        # cart.products.clear()
-    elif mode == 'selected':
-        try:
-            product_ids = [
-                int(product_id) for product_id in request.POST["product_ids"].split(",") if product_id != ""]
-        except:
-            return HttpResponse("Invalid request")
+        cart = Cart.objects.get(owner=request.user)
+        cart.products.clear()
+    elif context["mode"] == 'selected':
+        product_ids = [int(product_id) for product_id in context["product_ids"].split(
+            ",") if product_id != ""]
 
         cart_products = get_cart_products(request.user)
         total_price = calc_total_price(cart_products)
@@ -220,22 +251,21 @@ def place_order(request):
         order = Order(owner=request.user, address=address,
                       card=card, total_price=total_price, status="A")
 
+        # clear selected products from user cart
         cart = Cart.objects.get(owner=request.user)
         for cart_product in cart_products:
             if cart_product.id in product_ids:
                 order.products.create(
                     product=cart_product.product, quantity=cart_product.quantity)
                 cart.products.remove(cart_product)
-
-    elif mode == 'buy_now':
-        product = Product.objects.get(id=request.POST["product_id"])
-        quantity = int(request.POST["quantity"])
+    elif context["mode"] == 'buy_now':
+        product = Product.objects.get(id=context["product_id"])
+        quantity = int(context["quantity"])
         total_price = product.price * quantity
 
         order = Order(owner=request.user, address=address,
                       card=card, total_price=total_price, status="A")
         order.products.create(product=product, quantity=quantity)
-
     else:
         return HttpResponse('Invalid request')
 
