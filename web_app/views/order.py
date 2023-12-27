@@ -5,20 +5,9 @@ from django.shortcuts import redirect
 from web_app.models import Cart, Product, Order, Address, Card
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
+from django.db import transaction
 
 from web_app.data import *
-
-
-def get_cart_products(user):
-    """
-    The function `get_cart_products` retrieves all the products in a user's cart.
-
-    :param user: The user parameter is the owner of the cart. It is used to retrieve the cart object
-    associated with the user
-    :return: all the products in the user's cart.
-    """
-    cart = Cart.objects.get(owner=user)
-    return cart.products.all()
 
 
 def get_vendors(cart_products, product_ids=None):
@@ -61,7 +50,7 @@ def get_products_by_vendor(vendors, cart_products):
     containing information about the vendor and their associated products in the cart.
     """
     # group vendor
-    products_by_vendor = {}
+    products_by_vendor = []
     for vendor in vendors:
         # group products by vendor
         _cart_products = []
@@ -70,13 +59,14 @@ def get_products_by_vendor(vendors, cart_products):
                 product_dict = model_to_dict(cart_product)
                 product_dict['product'] = model_to_dict(cart_product.product)
                 _cart_products.append(product_dict)
-        products_by_vendor[vendor.id] = {
+        products_by_vendor.append({
             'vendor': {
+                "id": vendor.id,
                 "name": vendor.name,
                 "username": vendor.username
             },
             'cart_products': _cart_products,
-        }
+        })
     return products_by_vendor
 
 
@@ -121,7 +111,8 @@ def parse_checkout_context(request, mode):
 
     # If mode is 'all', calculate total price for all products in the cart
     if mode == 'all':
-        cart_products = get_cart_products(request.user)
+        cart_products = Cart.objects.get(
+            owner=request.user).products.all().order_by('id')
         vendors = get_vendors(cart_products)
         products_by_vendor = get_products_by_vendor(vendors, cart_products)
         total_price = calc_total_price(cart_products)
@@ -131,7 +122,8 @@ def parse_checkout_context(request, mode):
         context["product_ids"] = request.POST["product_ids"]
         product_ids = [int(product_id) for product_id in request.POST["product_ids"].split(
             ",") if product_id != ""]
-        cart_products = get_cart_products(request.user)
+        cart_products = Cart.objects.get(
+            owner=request.user).products.all().order_by('id')
         vendors = get_vendors(cart_products, product_ids)
         products_by_vendor = get_products_by_vendor(vendors, cart_products)
         total_price = calc_total_price(cart_products)
@@ -163,13 +155,16 @@ def parse_checkout_context(request, mode):
     _address = None
     _card = None
 
+    # get default address
     for address in request.user.addresses.all():
         if address.is_default:
             _address = address
             break
 
+    # get default card
     for card in request.user.cards.all():
         if card.is_default:
+            # reparse card info to prevent security issues
             expiration_date = month_map[card.expiration_date[:2]
                                         ] + ' 20' + card.expiration_date[-2:]
             _card = {
@@ -184,6 +179,7 @@ def parse_checkout_context(request, mode):
     context['address'] = model_to_dict(_address) if _address else None
     context['card'] = _card
 
+    # get names and phones if there is no (default) address
     if not _address:
         context['names'] = names_data
         context['phones'] = phones_data
@@ -219,86 +215,187 @@ def checkout(request):
     return HttpResponse(template.render(context, request))
 
 
+@csrf_exempt
 def place_order(request):
+    """
+    The `place_order` function processes a user's order by retrieving the necessary information from the
+    request and session, creating a new order with the selected products, updating the user's cart, and
+    redirecting to the order details page.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the request method (e.g., GET, POST), user information,
+    session data, and other request-specific details
+    :return: a redirect response to the URL '/order/' followed by the ID of the created order.
+    """
     if request.method != "POST":
         return HttpResponse('Invalid request')
     elif request.user == "guest":
         return redirect("/signin")
 
+    # retrieve the context from the session and delete it from the session
     context = request.session.get('context')
     del request.session['context']
 
-    address = Address.objects.get(id=context["address_id"])
-    card = Card.objects.get(id=context["card_id"])
+    # retrieve the address and card from the database using the ids stored in the context
+    address = Address.objects.get(id=context["address"]["id"])
+    card = Card.objects.get(id=context["card"]["id"])
 
-    if context["mode"] == 'all':
-        checkout_products = get_cart_products(request.user)
+    # If the mode is 'all', process all products in the cart
+    if context["mode"] == "all":
+        # retrieve the user's cart and all products in it
+        cart = Cart.objects.get(owner=request.user)
+        checkout_products = cart.products.all().order_by('id')
+
+        # calc total price of all products in the cart
         total_price = calc_total_price(checkout_products)
 
-        order = Order(owner=request.user, products=checkout_products, address=address,
-                      card=card, total_price=total_price, status="A")
-
-        # clear all products from user cart
-        cart = Cart.objects.get(owner=request.user)
-        cart.products.clear()
-    elif context["mode"] == 'selected':
-        product_ids = [int(product_id) for product_id in context["product_ids"].split(
-            ",") if product_id != ""]
-
-        cart_products = get_cart_products(request.user)
-        total_price = calc_total_price(cart_products)
-
+        # create a new order with all products in the cart
         order = Order(owner=request.user, address=address,
                       card=card, total_price=total_price, status="A")
+        order.save()
+        order.products.set(checkout_products)
 
-        # clear selected products from user cart
+        # clear all products from the user's cart
+        cart.products.clear()
+
+        # reset the user's cart quantity to 0
+        user = request.user
+        user.cart_quantity = 0
+        user.save()
+
+    # If the mode is 'selected', process only the selected products
+    elif context["mode"] == "selected":
         cart = Cart.objects.get(owner=request.user)
+
+        # filter selected cart products
+        product_ids = [int(product_id) for product_id in context["product_ids"].split(
+            ",") if product_id != ""]
+        checkout_products = []
+        cart_products = cart.products.all().order_by('id')
         for cart_product in cart_products:
-            if cart_product.id in product_ids:
-                order.products.create(
-                    product=cart_product.product, quantity=cart_product.quantity)
-                cart.products.remove(cart_product)
-    elif context["mode"] == 'buy_now':
+            if cart_product.product.id in product_ids:
+                checkout_products.append(cart_product)
+
+        # calc total price of selected products
+        total_price = calc_total_price(checkout_products)
+
+        # create a new order
+        order = Order(owner=request.user, address=address,
+                      card=card, total_price=total_price, status="A")
+        order.save()
+
+        # add and remove selected products to order and from user cart
+        cart = Cart.objects.get(owner=request.user)
+        for checkout_product in checkout_products:
+            order.products.create(
+                product=checkout_product.product, quantity=checkout_product.quantity)
+            cart.products.remove(checkout_product)
+
+        # update user cart quantity
+        user = request.user
+        user.cart_quantity = cart.products.count()
+        user.save()
+
+    # If the mode is 'buy_now', process the single product being bought now
+    elif context["mode"] == "buy_now":
+        # get product and quantity from context and calc total price
         product = Product.objects.get(id=context["product_id"])
         quantity = int(context["quantity"])
         total_price = product.price * quantity
 
+        # create a new order with the single product
         order = Order(owner=request.user, address=address,
                       card=card, total_price=total_price, status="A")
+        order.save()
         order.products.create(product=product, quantity=quantity)
     else:
         return HttpResponse('Invalid request')
 
-    return redirect('/order/' + order.id)
+    return redirect('/order/' + str(order.id))
 
 
 def view_order(request, order_id):
-    if request.method != "POST":
+    """
+    The `view_order` function retrieves and displays order details for a specific order ID, including
+    the products, vendors, total price, address, and card information.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    user. It contains information such as the request method (GET, POST, etc.), user authentication
+    details, and any data sent with the request
+    :param order_id: The order_id parameter is the unique identifier of the order that the user wants to
+    view
+    :return: an HttpResponse object.
+    """
+    if request.method != "GET":
         return HttpResponse('Invalid request')
     elif request.user == "guest":
         return redirect("/signin")
 
     order = Order.objects.get(id=order_id)
+    if order.owner != request.user:
+        return HttpResponse('You are not the owner of this order')
 
-    template = loader.get_template("order/order.html")
+    vendors = get_vendors(order.products.all().order_by('id'))
+    products_by_vendor = get_products_by_vendor(
+        vendors, order.products.all().order_by('id'))
+    expiration_date = month_map[order.card.expiration_date[:2]
+                                ] + ' 20' + order.card.expiration_date[-2:]
+
     context = {
         "username": request.user.username,
         "cart_quantity": request.user.cart_quantity,
         "type": request.user.account_type,
+        "products_by_vendor": products_by_vendor,
+        "total_price": order.total_price,
+        "address": order.address,
+        "card": {
+            'id': order.card.id,
+            'card_type': order.card.card_type,
+            'card_number': order.card.card_number[-4:],
+            'expiration_date': expiration_date,
+            'is_default': order.card.is_default
+        },
     }
+
+    template = loader.get_template("order/order.html")
     return HttpResponse(template.render(context, request))
 
 
 def view_orders(request):
-    if request.method != "POST":
+    """
+    The `view_orders` function retrieves and organizes order information for a user, including the total
+    price and products grouped by vendor, and renders it in an HTML template.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the request method (GET, POST, etc.), user information, and
+    any data sent with the request. In this code snippet, the `request` object is used to check the
+    request
+    :return: an HttpResponse object.
+    """
+    if request.method != "GET":
         return HttpResponse('Invalid request')
     elif request.user == "guest":
         return redirect("/signin")
 
-    template = loader.get_template("order/orders.html")
+    _orders = Order.objects.filter(owner=request.user).order_by('id')
+    orders = []
+    for order in _orders:
+        vendors = get_vendors(order.products.all().order_by('id'))
+        products_by_vendor = get_products_by_vendor(
+            vendors, order.products.all().order_by('id'))
+
+        orders.append({
+            "id": order.id,
+            "total_price": order.total_price,
+            "products_by_vendor": products_by_vendor,
+        })
+
     context = {
         "username": request.user.username,
         "cart_quantity": request.user.cart_quantity,
-        "type": request.user.account_type
+        "type": request.user.account_type,
+        "orders": orders,
     }
+
+    template = loader.get_template("order/orders.html")
     return HttpResponse(template.render(context, request))

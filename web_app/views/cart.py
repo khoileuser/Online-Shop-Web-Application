@@ -23,7 +23,7 @@ def view_cart(request):
 
     # get user's cart
     cart = Cart.objects.get(owner=request.user)
-    cart_products = cart.products.all()
+    cart_products = cart.products.all().order_by('id')
 
     # append all vendor exist in user's cart
     vendors = []
@@ -31,19 +31,19 @@ def view_cart(request):
      for cart_product in cart_products if cart_product.product.owner not in vendors]
 
     # group vendor
-    products_by_vendor = {}
+    products_by_vendor = []
     for vendor in vendors:
         # group products by vendor
         _cart_products = [
             cart_product for cart_product in cart_products if cart_product.product.owner == vendor]
-        _vendor = {
-            "name": vendor.name,
-            "username": vendor.username
-        }
-        products_by_vendor[vendor.id] = {
-            'vendor': _vendor,
+        products_by_vendor.append({
+            'vendor': {
+                "id": vendor.id,
+                "name": vendor.name,
+                "username": vendor.username
+            },
             'cart_products': _cart_products,
-        }
+        })
 
     # calculate total price of user's cart
     total_price = 0

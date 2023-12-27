@@ -88,6 +88,15 @@
 
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="/me">My Account</a></li>
+                                    {% if type == 'C' %}
+                                    <li>
+                                        <a class="dropdown-item" href="/orders">My Orders</a>
+                                    </li>
+                                    {% else %}
+                                    <li>
+                                        <a class="dropdown-item" href="/products/{{ username }}">My Products</a>
+                                    </li>
+                                    {% endif %}
                                     <li>
                                         <a class="dropdown-item" href="/signout">Sign out</a>
                                     </li>

@@ -34,7 +34,6 @@ def product(request, product_id):
     requested. It is used to retrieve the specific product from the database
     :return: an HttpResponse object.
     """
-    template = loader.get_template("products/product.html")
     if request.user != "guest":
         context = {
             "username": request.user.username,
@@ -54,4 +53,17 @@ def product(request, product_id):
     context["price"] = product.price
     context["description"] = product.description
     context["images"] = product.images
+
+    template = loader.get_template("products/product.html")
+    return HttpResponse(template.render(context, request))
+
+
+def vendor_products(request, vendor):
+    context = {
+        "username": request.user.username,
+        "cart_quantity": request.user.cart_quantity,
+        "type": request.user.account_type
+    }
+
+    template = loader.get_template("products/products.html")
     return HttpResponse(template.render(context, request))

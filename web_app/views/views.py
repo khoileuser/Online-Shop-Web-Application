@@ -32,10 +32,7 @@ def index(request):
 
 def execute(request):
     from web_app.models import Order, Cart, CartProduct
-    cart = Cart.objects.all().values()
-    print(cart)
-    order = Order.objects.all().values()
-    print(order)
-    cart_product = CartProduct.objects.all().values()
-    print(cart_product)
+    orders = Order.objects.all()
+    for order in orders:
+        print(order.products.all())
     return HttpResponse('ok')
