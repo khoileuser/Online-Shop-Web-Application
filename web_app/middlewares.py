@@ -3,17 +3,25 @@ from secrets import compare_digest
 from django.http import HttpResponse
 
 
+# The `Authentication` class is a middleware that handles user authentication by checking session
+# credentials and comparing them with stored tokens.
 class Authentication:
 
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
+        """
+        The above function is a middleware in Python that handles user authentication by checking if the
+        user's token matches any of the tokens stored in the user's tokens list.
 
-        if request.method == "POST":
-            response = self.get_response(request)
-            return response
-
+        :param request: The `request` parameter is an object that represents an HTTP request made by a
+        client to a server. It contains information such as the request method, headers, body, and session
+        data
+        :return: The code is returning an HttpResponse with the message "Invalid credentials" if the user's
+        credentials are not valid. If an exception occurs during the authentication process, it returns an
+        HttpResponse with the message "Authentication failed, cleaned stored credentials".
+        """
         try:
             user_id = request.session.get("user_id")
             if user_id:
