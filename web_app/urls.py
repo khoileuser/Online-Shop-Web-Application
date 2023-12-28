@@ -53,8 +53,8 @@ urlpatterns = [
     path('product/<int:product_id>', products.product),
 
     # product management
-    path('addproduct/', product_management.add_product),
-    path('updateproduct/', product_management.add_product),
+    path('addproduct/', products.add_product),
+    path('updateproduct/', products.add_product),
 
     # testing
     path('execute/', views.execute),
