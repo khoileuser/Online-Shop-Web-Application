@@ -51,10 +51,10 @@ urlpatterns = [
     path('products/vendor/<str:vendor>', products.vendor_products),
     path('products/<int:product_id>', products.product),
     path('product/<int:product_id>', products.product),
-    
+
     # product management
     path('addproduct/', product_management.add_product),
-    path('updateproduct/', product_management.add_product)
+    path('updateproduct/', product_management.add_product),
 
     # testing
     path('execute/', views.execute),
