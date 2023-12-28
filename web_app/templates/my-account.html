@@ -1,0 +1,242 @@
+{% load js %}
+
+{% load static %}
+
+{% include "partials/header.html" %}
+
+<div class="dummy"></div>
+
+{% include "partials/add-modal.html" %}
+
+<div class="container me-container d-flex flex-wrap align-items-center justify-content-center gap-3">
+    <!-- Profile -->
+    <input type="radio" class="tab-radio" id="tab1" name="me-tabs" checked>
+    <label for="tab1" class="tab-label btn rounded">Profile</label>
+    <div class="container rounded shadow-sm p-5 tab-content info-tab">
+        <div class="row">
+            <div class="col-1 d-none d-lg-block"></div>
+
+            <div class="user-info col-8 col-lg-6 mt-5">
+                <div class="private-info">
+                    <div class="row p-2">
+                        <div class="col-4 text-end pt-1">Name</div>
+                        <div class="col-7">
+                            <form method="POST" action="/me/update/name">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="{{ name }}" name="name">
+                                    <button class="btn btn-outline-secondary" type="submit" disabled>Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-4 text-end pt-1">Username</div>
+                        <div class="col-7">
+                            <input type="text" class="form-control" value="{{ username }}" readonly>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-4 text-end pt-1">Account type</div>
+                        <div class="col-7">
+                            {% if type == 'C' %}
+                            <input class="form-control" type="text" value="Customer" readonly>
+                            {% elif type == 'V' %}
+                            <input class="form-control" type="text" value="Vendor" readonly>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row p-2">
+                        <div class="col-4 text-end p-1 mt-4"><b>Change password</b></div>
+                        <div class="col-7"></div>
+
+                        <div class="col-4 text-end p-1 mt-3">Old password</div>
+                        <div class="col-7 mt-3">
+                            <input class="form-control old-password" type="password">
+                        </div>
+
+                        <div class="col-4 text-end pt-1 mt-3">New password</div>
+                        <div class="col-7 mt-3">
+                            <input class="form-control password" type="password" oninput="profileEditPassword()">
+                            <i class="password-danger caution text-danger">*Passwords must contain at least one
+                                uppercase, one lowercase, one digit, one special character and at least 8 characters
+                                long.</i>
+                        </div>
+
+                        <div class="col-4 text-end pt-1 mt-3">Confirm new password</div>
+                        <div class="col-7 mt-3">
+                            <div class="input-group">
+                                <input type="password" class="form-control confirm-password new-password"
+                                    oninput="profileConfirmPassword()">
+                                <button class="btn btn-outline-secondary password-save-btn" type="button"
+                                    onclick="profileSavePassword()" disabled>Save</button>
+                            </div>
+                            <i class="confirm-password-danger caution text-danger">*Password confirmation doesn't
+                                match the password</i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-1 d-none d-lg-block"></div>
+
+            <div class="avatar col-4 col-lg-3 d-flex flex-column justify-content-center align-items-center">
+                <div class="image">
+                    {% if avatar %}
+                    <img src="{% static 'images/avatar/' %}{{ avatar }}" alt="user-image">
+                    {% else %}
+                    <img src="{% static 'images/avatar/default.jpg' %}" alt="user-image">
+                    {% endif %}
+                </div>
+                <div class="mt-4">
+                    <button class="btn btn-primary">Upload avatar</button>
+                </div>
+            </div>
+
+            <div class="col-1 d-none d-lg-block"></div>
+
+        </div>
+    </div>
+
+    <!-- Addresses -->
+    <input type="radio" class="tab-radio" id="tab2" name="me-tabs">
+    <label for="tab2" class="tab-label btn rounded">Addresses</label>
+    <div class="container rounded shadow-sm tab-content address-tab">
+        {% if addresses %}
+        {% for address in addresses %}
+        <div class="row p-4 m-2 border-bottom">
+            <div class="col-10">
+                <div class="row p-2">
+                    <div class="col-2 text-end pt-1">Phone number</div>
+                    <div class="col-4">
+                        {% if '+' not in address.phone_number_code %}
+                        <input class="form-control" type="text"
+                            value="(+{{ address.phone_number_code }}) {{ address.phone_number }}" readonly>
+                        {% else %}
+                        <input class="form-control" type="text"
+                            value="({{ address.phone_number_code }}) {{ address.phone_number }}" readonly>
+                        {% endif %}
+                    </div>
+                    <div class="col-2 text-end pt-1">Country</div>
+                    <div class="col-4">
+                        <input class="form-control" type="text" value="{{ address.country }}" readonly>
+                    </div>
+                </div>
+
+                <div class="row p-2">
+                    <div class="col-2 text-end pt-1">Address</div>
+                    <div class="col-4">
+                        <input class="form-control" type="text" value="{{ address.address }}" readonly>
+                    </div>
+                    <div class="col-2 text-end pt-1">City</div>
+                    <div class="col-4">
+                        <input class="form-control" type="text" value="{{ address.city }}" readonly>
+                    </div>
+                </div>
+
+                <div class="row p-2">
+                    <div class="col-2 text-end pt-1">State</div>
+                    <div class="col-4">
+                        <input class="form-control" type="text" value="{{ address.state }}" readonly>
+                    </div>
+                    <div class="col-2 text-end pt-1">Postal code</div>
+                    <div class="col-4">
+                        <input class="form-control" type="text" value="{{ address.postal_code }}" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-2 text-center d-flex flex-column justify-content-center align-items-center gap-2">
+                {% if address.is_default %}
+                <button class="btn btn-danger w-75" type="submit" disabled>Default</button>
+                {% else %}
+                <form class="w-100" method="POST" action="/me/address/set/default/{{ address.id }}">
+                    <button class="btn btn-primary w-75" type="submit">Set default</button>
+                </form>
+                {% endif %}
+                <form class="w-100" method="POST" action="/me/address/remove/{{ address.id }}">
+                    <button class="btn btn-secondary w-75" type="submit">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="text-center d-flex justify-content-center align-items-center p-5 m-5">
+            <h2>You haven't added any addresses yet.</h2>
+        </div>
+        {% endif %}
+        <div class="text-center">
+            <button type="button" class="btn btn-primary m-3 mb-4" data-bs-toggle="modal" data-bs-target="#addAddress">
+                Add new address
+            </button>
+        </div>
+    </div>
+
+    <!-- Billing -->
+    <input type="radio" class="tab-radio" id="tab3" name="me-tabs">
+    <label for="tab3" class="tab-label btn rounded">Billing</label>
+    <div class="container rounded shadow-sm tab-content billing-tab">
+        {% if cards %}
+        {% for card in cards %}
+        <div class="row p-4 m-2 border-bottom">
+            <div class="col-10">
+                <div class="row p-2">
+                    {% if card.card_type == "VISA" %}
+                    <div class="col-2 visa-logo rounded d-flex align-items-center justify-content-center">
+                        <img src="{% static 'images/Visa_Brandmark_Blue_RGB_2021.png' %}" class="img-fluid p-1"
+                            alt="visa-logo">
+                    </div>
+                    <div class="col-10 d-flex align-items-center">
+                        <div class="row">
+                            <div class="col-12">Visa ending in {{ card.card_number }}</div>
+                            <div class="col-12">Expires {{ card.expiration_date }}</div>
+                        </div>
+                    </div>
+
+                    {% elif card.card_type == "MC" %}
+                    <div class="col-2 mastercard-logo rounded d-flex align-items-center justify-content-center">
+                        <img src="{% static 'images/mc_symbol_opt_73_3x.png' %}" class="img-fluid"
+                            alt="mastercard-logo">
+                    </div>
+                    <div class="col-10 d-flex align-items-center">
+                        <div class="row">
+                            <div class="col-12">Mastercard ending in {{ card.card_number }}</div>
+                            <div class="col-12">Expires {{ card.expiration_date }}</div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <div class="col-2 text-center d-flex flex-column justify-content-center align-items-center gap-2">
+                {% if card.is_default %}
+                <button class="btn btn-danger w-75" disabled>Default</button>
+                {% else %}
+                <form class="w-100" method="POST" action="/me/card/set/default/{{ card.id }}">
+                    <button class="btn btn-primary w-75" type="submit">Set default</button>
+                </form>
+                {% endif %}
+                <form class="w-100" method="POST" action="/me/card/remove/{{ card.id }}">
+                    <button class="btn btn-secondary w-75" type="submit">Delete</button>
+                </form>
+            </div>
+
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="text-center d-flex justify-content-center align-items-center p-5 m-5">
+            <h2>You haven't added any card yet.</h2>
+        </div>
+        {% endif %}
+        <div class="text-center">
+            <button type="button" class="btn btn-primary m-3 mb-4" data-bs-toggle="modal" data-bs-target="#addCard">
+                Add new card
+            </button>
+        </div>
+    </div>
+
+</div>
+
+{% include "partials/footer.html" %}

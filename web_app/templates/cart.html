@@ -1,0 +1,132 @@
+{% load static %}
+
+{% load math %}
+
+{% include "partials/header.html" %}
+
+<div class="dummy"></div>
+
+<div class="container cart-page mb-5">
+    {% if products_by_vendor %}
+    {% for vendor in products_by_vendor %}
+    <div class="row rounded cart-container mb-4 shadow-sm">
+        <div class="vendorname border-bottom p-3">
+            <a href="/products/vendor/{{ vendor.vendor.username }}" class="text-decoration-none text-reset">
+                <span class="text">
+                    <i class="bi bi-shop-window"></i>
+                    {{ vendor.vendor.name }}
+                    <i class="bi bi-chevron-right"></i>
+                </span>
+            </a>
+        </div>
+
+        {% for cart_product in vendor.cart_products %}
+        <div class="row vendor-products p-3">
+            <div class="col-1 d-flex justify-content-center align-items-center select-col">
+                <input type="checkbox"
+                    class="form-check-input product-checkbox pd-checkbox-{{ cart_product.product.id }}"
+                    onchange="selectOne('{{ cart_product.product.id }}')">
+            </div>
+
+            <div class="col pd-img d-flex justify-content-center align-items-center mb-3">
+                <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
+                    <div class="image">
+                        <img class="img-fluid" src="{% static 'images/products/' %}{{ cart_product.product.images.0 }}"
+                            alt="product-img">
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-7 col-md-8 pd-info d-flex align-items-center mb-3">
+                <div class="col pd-name text-start">
+                    <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
+                        {{ cart_product.product.name }}
+                    </a>
+                </div>
+
+                <div class="col pd-price text-center">
+                    $
+                    <span class="pd-price-{{ cart_product.product.id }}">
+                        {{ cart_product.product.price }}
+                    </span>
+                </div>
+
+                <div class="col-8 col-md-4 col-lg-3 pd-quantity">
+                    <div class="pd-quantity-input">
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-number"
+                                    onclick="editQuantity('{{ cart_product.product.id }}', 'remove', 1)">
+                                    <i class="bi bi-dash"></i>
+                                </button>
+                            </div>
+
+                            <input type="number" step="any" name="quant[1]"
+                                class="text-center form-control input-number pd-quantity-input-box-{{ cart_product.product.id }}"
+                                value="{{ cart_product.quantity }}" min="1" onfocus="this.oldvalue = this.value;"
+                                onchange="editQuantity('{{ cart_product.product.id }}', 'edit');this.oldvalue = this.value;">
+
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-number"
+                                    onclick="editQuantity('{{ cart_product.product.id }}', 'add', 1)">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col pd-total-price d-none d-lg-block text-center">
+                    $
+                    <span class="pd-total-price-{{ cart_product.product.id }}">
+                        {{ cart_product.product.price|products_price:cart_product.quantity }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-1 pd-remove d-none d-lg-flex justify-content-center align-items-center mb-3">
+                <button class="btn anm-btn pd-remove-btn"
+                    onclick="editQuantity('{{ cart_product.product.id }}', 'remove', 'all')">Remove</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endfor %}
+
+    {% else %}
+    <div class="row rounded cart-container empty-cart text-center shadow-sm">
+        <h2>You haven't add any products to your cart yet.</h2>
+    </div>
+    {% endif %}
+
+    <div class="row checkout-container rounded shadow-sm p-3">
+        <div class="col d-flex align-items-center select-all-wrapper">
+            <div calss="form-check">
+                <input type="checkbox" class="form-check-input select-all" id="select-all" onchange="selectAll()">
+                <label class="form-check-label" for="select-all">Select All</label>
+            </div>
+        </div>
+
+        <div class="col d-flex justify-content-center align-items-center gap-4">
+            <div class="cart-total-price">
+                Total: <span class="dolar">$</span>
+                <span class="total-price">
+                    {{ total_price }}
+                </span>
+            </div>
+
+            <div class="checkout">
+                <form class="checkout-form" method="POST" action="/checkout/">
+                    <input type="hidden" class="checkout-mode" id="mode" name="mode">
+                    <input type="hidden" class="checkout-pd-ids" id="product_ids" name="product_ids">
+                    <button type="button" onclick="checkOutCart()" disabled
+                        class="btn btn-primary checkout-btn anm-btn">
+                        <span>Checkout</span></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% include "partials/footer.html" %}
