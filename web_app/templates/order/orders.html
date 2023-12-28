@@ -7,38 +7,41 @@
 <div class="dummy"></div>
 
 <div class="container orders-page mt-4 mb-4">
-    <div class="row rounded d-flex justify-content-between heading shadow-sm mb-4">
+    <div class="row rounded heading shadow-sm mb-4 p-3">
         <div class="col">
             <span>My orders</span>
         </div>
-        <div class="col order-total d-flex justify-content-end">
+        <div class="col order-total text-end">
             <span>
                 Total:
                 <span class="order-count">
                     {{ orders|length }}
                 </span>
+                <i class="bi bi-receipt"></i>
             </span>
         </div>
     </div>
+
     {% if orders|length == 0 %}
     <div class="row no-order text-center shadow-sm rounded">
         <span>There is no order to display.</span>
     </div>
+
     {% else %}
     <div class="row display-orders">
         {% for order in orders %}
-        <div class="order-container mb-4 rounded shadow-sm p-3">
-            <div class="row order-id">
+        <div class="order-container mb-4 rounded shadow-sm">
+            <div class="order-id border-bottom p-3">
                 <a href="/order/{{ order.id }}" class="text-decoration-none text-reset">
                     <span>
+                        <i class="bi bi-receipt"></i>
                         Order ID: {{ order.id }}
                         <i class="bi bi-chevron-right"></i>
                     </span>
                 </a>
             </div>
-            <hr>
 
-            <div class="vendorname mb-3 border-bottom">
+            <div class="vendorname border-bottom p-3">
                 <a href="/products/vendor/{{ order.products_by_vendor.0.vendor.username }}"
                     class="text-decoration-none text-reset">
                     <span class="text">
@@ -49,38 +52,38 @@
                 </a>
             </div>
 
-            <div class="row pd-info">
-                <div class="col-2 pd-img d-flex justify-content-center align-items-center mb-3">
-                    <a href="/product/{{ order.products_by_vendor.0.cart_products.0.product.id }}"
-                        class="text-decoration-none text-reset">
-                        <img class="img-fluid"
-                            src="{% static 'images/products/' %}{{ order.products_by_vendor.0.cart_products.0.product.images.0 }}"
-                            alt="pd-img">
-                    </a>
-                </div>
-                <div class="col-8 col-md-6 pd-info d-flex flex-column justify-content-center">
-                    <a href="/product/{{ order.products_by_vendor.0.cart_products.0.product.id }}"
-                        class="text-decoration-none text-reset">
-                        <span class="pd-name">
-                            {{ order.products_by_vendor.0.cart_products.0.product.name }}
+            <div class="p-3 border-bottom">
+                <div class="row pd-info">
+                    <div class="col-2 pd-img d-flex justify-content-center align-items-center mb-3">
+                        <a href="/product/{{ order.products_by_vendor.0.cart_products.0.product.id }}"
+                            class="text-decoration-none text-reset">
+                            <img class="img-fluid"
+                                src="{% static 'images/products/' %}{{ order.products_by_vendor.0.cart_products.0.product.images.0 }}"
+                                alt="pd-img">
+                        </a>
+                    </div>
+                    <div class="col-8 col-md-6 pd-info d-flex flex-column justify-content-center">
+                        <a href="/product/{{ order.products_by_vendor.0.cart_products.0.product.id }}"
+                            class="text-decoration-none text-reset">
+                            <span class="pd-name">
+                                {{ order.products_by_vendor.0.cart_products.0.product.name }}
+                            </span>
+                        </a>
+                        <span>
+                            x{{ order.products_by_vendor.0.cart_products.0.quantity }}
                         </span>
-                    </a>
-                    <span>
-                        x{{ order.products_by_vendor.0.cart_products.0.quantity }}
-                    </span>
-                </div>
-                <div class="col-2 col-md-4 order-price d-flex justify-content-end align-items-center">
-                    $
-                    <span class="pd-total-price-{{ cart_product.product.id }}">
-                        {{order.products_by_vendor.0.cart_products.0.product.price|products_price:order.products_by_vendor.0.cart_products.0.quantity}}
-                    </span>
+                    </div>
+                    <div class="col-2 col-md-4 order-price d-flex justify-content-end align-items-center">
+                        $
+                        <span class="pd-total-price-{{ cart_product.product.id }}">
+                            {{order.products_by_vendor.0.cart_products.0.product.price|products_price:order.products_by_vendor.0.cart_products.0.quantity}}
+                        </span>
+                    </div>
                 </div>
             </div>
 
-            <hr>
-
             {% if order.products_by_vendor|calc_remain > 0 %}
-            <div class="row">
+            <div class="border-bottom p-3">
                 <a href="/order/{{ order.id }}" class="text-decoration-none text-reset">
                     <div class="col d-flex justify-content-center">
                         <i>and {{ order.products_by_vendor|calc_remain }} more</i>
@@ -89,56 +92,79 @@
                     </div>
                 </a>
             </div>
-            <hr>
             {% endif %}
 
-            <div class="row order-status">
-                <div class="col d-flex align-items-center gap-3">
-                    <div class="order-status">
-                        Status:
-                        {% if order.status == "A" %}
-                        <span class="status-active">
-                            Active
-                        </span>
-                        {% elif order.status == "D" %}
-                        <span class="status-delivered">
-                            Delivered
-                        </span>
-                        {% elif order.status == "C" %}
-                        <span class="status-canceled">
-                            Canceled
-                        </span>
+            <div class="p-3">
+                <div class="row order-status">
+                    <div class="col d-flex align-items-center gap-3">
+                        <div class="order-status">
+                            Status:
+                            {% if order.status == "A" %}
+                            <span class="status-active">
+                                <i class="bi bi-check"></i>
+                                Active
+                            </span>
+                            {% elif order.status == "G" %}
+                            <span class="status-delivered">
+                                <i class="bi bi-truck"></i>
+                                Delivering
+                            </span>
+                            {% elif order.status == "D" %}
+                            <span class="status-delivered">
+                                <i class="bi bi-check2-square"></i>
+                                Delivered
+                            </span>
+                            {% elif order.status == "C" %}
+                            <span class="status-canceled">
+                                <i class="bi bi-x"></i>
+                                Canceled
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        {% if type == 'S' %}
+                        <div class="set-order-status display-shipper">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Set status
+                                </button>
+                                <ul class="dropdown-menu">
+                                    {% if order.status == "A" %}
+                                    <li>
+                                        <form action="/order/{{ order.id }}/status/Delivered" method="POST">
+                                            <i class="bi bi-truck"></i><button type="submit"
+                                                class="dropdown-item">Delivering</button>
+                                        </form>
+                                    </li>
+                                    {% elif order.status == "G" %}
+                                    <li>
+                                        <form action="/order/{{ order.id }}/status/Delivered" method="POST">
+                                            <i class="bi bi-check2-square"></i><button type="submit"
+                                                class="dropdown-item">Delivered</button>
+                                        </form>
+                                    </li>
+                                    {% endif %}
+                                    <li>
+                                        <form action="/order/{{ order.id }}/status/Canceled" method="POST">
+                                            <i class="bi bi-x"></i><button type="submit"
+                                                class="dropdown-item">Canceled</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                         {% endif %}
                     </div>
 
-                    <div class="set-order-status display-shipper">
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Set status
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <form action="/order/{{ order.id }}/status/Delivered" method="POST">
-                                        <button type="submit" class="dropdown-item">Delivered</button>
-                                    </form>
-                                </li>
-                                <li>
-                                    <form action="/order/{{ order.id }}/status/Canceled" method="POST">
-                                        <button type="submit" class="dropdown-item">Canceled</button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="col order-total-price d-flex justify-content-end">
+                        Total: $ <span class="total-price">
+                            {{ order.total_price }}
+                        </span>
                     </div>
                 </div>
-
-                <div class="col order-total-price d-flex justify-content-end">
-                    Total: $ <span class="total-price">
-                        {{ order.total_price }}
-                    </span>
-                </div>
             </div>
+
         </div>
         {% endfor %}
     </div>

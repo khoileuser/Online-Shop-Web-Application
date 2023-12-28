@@ -630,4 +630,11 @@ body {
             width: 20vw;
         }
     }
+
+    .no-order {
+        margin-top: 25px;
+        margin-bottom: 25px;
+        padding-top: 200px;
+        padding-bottom: 200px;
+    }
 }

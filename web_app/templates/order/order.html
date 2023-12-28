@@ -7,13 +7,55 @@
 <div class="dummy"></div>
 
 <div class="container order-page">
+    <!-- Status -->
+    {% if status == "A" %}
+    <div class="row child-container rounded shadow-sm p-3 bg-success text-light">
+        <div class="col d-flex align-items-center">
+            <span>Your oder has been confirmed</span>
+        </div>
+        <div class="col d-flex align-items-center justify-content-end">
+            <i class="bi bi-check h4"></i>
+            <h5 class="d-inline-block">Active</h5>
+        </div>
+    </div>
+    {% elif order.status == "G" %}
+    <div class="row child-container rounded shadow-sm p-3 bg-success text-light">
+        <div class="col d-flex align-items-center">
+            <span>Your oder is being delivered</span>
+        </div>
+        <div class="col d-flex align-items-center justify-content-end">
+            <i class="bi bi-truck h4"></i>
+            <h5 class="d-inline-block">Delivering</h5>
+        </div>
+    </div>
+    {% elif order.status == "D" %}
+    <div class="row child-container rounded shadow-sm p-3 bg-info text-black">
+        <div class="col d-flex align-items-center">
+            <span>Your oder has been delivered</span>
+        </div>
+        <div class="col d-flex align-items-center justify-content-end">
+            <i class="bi bi-check2-square h4"></i>
+            <h5 class="d-inline-block">Delivered</h5>
+        </div>
+    </div>
+    {% elif order.status == "C" %}
+    <div class="row child-container rounded shadow-sm p-3 bg-danger text-light">
+        <div class="col d-flex align-items-center">
+            <span>Your oder has been cancaled</span>
+        </div>
+        <div class="col d-flex align-items-center justify-content-end">
+            <i class="bi bi-x h4"></i>
+            <h5 class="d-inline-block">Canceled</h5>
+        </div>
+    </div>
+    {% endif %}
 
-    <div class="row child-container rounded shadow-sm p-4">
-        <!-- Address -->
+    <!-- Address -->
+    <div class="row child-container rounded shadow-sm p-4 mt-4">
         <div class="text-center mt-2">
             <h4>Address</h4>
         </div>
-        <div class="col-12">
+        <div class="col-12 mt-2">
             <div class="row p-2">
                 <div class="col-2 text-end pt-1">Phone number</div>
                 <div class="col-4">
@@ -55,7 +97,7 @@
         </div>
     </div>
 
-    <!-- Product -->
+    <!-- Products -->
     {% for vendor in products_by_vendor %}
     <div class="row rounded cart-container mt-4 shadow-sm">
         <div class="vendorname border-bottom p-3">
@@ -117,10 +159,10 @@
 
     <div class="row child-container rounded shadow-sm mt-4 p-4">
         <!-- Payment Methods -->
-        <div class="methods">
-            <h4>Payment method</h4>
-        </div>
         <div class="col-8">
+            <div class="methods">
+                <h4>Payment method</h4>
+            </div>
             <div class="row p-2">
                 {% if card.card_type == "VISA" %}
                 <div class="col-2 visa-logo rounded d-flex align-items-center justify-content-center">

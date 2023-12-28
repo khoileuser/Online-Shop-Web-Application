@@ -19,7 +19,7 @@
             <h4>Address</h4>
         </div>
         {% if address %}
-        <div class="col-12">
+        <div class="col-12 mt-2">
             <div class="row p-2">
                 <div class="col-2 text-end pt-1">Phone number</div>
                 <div class="col-4">
@@ -130,11 +130,11 @@
 
     <div class="row child-container rounded shadow-sm mt-4 p-4">
         <!-- Payment Methods -->
-        <div class="methods">
-            <h4>Payment method</h4>
-        </div>
         {% if card %}
         <div class="col-8">
+            <div class="methods">
+                <h4>Payment method</h4>
+            </div>
             <div class="row p-2">
                 {% if card.card_type == "VISA" %}
                 <div class="col-2 visa-logo rounded d-flex align-items-center justify-content-center">

@@ -39,7 +39,8 @@ class Card(models.Model):
 class User(models.Model):
     ACCOUNT_TYPES = [
         ("V", "Vendor"),
-        ("C", "Customer")
+        ("C", "Customer"),
+        ("S", "Shipper")
     ]
     tokens = models.JSONField(default=list, null=True)
     username = models.CharField(max_length=25, unique=True, validators=[
@@ -84,6 +85,7 @@ class Cart(models.Model):
 class Order(models.Model):
     ORDER_STATUSES = [
         ("A", "Active"),
+        ("G", "Delivering"),
         ("D", "Delivered"),
         ("C", "Canceled")
     ]

@@ -347,6 +347,7 @@ def view_order(request, order_id):
         "type": request.user.account_type,
         "products_by_vendor": products_by_vendor,
         "total_price": order.total_price,
+        "status": order.status,
         "address": order.address,
         "card": {
             'id': order.card.id,
@@ -387,6 +388,7 @@ def view_orders(request):
         orders.append({
             "id": order.id,
             "total_price": order.total_price,
+            "status": order.status,
             "products_by_vendor": products_by_vendor,
         })
 
