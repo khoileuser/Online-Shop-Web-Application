@@ -5,11 +5,6 @@ from django.shortcuts import redirect
 from web_app.models import Product
 
 
-def listing_2(request):
-    template = loader.get_template("listing_2.html")
-    return HttpResponse(template.render())
-
-
 def listing(request):
     template = loader.get_template("products/listing.html")
     if request.user != "guest":
