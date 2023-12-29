@@ -227,6 +227,47 @@ body {
     }
 }
 
+.home-products {
+    .pd-card {
+        height: 35vh;
+    }
+
+    .pd-img {
+        height: 22.5vh;
+
+        a {
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+    }
+
+    .pd-name {
+        /* height: 12.5vh; */
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        /* number of lines to show */
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .pd-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
+
 .auth-page {
     ::-webkit-scrollbar {
         width: 0px;
@@ -640,24 +681,11 @@ body {
 }
 
 .listing-page {
-    width: 90%;
-    max-width: 1280px;
-    margin: 0 auto;
-
-    .columns {
-        display: flex;
-        margin: 0;
-    }
-
     .col-1 {
         width: 22%;
         margin-left: 20px;
         margin-right: 40px;
         margin-top: 10px;
-    }
-
-    .col-2 {
-        width: 72%;
     }
 
     .col-centered {

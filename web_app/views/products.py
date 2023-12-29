@@ -6,7 +6,11 @@ from web_app.models import Product
 
 
 def listing(request):
-    template = loader.get_template("products/listing.html")
+    _products = Product.objects
+    categories = _products.values_list('category', flat=True).distinct()
+    products = _products.all().order_by('?')
+    print(categories)
+
     if request.user != "guest":
         context = {
             "username": request.user.username,
@@ -19,6 +23,11 @@ def listing(request):
             "cart_quantity": None,
             "type": None
         }
+
+    context['categories'] = categories
+    context['products'] = products
+
+    template = loader.get_template("products/listing.html")
     return HttpResponse(template.render(context, request))
 
 

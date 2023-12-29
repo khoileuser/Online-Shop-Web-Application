@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="col-lg-6 hero-img" data-aos="zoom-out" data-aos-delay="200">
-                <img src="{% static 'images/hero-img.png' %}" class="img-fluid" alt="">
+                <img src="{% static 'images/hero-img.png' %}" alt="hero-img">
             </div>
         </div>
     </div>
@@ -53,19 +53,21 @@
                             {% for product in trending1 %}
                             <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
                                 <div class="card pd-card">
-                                    <a href="/product/{{ product.id }}" class="pd-img">
-                                        <img class="img-fluid" alt="pd-img"
-                                            src="{% static 'images/products/' %}{{ product.images.0 }}">
-                                    </a>
-                                    <div class="card-body pd-info d-flex flex-column justify-content-end">
-                                        <h4 class="card-title pd-name">
+                                    <div class="pd-img">
+                                        <a href="/product/{{ product.id }}">
+                                            <img alt="pd-img"
+                                                src="{% static 'images/products/' %}{{ product.images.0 }}">
+                                        </a>
+                                    </div>
+                                    <div class="card-body pd-info">
+                                        <div class="card-title pd-name">
                                             <a href="/product/{{ product.id }}" class="text-decoration-none text-reset">
                                                 {{ product.name }}
                                             </a>
-                                        </h4>
-                                        <p class="card-text pd-price">
+                                        </div>
+                                        <div class="card-text pd-price">
                                             {{ product.price }}
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -78,19 +80,21 @@
                             {% for product in trending2 %}
                             <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
                                 <div class="card pd-card">
-                                    <a href="/product/{{ product.id }}" class="pd-img">
-                                        <img class="img-fluid" alt="pd-img"
-                                            src="{% static 'images/products/' %}{{ product.images.0 }}">
-                                    </a>
-                                    <div class="card-body pd-info d-flex flex-column justify-content-end">
-                                        <h4 class="card-title pd-name">
+                                    <div class="pd-img">
+                                        <a href="/product/{{ product.id }}">
+                                            <img alt="pd-img"
+                                                src="{% static 'images/products/' %}{{ product.images.0 }}">
+                                        </a>
+                                    </div>
+                                    <div class="card-body pd-info">
+                                        <div class="card-title pd-name">
                                             <a href="/product/{{ product.id }}" class="text-decoration-none text-reset">
                                                 {{ product.name }}
                                             </a>
-                                        </h4>
-                                        <p class="card-text pd-price">
+                                        </div>
+                                        <div class="card-text pd-price">
                                             {{ product.price }}
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -103,19 +107,21 @@
                             {% for product in trending3 %}
                             <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
                                 <div class="card pd-card">
-                                    <a href="/product/{{ product.id }}" class="pd-img">
-                                        <img class="img-fluid" alt="pd-img"
-                                            src="{% static 'images/products/' %}{{ product.images.0 }}">
-                                    </a>
-                                    <div class="card-body pd-info d-flex flex-column justify-content-end">
-                                        <h4 class="card-title pd-name">
+                                    <div class="pd-img">
+                                        <a href="/product/{{ product.id }}">
+                                            <img alt="pd-img"
+                                                src="{% static 'images/products/' %}{{ product.images.0 }}">
+                                        </a>
+                                    </div>
+                                    <div class="card-body pd-info">
+                                        <div class="card-title pd-name">
                                             <a href="/product/{{ product.id }}" class="text-decoration-none text-reset">
                                                 {{ product.name }}
                                             </a>
-                                        </h4>
-                                        <p class="card-text pd-price">
+                                        </div>
+                                        <div class="card-text pd-price">
                                             {{ product.price }}
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -149,19 +155,21 @@
                             {% for product in new_arrival1 %}
                             <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
                                 <div class="card pd-card">
-                                    <a href="/product/{{ product.id }}" class="pd-img">
-                                        <img class="img-fluid" alt="pd-img"
-                                            src="{% static 'images/products/' %}{{ product.images.0 }}">
-                                    </a>
-                                    <div class="card-body pd-info d-flex flex-column justify-content-end">
-                                        <h4 class="card-title pd-name">
+                                    <div class="pd-img p-0">
+                                        <a href="/product/{{ product.id }}">
+                                            <img alt="pd-img"
+                                                src="{% static 'images/products/' %}{{ product.images.0 }}">
+                                        </a>
+                                    </div>
+                                    <div class="card-body pd-info">
+                                        <div class="card-title pd-name">
                                             <a href="/product/{{ product.id }}" class="text-decoration-none text-reset">
                                                 {{ product.name }}
                                             </a>
-                                        </h4>
-                                        <p class="card-text pd-price">
+                                        </div>
+                                        <div class="card-text pd-price">
                                             {{ product.price }}
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -174,19 +182,21 @@
                             {% for product in new_arrival2 %}
                             <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
                                 <div class="card pd-card">
-                                    <a href="/product/{{ product.id }}" class="pd-img">
-                                        <img class="img-fluid" alt="pd-img"
-                                            src="{% static 'images/products/' %}{{ product.images.0 }}">
-                                    </a>
-                                    <div class="card-body pd-info d-flex flex-column justify-content-end">
-                                        <h4 class="card-title pd-name">
+                                    <div class="pd-img">
+                                        <a href="/product/{{ product.id }}">
+                                            <img alt="pd-img"
+                                                src="{% static 'images/products/' %}{{ product.images.0 }}">
+                                        </a>
+                                    </div>
+                                    <div class="card-body pd-info">
+                                        <div class="card-title pd-name">
                                             <a href="/product/{{ product.id }}" class="text-decoration-none text-reset">
                                                 {{ product.name }}
                                             </a>
-                                        </h4>
-                                        <p class="card-text pd-price">
+                                        </div>
+                                        <div class="card-text pd-price">
                                             {{ product.price }}
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -199,19 +209,21 @@
                             {% for product in new_arrival3 %}
                             <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
                                 <div class="card pd-card">
-                                    <a href="/product/{{ product.id }}" class="pd-img">
-                                        <img class="img-fluid" alt="pd-img"
-                                            src="{% static 'images/products/' %}{{ product.images.0 }}">
-                                    </a>
-                                    <div class="card-body pd-info d-flex flex-column justify-content-end">
-                                        <h4 class="card-title pd-name">
+                                    <div class="pd-img">
+                                        <a href="/product/{{ product.id }}">
+                                            <img alt="pd-img"
+                                                src="{% static 'images/products/' %}{{ product.images.0 }}">
+                                        </a>
+                                    </div>
+                                    <div class="card-body pd-info">
+                                        <div class="card-title pd-name">
                                             <a href="/product/{{ product.id }}" class="text-decoration-none text-reset">
                                                 {{ product.name }}
                                             </a>
-                                        </h4>
-                                        <p class="card-text pd-price">
+                                        </div>
+                                        <div class="card-text pd-price">
                                             {{ product.price }}
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
