@@ -24,12 +24,16 @@
                 </div>
             </div>
             <div class="col-6">
-                <p class="breadcrumb">Products / {{ category }}</p>
-                <h1 class="name mt-4">{{ name }}</h1>
-                <h4 class="price mt-5">$ {{ price }}</h4>
+                <nav class="breadcrumb">
+                    <a href="/products" class="breadcrumbs__item">Products</a>
+                    <a class="breadcrumbs__item is-active">{{ category }}</a>
+                </nav>
+
+                <h3 class="name mt-2">{{ name }}</h3>
+                <h4 class="price mt-4">${{ price }}</h4>
 
                 {% if type != "V" %}
-                <div class="row mt-5 pd-action">
+                <div class="row mt-4 pd-action">
                     <div class="col-3 pt-1 text-end">
                         <span class="quantity-text">Quantity: </span>
                     </div>
@@ -58,7 +62,7 @@
                     </div>
 
                     <div class="col-12">
-                        <div class="row buttons mt-5">
+                        <div class="row buttons mt-4">
                             <div class="col-6 col-md-5">
                                 <button type="button" onclick="addToCart('{{ product_id }}', true)"
                                     class="btn btn-primary add-cart-btn anm-btn w-100">

@@ -51,24 +51,22 @@
                     <div class="carousel-item active">
                         <div class="row d-flex justify-content-center pd-row">
                             {% for product in trending1 %}
-                            <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
+                            <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3 d-flex justify-content-center">
                                 <div class="card pd-card">
-                                    <div class="pd-img">
-                                        <a href="/product/{{ product.id }}">
+                                    <a href="/product/{{ product.id }}">
+                                        <div class="pd-img">
                                             <img alt="pd-img"
                                                 src="{% static 'images/products/' %}{{ product.images.0 }}">
-                                        </a>
-                                    </div>
-                                    <div class="card-body pd-info">
-                                        <div class="card-title pd-name">
-                                            <a href="/product/{{ product.id }}" class="text-decoration-none text-reset">
+                                        </div>
+                                        <div class="card-body pd-info">
+                                            <div class="card-title pd-name">
                                                 {{ product.name }}
-                                            </a>
+                                            </div>
+                                            <div class="card-text pd-price">
+                                                ${{ product.price }}
+                                            </div>
                                         </div>
-                                        <div class="card-text pd-price">
-                                            {{ product.price }}
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                             {% endfor %}
@@ -78,24 +76,22 @@
                     <div class="carousel-item">
                         <div class="row d-flex justify-content-center pd-row">
                             {% for product in trending2 %}
-                            <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
+                            <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3 d-flex justify-content-center">
                                 <div class="card pd-card">
-                                    <div class="pd-img">
-                                        <a href="/product/{{ product.id }}">
+                                    <a href="/product/{{ product.id }}">
+                                        <div class="pd-img">
                                             <img alt="pd-img"
                                                 src="{% static 'images/products/' %}{{ product.images.0 }}">
-                                        </a>
-                                    </div>
-                                    <div class="card-body pd-info">
-                                        <div class="card-title pd-name">
-                                            <a href="/product/{{ product.id }}" class="text-decoration-none text-reset">
+                                        </div>
+                                        <div class="card-body pd-info">
+                                            <div class="card-title pd-name">
                                                 {{ product.name }}
-                                            </a>
+                                            </div>
+                                            <div class="card-text pd-price">
+                                                ${{ product.price }}
+                                            </div>
                                         </div>
-                                        <div class="card-text pd-price">
-                                            {{ product.price }}
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                             {% endfor %}
@@ -105,24 +101,22 @@
                     <div class="carousel-item">
                         <div class="row d-flex justify-content-center pd-row">
                             {% for product in trending3 %}
-                            <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
+                            <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3 d-flex justify-content-center">
                                 <div class="card pd-card">
-                                    <div class="pd-img">
-                                        <a href="/product/{{ product.id }}">
+                                    <a href="/product/{{ product.id }}">
+                                        <div class="pd-img">
                                             <img alt="pd-img"
                                                 src="{% static 'images/products/' %}{{ product.images.0 }}">
-                                        </a>
-                                    </div>
-                                    <div class="card-body pd-info">
-                                        <div class="card-title pd-name">
-                                            <a href="/product/{{ product.id }}" class="text-decoration-none text-reset">
+                                        </div>
+                                        <div class="card-body pd-info">
+                                            <div class="card-title pd-name">
                                                 {{ product.name }}
-                                            </a>
+                                            </div>
+                                            <div class="card-text pd-price">
+                                                ${{ product.price }}
+                                            </div>
                                         </div>
-                                        <div class="card-text pd-price">
-                                            {{ product.price }}
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                             {% endfor %}
@@ -153,24 +147,22 @@
                     <div class="carousel-item active">
                         <div class="row d-flex justify-content-center pd-row">
                             {% for product in new_arrival1 %}
-                            <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
+                            <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3 d-flex justify-content-center">
                                 <div class="card pd-card">
-                                    <div class="pd-img p-0">
-                                        <a href="/product/{{ product.id }}">
+                                    <a href="/product/{{ product.id }}">
+                                        <div class="pd-img">
                                             <img alt="pd-img"
                                                 src="{% static 'images/products/' %}{{ product.images.0 }}">
-                                        </a>
-                                    </div>
-                                    <div class="card-body pd-info">
-                                        <div class="card-title pd-name">
-                                            <a href="/product/{{ product.id }}" class="text-decoration-none text-reset">
+                                        </div>
+                                        <div class="card-body pd-info">
+                                            <div class="card-title pd-name">
                                                 {{ product.name }}
-                                            </a>
+                                            </div>
+                                            <div class="card-text pd-price">
+                                                ${{ product.price }}
+                                            </div>
                                         </div>
-                                        <div class="card-text pd-price">
-                                            {{ product.price }}
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                             {% endfor %}
@@ -180,24 +172,22 @@
                     <div class="carousel-item">
                         <div class="row d-flex justify-content-center pd-row">
                             {% for product in new_arrival2 %}
-                            <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
+                            <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3 d-flex justify-content-center">
                                 <div class="card pd-card">
-                                    <div class="pd-img">
-                                        <a href="/product/{{ product.id }}">
+                                    <a href="/product/{{ product.id }}">
+                                        <div class="pd-img">
                                             <img alt="pd-img"
                                                 src="{% static 'images/products/' %}{{ product.images.0 }}">
-                                        </a>
-                                    </div>
-                                    <div class="card-body pd-info">
-                                        <div class="card-title pd-name">
-                                            <a href="/product/{{ product.id }}" class="text-decoration-none text-reset">
+                                        </div>
+                                        <div class="card-body pd-info">
+                                            <div class="card-title pd-name">
                                                 {{ product.name }}
-                                            </a>
+                                            </div>
+                                            <div class="card-text pd-price">
+                                                ${{ product.price }}
+                                            </div>
                                         </div>
-                                        <div class="card-text pd-price">
-                                            {{ product.price }}
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                             {% endfor %}
@@ -207,24 +197,22 @@
                     <div class="carousel-item">
                         <div class="row d-flex justify-content-center pd-row">
                             {% for product in new_arrival3 %}
-                            <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3">
+                            <div class="col-12 col-sm-10 col-md-8 col-lg-4 mb-3 d-flex justify-content-center">
                                 <div class="card pd-card">
-                                    <div class="pd-img">
-                                        <a href="/product/{{ product.id }}">
+                                    <a href="/product/{{ product.id }}">
+                                        <div class="pd-img">
                                             <img alt="pd-img"
                                                 src="{% static 'images/products/' %}{{ product.images.0 }}">
-                                        </a>
-                                    </div>
-                                    <div class="card-body pd-info">
-                                        <div class="card-title pd-name">
-                                            <a href="/product/{{ product.id }}" class="text-decoration-none text-reset">
+                                        </div>
+                                        <div class="card-body pd-info">
+                                            <div class="card-title pd-name">
                                                 {{ product.name }}
-                                            </a>
+                                            </div>
+                                            <div class="card-text pd-price">
+                                                ${{ product.price }}
+                                            </div>
                                         </div>
-                                        <div class="card-text pd-price">
-                                            {{ product.price }}
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                             {% endfor %}

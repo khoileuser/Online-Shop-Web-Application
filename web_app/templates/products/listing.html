@@ -24,161 +24,21 @@
 
         <div class="Product-Listing-Cards col">
 
-            <!--Row 1-->
+            {% for product in products %}
             <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
+                <a href="/product/{{ product.id }}">
+                    <div class="card-image">
+                        <img src="{% static 'images/products/' %}{{ product.images.0 }}" alt="Product Image">
+                    </div>
                     <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
+                        <div class="card-title">{{ product.name }}</div>
+                        <div class="card-price">${{ product.price }}</div>
                     </div>
                 </a>
             </div>
+            {% endfor %}
 
 
-            <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
-                    <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
-                    </div>
-                </a>
-            </div>
-
-
-            <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
-                    <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
-                    <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
-                    <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
-                    </div>
-                </a>
-            </div>
-
-
-            <!--ROW 2-->
-            <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
-                    <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
-                    <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
-                    <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
-                    <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
-                    <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
-                    </div>
-                </a>
-            </div>
-
-            <!--ROW 3-->
-            <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
-                    <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
-                    <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
-                    <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
-                    <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
-                    </div>
-                </a>
-            </div>
-
-            <div class="card">
-                <a href="#"> <!--Add link to product here-->
-                    <img src="https://via.placeholder.com/200x120" alt="Product Image">
-                    <div class="card-content">
-                        <div class="card-title">Product Title Here</div>
-                        <div class="card-price">$19.99</div>
-                    </div>
-                </a>
-            </div>
         </div>
     </div>
 

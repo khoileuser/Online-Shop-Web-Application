@@ -137,7 +137,6 @@ body {
     .navbar-scrolled {
         background-color: #f8f9fa;
         --bs-bg-opacity: .99 !important;
-        /* padding: 15px 0; */
         box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
     }
 }
@@ -228,43 +227,49 @@ body {
 }
 
 .home-products {
-    .pd-card {
-        height: 35vh;
+    .card {
+        width: 80%;
+    }
+
+    a {
+        text-decoration: none;
     }
 
     .pd-img {
         height: 22.5vh;
-
-        a {
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            width: 100%;
-        }
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         img {
-            height: 100%;
-            width: 100%;
-            object-fit: contain;
+            padding: 10px;
+            max-height: 100%;
+            max-width: 100%;
         }
-    }
-
-    .pd-name {
-        /* height: 12.5vh; */
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        /* number of lines to show */
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
     }
 
     .pd-info {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+    }
+
+    .pd-name {
+        color: var(--text-normal);
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        font-size: 16px;
+        line-height: 1.2;
+        min-height: calc(2 * 16px * 1.3);
+        text-overflow: ellipsis;
+    }
+
+    .pd-price {
+        color: var(--text-header);
+        font-size: large;
     }
 }
 
@@ -481,15 +486,69 @@ body {
     }
 
     .name {
-        color: var(--text-header);
+        color: var(--text-normal);
     }
 
     .breadcrumb {
         color: var(--text-sub-header);
+
+        border: 1px solid #cbd2d9;
+        border-radius: 0.3rem;
+        display: inline-flex;
+        overflow: hidden;
+
+        .breadcrumbs__item {
+            background: #fff;
+            color: #333;
+            outline: none;
+            padding: 0.3em 0.3em 0.3em 0.8em;
+            position: relative;
+            text-decoration: none;
+            transition: background 0.2s linear;
+        }
+
+        .breadcrumbs__item:hover:after,
+        .breadcrumbs__item:hover {
+            background: #edf1f5;
+        }
+
+        .breadcrumbs__item:focus:after,
+        .breadcrumbs__item:focus,
+        .breadcrumbs__item.is-active:focus {
+            background: #323f4a;
+            color: #fff;
+        }
+
+        .breadcrumbs__item:after,
+        .breadcrumbs__item:before {
+            background: white;
+            bottom: 0;
+            clip-path: polygon(50% 50%, -50% -50%, 0 100%);
+            content: "";
+            left: 100%;
+            position: absolute;
+            top: 0;
+            transition: background 0.2s linear;
+            width: 1em;
+            z-index: 1;
+        }
+
+        .breadcrumbs__item:before {
+            background: #cbd2d9;
+            margin-left: 1px;
+        }
+
+        .breadcrumbs__item:last-child {
+            border-right: none;
+        }
+
+        .breadcrumbs__item.is-active {
+            background: #edf1f5;
+        }
     }
 
     .price {
-        color: var(--text-normal);
+        color: var(--text-header);
         background-color: #fafafa;
         border-radius: 0.25rem;
         padding: 15px;
@@ -683,17 +742,14 @@ body {
 .listing-page {
     .col-1 {
         width: 22%;
-        margin-left: 20px;
-        margin-right: 40px;
         margin-top: 10px;
+        margin-right: 20px;
     }
 
     .col-centered {
         justify-content: center;
     }
 
-    /* NAVIGATION
-*/
     nav ul {
         margin: 0;
         padding: 0;
@@ -721,7 +777,6 @@ body {
         pointer-events: none;
     }
 
-    /*Product Listing Cards Styling*/
     .Product-Listing-Cards {
         display: flex;
         flex-wrap: wrap;
@@ -732,22 +787,27 @@ body {
 
     .Product-Listing-Cards a {
         text-decoration: none;
-        /* Remove text decoration for anchor tags within product cards */
         color: black;
     }
 
     .card {
-        width: calc(33.33% - 20px);
-        /* Set width to fit 5 cards per row with some spacing */
-
+        width: calc(33% - 20px);
         margin: 10px 1%;
-        /* Add margin for spacing between rows */
-
         box-sizing: border-box;
-        /* Include padding and border in the width */
         border: 1px solid #ccc;
-        /* Add a border for card separation */
         transition: transform 0.3s ease;
+    }
+
+    @media (max-width: 991px) {
+        .card {
+            width: calc(50% - 20px);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .card {
+            width: 100%;
+        }
     }
 
     .card:hover {
@@ -762,26 +822,40 @@ body {
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+        color: var(--text-normal);
+        font-size: 16px;
+        line-height: 1.2;
+        min-height: calc(2 * 16px * 1.3);
+    }
+
+    .card-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 22.5vh;
     }
 
     .card img {
-        width: 100%;
-        height: auto;
+        padding: 10px;
+        max-height: 100%;
+        max-width: 100%;
     }
 
     .card-content {
         padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .card-price {
-        color: orange;
+        color: var(--text-header);
+        font-size: large;
     }
 
-    /*Navigation*/
     .listing-nav {
         text-align: center;
         margin-top: 15px;
-        /* Add margin for spacing */
     }
 
     .listing-nav button {
@@ -800,6 +874,5 @@ body {
         background-color: #007bff;
         color: white;
         pointer-events: none;
-        /* Disable click events on the active button */
     }
 }
