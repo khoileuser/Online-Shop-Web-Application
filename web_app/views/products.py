@@ -2,16 +2,14 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
+from django.core.paginator import Paginator
 from web_app.models import Product
 
 
 def listing(request):
-    _products = Product.objects
-    categories = _products.values_list('category', flat=True).distinct()
-    products = _products.all().order_by('?')
-    print(categories)
-
-    if request.user != "guest":
+    if request.method != "GET":
+        return HttpResponse('Invalid request')
+    elif request.user != "guest":
         context = {
             "username": request.user.username,
             "cart_quantity": request.user.cart_quantity,
@@ -24,7 +22,21 @@ def listing(request):
             "type": None
         }
 
+    _products = Product.objects
+    categories = _products.values_list('category', flat=True).distinct()
     context['categories'] = categories
+    products_list = _products.all().order_by('?')
+
+    if request.GET.get('filter'):
+        products = products_list.filter(category=request.GET.get('filter'))
+        context['active_filter'] = request.GET.get('filter')
+    else:
+        paginator = Paginator(products_list, 30)  # Show 10 products per page
+        context['page_range'] = paginator.page_range
+        page_number = request.GET.get('page')
+        context['active_page'] = page_number
+        products = paginator.get_page(page_number)
+
     context['products'] = products
 
     template = loader.get_template("products/listing.html")
@@ -43,7 +55,9 @@ def product(request, product_id):
     requested. It is used to retrieve the specific product from the database
     :return: an HttpResponse object.
     """
-    if request.user != "guest":
+    if request.method != "GET":
+        return HttpResponse('Invalid request')
+    elif request.user != "guest":
         context = {
             "username": request.user.username,
             "cart_quantity": request.user.cart_quantity,

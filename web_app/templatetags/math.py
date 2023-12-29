@@ -30,3 +30,8 @@ def calc_remain(products_by_vendor):
         for product in item["cart_products"]:
             remain += 1
     return remain-1
+
+
+@register.filter
+def to_int(value):
+    return int(value)

@@ -748,3 +748,18 @@ function preventFirstSpace(input) {
         input.value = input.value.slice(0, -1);
     }
 }
+
+function filterCategory(input) {
+    if (input.checked) {
+        var checkboxes = document.querySelectorAll('.category-checkbox');
+        checkboxes.forEach(function uncheckCheckbox(checkbox) {
+            if (checkbox.value != input.value) {
+                checkbox.checked = false;
+            }
+        })
+        window.location.href = '?filter=' + input.value;
+    }
+    else {
+        window.location.href = '?page=1';
+    }
+}
