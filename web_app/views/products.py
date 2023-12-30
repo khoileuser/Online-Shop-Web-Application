@@ -10,6 +10,15 @@ from thefuzz import process
 
 
 def listing(request):
+    """
+    The `listing` function is a view function in Django that handles the rendering of a product listing
+    page, including filtering and searching functionality.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the request method (GET, POST, etc.), user information, and
+    any data sent with the request
+    :return: an HttpResponse object.
+    """
     if request.method != "GET":
         return HttpResponse('Invalid request')
     elif request.user != "guest":
@@ -25,15 +34,19 @@ def listing(request):
             "type": None
         }
 
+    # get all products and categories
     _products = Product.objects
     categories = _products.values_list('category', flat=True).distinct()
     context['categories'] = categories
     products_list = _products.all().order_by('?')
 
+    # If there is a search query in the request
     if request.GET.get('search'):
         context['active_filter'] = 'search'
         search_query = request.GET.get('search')
         product_names = _products.values_list('name', flat=True)
+
+        # query search with fuzzy matching
         best_matches = process.extractBests(
             search_query, product_names, score_cutoff=60, limit=60)
         best_match_names = [match[0] for match in best_matches]
@@ -43,17 +56,23 @@ def listing(request):
         else:
             products = _products.filter(name__in=best_match_names)
             max_price = products.aggregate(Max('price'))['price__max']
+
+    # If there is a filter in the request
     elif request.GET.get('filter'):
+        # If the filter is 'price'
         if request.GET.get('filter') == 'price':
             context['active_filter'] = 'price'
             products = products_list
             context['max_filter'] = int(request.GET.get('max'))
             context['min_filter'] = int(request.GET.get('min'))
             max_price = products_list.aggregate(Max('price'))['price__max']
+        # If the filter is other (category)
         else:
             products = products_list.filter(category=request.GET.get('filter'))
             context['active_filter'] = request.GET.get('filter')
             max_price = products.aggregate(Max('price'))['price__max']
+
+    # If there is no search query or filter in the request, return with pagination
     else:
         paginator = Paginator(products_list, 30)
         context['page_range'] = paginator.page_range
@@ -120,6 +139,7 @@ def product(request, product_id):
             "cart_quantity": None,
             "type": None
         }
+
     product = Product.objects.get(id=product_id)
     context["product_id"] = product.id
     context["category"] = product.category

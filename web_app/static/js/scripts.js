@@ -860,12 +860,22 @@ function submitFilterPrice() {
     window.location.href = '?filter=price&min=' + min + '&max=' + max;
 }
 
+/**
+ * The function "handleKeyPress" checks if the key pressed is the Enter key and calls the
+ * "submitSearch" function if it is.
+ * @param event - The event parameter is an object that represents the event that occurred, in this
+ * case, a key press event. It contains information about the event, such as the key that was pressed.
+ */
 function handleKeyPress(event) {
     if (event.key === 'Enter') {
         submitSearch();
     }
 }
 
+/**
+ * The function `submitSearch` redirects the user to a search page with the search query as a parameter
+ * in the URL.
+ */
 function submitSearch() {
     var search = document.querySelector('.search-input');
     if (window.location.pathname.includes('/products')) {
@@ -876,6 +886,7 @@ function submitSearch() {
     }
 }
 
+/* The above code is a JavaScript code snippet that is executed when the window loads. */
 window.onload = function () {
     if (window.location.href.includes('?filter=price')) {
         var paramString = window.location.href.split('?')[1];
