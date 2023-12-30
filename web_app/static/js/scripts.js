@@ -792,26 +792,25 @@ function filterCategory(input) {
  * @returns nothing (undefined).
  */
 function filterProductPrice(min, max) {
-    if (!window.location.href.includes('?filter')) {
-        return
-    }
-    if (min == 0 && max == 0) {
-        var products = document.querySelectorAll('.pd-card');
-        products.forEach(function filterProduct(product) {
-            product.style.display = "block";
-        })
-    }
-    else {
-        var products = document.querySelectorAll('.pd-card');
-        products.forEach(function filterProduct(product) {
-            var price = parseFloat(product.querySelector('.card-price').innerHTML.trim().replace('$', ''));
-            if (price < min || price > max) {
-                product.style.display = "none";
-            }
-            else {
+    if (window.location.href.includes('?filter') || window.location.href.includes('?search')) {
+        if (min == 0 && max == 0) {
+            var products = document.querySelectorAll('.pd-card');
+            products.forEach(function filterProduct(product) {
                 product.style.display = "block";
-            }
-        })
+            })
+        }
+        else {
+            var products = document.querySelectorAll('.pd-card');
+            products.forEach(function filterProduct(product) {
+                var price = parseFloat(product.querySelector('.card-price').innerHTML.trim().replace('$', ''));
+                if (price < min || price > max) {
+                    product.style.display = "none";
+                }
+                else {
+                    product.style.display = "block";
+                }
+            })
+        }
     }
 }
 
@@ -861,9 +860,22 @@ function submitFilterPrice() {
     window.location.href = '?filter=price&min=' + min + '&max=' + max;
 }
 
-/* The above code is checking if the current URL contains the query parameter "filter=price". If it
-does, it extracts the values of the "min" and "max" parameters from the URL and passes them to the
-function "filterProductPrice(min, max)". */
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        submitSearch();
+    }
+}
+
+function submitSearch() {
+    var search = document.querySelector('.search-input');
+    if (window.location.pathname.includes('/products')) {
+        window.location.href = '?search=' + search.value;
+    }
+    else {
+        window.location.href = '/products?search=' + search.value;
+    }
+}
+
 window.onload = function () {
     if (window.location.href.includes('?filter=price')) {
         var paramString = window.location.href.split('?')[1];
@@ -871,5 +883,11 @@ window.onload = function () {
         var min = queryString.get('min');
         var max = queryString.get('max');
         filterProductPrice(min, max);
+    }
+    else if (window.location.href.includes('?search=')) {
+        var paramString = window.location.href.split('?')[1];
+        var queryString = new URLSearchParams(paramString);
+        var search = queryString.get('search');
+        document.querySelector('.search-input').value = search;
     }
 }

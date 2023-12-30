@@ -6,13 +6,21 @@
 
 <div class="dummy"></div>
 
-<div class="container listing-page">
-
+<div class="container-fluid listing-page">
     <div class="row">
 
-        <div class="Navigation-Bar col-4 col-md-3 col-lg-2">
-            <h3>Categories</h3>
-            <nav class="mt-4">
+        <div class="Navigation-Bar col-4 col-md-3 col-lg-2 d-flex flex-column align-items-center">
+            <nav class="breadcrumb">
+                {% if active_filter %}
+                <a href="/products" class="breadcrumbs__item">Products</a>
+                <a class="breadcrumbs__item is-active">Categories</a>
+                {% else %}
+                <a href="/products" class="breadcrumbs__item">Products</a>
+                <a class="breadcrumbs__item">Categories</a>
+                {% endif %}
+            </nav>
+
+            <nav class="mt-1">
                 <ul class="nav-list">
                     {% for category in categories %}
                     <li class="nav-list-styling">
@@ -65,44 +73,51 @@
         </div>
 
         <div class="Product-Listing-Cards col-8 col-md-9 col-lg-10">
-            {% for product in products %}
-            <div class="card pd-card">
-                <input type="hidden" class="pd-category" value="{{ product.category }}">
-                <a href="/product/{{ product.id }}">
-                    <div class="card-image">
-                        <img src="{% static 'images/products/' %}{{ product.images.0 }}" alt="Product Image">
-                    </div>
-                    <div class="card-content">
-                        <div class="card-title">{{ product.name }}</div>
-                        <div class="card-price">${{ product.price }}</div>
-                    </div>
-                </a>
+            <div class="row d-flex justify-content-center">
+                {% if products %}
+                {% for product in products %}
+                <div class="col-10 col-md-5 col-lg-3 col-xl-2 m-2 card pd-card">
+                    <input type="hidden" class="pd-category" value="{{ product.category }}">
+                    <a href="/product/{{ product.id }}">
+                        <div class="card-image">
+                            <img src="{% static 'images/products/' %}{{ product.images.0 }}" alt="Product Image">
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">{{ product.name }}</div>
+                            <div class="card-price">${{ product.price }}</div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="col-12 no-products rounded shadow-sm text-center">
+                    <h3>No products found</h3>
+                </div>
+                {% endif %}
             </div>
-            {% endfor %}
         </div>
 
     </div>
 
-    <div class="columns col-centered">
-
+    <div class="">
         <nav class="listing-nav">
             {% if not active_filter %}
 
             {% if active_page %}
             {% for i in page_range %}
             {% if active_page|to_int == i %}
-            <button class="active" onclick="window.location.href='?page={{ i }}'">{{ i }}</button>
+            <button class="btn active" onclick="window.location.href='?page={{ i }}'">{{ i }}</button>
             {% else %}
-            <button onclick="window.location.href='?page={{ i }}'">{{ i }}</button>
+            <button class="btn" onclick="window.location.href='?page={{ i }}'">{{ i }}</button>
             {% endif %}
             {% endfor %}
 
             {% elif active_page is None %}
             {% for i in page_range %}
             {% if i == 1 %}
-            <button class="active" onclick="window.location.href='?page={{ i }}'">{{ i }}</button>
+            <button class="btn active" onclick="window.location.href='?page={{ i }}'">{{ i }}</button>
             {% else %}
-            <button onclick="window.location.href='?page={{ i }}'">{{ i }}</button>
+            <button class="btn" onclick="window.location.href='?page={{ i }}'">{{ i }}</button>
             {% endif %}
             {% endfor %}
 

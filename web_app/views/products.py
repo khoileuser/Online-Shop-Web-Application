@@ -6,6 +6,8 @@ from django.core.paginator import Paginator
 from django.db.models import Max
 from web_app.models import Product, User
 
+from thefuzz import process
+
 
 def listing(request):
     if request.method != "GET":
@@ -30,6 +32,17 @@ def listing(request):
 
     if request.GET.get('search'):
         context['active_filter'] = 'search'
+        search_query = request.GET.get('search')
+        product_names = _products.values_list('name', flat=True)
+        best_matches = process.extractBests(
+            search_query, product_names, score_cutoff=60, limit=60)
+        best_match_names = [match[0] for match in best_matches]
+        if best_match_names == []:
+            products = None
+            max_price = 0
+        else:
+            products = _products.filter(name__in=best_match_names)
+            max_price = products.aggregate(Max('price'))['price__max']
     elif request.GET.get('filter'):
         if request.GET.get('filter') == 'price':
             context['active_filter'] = 'price'
@@ -37,14 +50,10 @@ def listing(request):
             context['max_filter'] = int(request.GET.get('max'))
             context['min_filter'] = int(request.GET.get('min'))
             max_price = products_list.aggregate(Max('price'))['price__max']
-            context['max_price'] = max_price
-            context['min_price'] = max_price-1
         else:
             products = products_list.filter(category=request.GET.get('filter'))
             context['active_filter'] = request.GET.get('filter')
             max_price = products.aggregate(Max('price'))['price__max']
-            context['max_price'] = max_price
-            context['min_price'] = max_price-1
     else:
         paginator = Paginator(products_list, 30)
         context['page_range'] = paginator.page_range
@@ -52,10 +61,10 @@ def listing(request):
         context['active_page'] = page_number
         products = paginator.get_page(page_number)
         max_price = products_list.aggregate(Max('price'))['price__max']
-        context['max_price'] = max_price
-        context['min_price'] = max_price-1
 
     context['products'] = products
+    context['max_price'] = max_price
+    context['min_price'] = max_price-1
 
     template = loader.get_template("products/listing.html")
     return HttpResponse(template.render(context, request))
