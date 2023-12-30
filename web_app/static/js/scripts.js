@@ -561,60 +561,68 @@ function profileSavePassword() {
 }
 
 /**
+ * The function removes diacritics (accent marks) from a given string.
+ * @param str - The parameter "str" is a string that represents the input text.
+ * @returns a string with diacritics (accent marks) removed.
+ */
+function removeDiacritics(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+/**
+ * The function `doFilter` takes an array `a` and a filter string, and filters the array based on fuzzy
+ * matching with the filter string.
+ * @param a - The parameter "a" is an array of elements that you want to filter. These elements can be
+ * HTML elements or any other objects that have a "textContent" or "innerText" property.
+ * @param filter - The `filter` parameter is a string that represents the filter criteria. It is used
+ * to match against the elements in the `a` array.
+ * @returns The function `doFilter` does not have a return statement, so it does not explicitly return
+ * anything.
+ */
+function doFilter(a, filter) {
+    var prepared = a.map(function (el) {
+        return { target: fuzzysort.prepare(removeDiacritics(el.textContent || el.innerText)), el: el };
+    });
+    var result = fuzzysort.go(filter, prepared, {
+        key: 'target'
+    });
+
+    a.forEach(function (el) {
+        el.style.display = "none";
+    });
+    result.forEach(function (res) {
+        res.obj.el.style.display = "";
+    });
+}
+
+/**
  * The function filters a list of countries based on user input.
  */
 function filterCountry() {
-    var input, filter, ul, li, a, i, txtValue;
-    input = document.querySelector(".country");
-    filter = input.value.toUpperCase();
-    div = document.querySelector(".country-dropdown");
-    a = div.getElementsByTagName("a");
-    for (i = 0; i < a.length; i++) {
-        txtValue = a[i].textContent || a[i].innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            a[i].style.display = "";
-        } else {
-            a[i].style.display = "none";
-        }
-    }
+    var input = document.querySelector(".country");
+    var div = document.querySelector(".country-dropdown");
+    var a = Array.from(div.getElementsByTagName("a"));
+    doFilter(a, input.value);
 }
 
 /**
  * The function filters a dropdown list of phone number codes based on user input.
  */
 function filterNumberCode() {
-    var input, filter, ul, li, a, i, txtValue;
-    input = document.querySelector(".phone_number_code");
-    filter = input.value.toUpperCase();
-    div = document.querySelector(".number-code-dropdown");
-    a = div.getElementsByTagName("a");
-    for (i = 0; i < a.length; i++) {
-        txtValue = a[i].textContent || a[i].innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            a[i].style.display = "";
-        } else {
-            a[i].style.display = "none";
-        }
-    }
+    var input = document.querySelector(".phone_number_code");
+    var div = document.querySelector(".number-code-dropdown");
+    var a = Array.from(div.getElementsByTagName("a"));
+    doFilter(a, input.value);
 }
 
 /**
  * The function filters a dropdown list of states based on user input.
  */
 function filterState() {
-    var input, filter, ul, li, a, i, txtValue;
-    input = document.querySelector(".state");
-    filter = input.value.toUpperCase();
-    div = document.querySelector(".state-dropdown");
-    a = div.getElementsByTagName("a");
-    for (i = 0; i < a.length; i++) {
-        txtValue = a[i].textContent || a[i].innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            a[i].style.display = "";
-        } else {
-            a[i].style.display = "none";
-        }
-    }
+    var input = document.querySelector(".state");
+    var div = document.querySelector(".state-dropdown");
+    var a = Array.from(div.getElementsByTagName("a"));
+    doFilter(a, input.value);
 }
 
 /**
@@ -627,6 +635,10 @@ function choseState(state) {
     document.querySelector(".state_input").value = state;
 }
 
+/**
+ * The function `addAddress` checks if all the required address fields are filled out and submits the
+ * form if they are.
+ */
 function addAddress() {
     var country = document.querySelector(".country_input");
     var code = document.querySelector(".phone_number_code_input");
@@ -743,12 +755,21 @@ function editExpireDate(input) {
     }
 }
 
+/**
+ * The function `preventFirstSpace` removes the first space character from the value of an input field
+ * if it exists.
+ * @param input - The input parameter is a reference to an HTML input element.
+ */
 function preventFirstSpace(input) {
     if (input.value.charAt(0) == ' ') {
         input.value = input.value.slice(0, -1);
     }
 }
 
+/**
+ * The function filters a category based on the input checkbox value and updates the URL accordingly.
+ * @param input - The input parameter is the checkbox element that triggered the function.
+ */
 function filterCategory(input) {
     if (input.checked) {
         var checkboxes = document.querySelectorAll('.category-checkbox');
@@ -761,5 +782,94 @@ function filterCategory(input) {
     }
     else {
         window.location.href = '?page=1';
+    }
+}
+
+/**
+ * The function filters product cards on a webpage based on their price range.
+ * @param min - The minimum price value to filter the products by.
+ * @param max - The maximum price value that you want to filter the products by.
+ * @returns nothing (undefined).
+ */
+function filterProductPrice(min, max) {
+    if (!window.location.href.includes('?filter')) {
+        return
+    }
+    if (min == 0 && max == 0) {
+        var products = document.querySelectorAll('.pd-card');
+        products.forEach(function filterProduct(product) {
+            product.style.display = "block";
+        })
+    }
+    else {
+        var products = document.querySelectorAll('.pd-card');
+        products.forEach(function filterProduct(product) {
+            var price = parseFloat(product.querySelector('.card-price').innerHTML.trim().replace('$', ''));
+            if (price < min || price > max) {
+                product.style.display = "none";
+            }
+            else {
+                product.style.display = "block";
+            }
+        })
+    }
+}
+
+/**
+ * The function `editMinPrice` updates the minimum price value on a webpage and calls another function
+ * to filter products based on the updated minimum price.
+ * @param input - The input parameter is the HTML input element that represents the minimum price
+ * value.
+ */
+function editMinPrice(input) {
+    var min = parseInt(input.value);
+    document.querySelector(".min-price-txt").innerHTML = "$" + min;
+    filterProductPrice(min, parseInt(document.querySelector('.max-price').value))
+}
+
+/**
+ * The function `editMaxPrice` updates the maximum price value and filters the product price based on
+ * the new maximum value.
+ * @param input - The input parameter is the HTML input element that represents the maximum price
+ * value.
+ */
+function editMaxPrice(input) {
+    var max = parseInt(input.value);
+    document.querySelector(".max-price-txt").innerHTML = "$" + max;
+    filterProductPrice(parseInt(document.querySelector('.min-price').value), max)
+}
+
+/**
+ * The function `resetFilterPrice` resets the filter for product prices to the default values of 
+ * minimum and  maximum.
+ */
+function resetFilterPrice() {
+    document.querySelector('.min-price').value = "0";
+    document.querySelector('.max-price').value = "1";
+    document.querySelector(".min-price-txt").innerHTML = "$0";
+    document.querySelector(".max-price-txt").innerHTML = "$1";
+    filterProductPrice(0, 0);
+}
+
+/**
+ * The function `submitFilterPrice` takes the values of the minimum and maximum price inputs, and
+ * updates the URL with the filter parameters.
+ */
+function submitFilterPrice() {
+    var min = parseInt(document.querySelector('.min-price').value);
+    var max = parseInt(document.querySelector('.max-price').value);
+    window.location.href = '?filter=price&min=' + min + '&max=' + max;
+}
+
+/* The above code is checking if the current URL contains the query parameter "filter=price". If it
+does, it extracts the values of the "min" and "max" parameters from the URL and passes them to the
+function "filterProductPrice(min, max)". */
+window.onload = function () {
+    if (window.location.href.includes('?filter=price')) {
+        var paramString = window.location.href.split('?')[1];
+        var queryString = new URLSearchParams(paramString);
+        var min = queryString.get('min');
+        var max = queryString.get('max');
+        filterProductPrice(min, max);
     }
 }

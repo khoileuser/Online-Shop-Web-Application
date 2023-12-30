@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
 from django.core.paginator import Paginator
-from web_app.models import Product
+from django.db.models import Max
+from web_app.models import Product, User
 
 
 def listing(request):
@@ -27,16 +28,57 @@ def listing(request):
     context['categories'] = categories
     products_list = _products.all().order_by('?')
 
-    if request.GET.get('filter'):
-        products = products_list.filter(category=request.GET.get('filter'))
-        context['active_filter'] = request.GET.get('filter')
+    if request.GET.get('search'):
+        context['active_filter'] = 'search'
+    elif request.GET.get('filter'):
+        if request.GET.get('filter') == 'price':
+            context['active_filter'] = 'price'
+            products = products_list
+            context['max_filter'] = int(request.GET.get('max'))
+            context['min_filter'] = int(request.GET.get('min'))
+            max_price = products_list.aggregate(Max('price'))['price__max']
+            context['max_price'] = max_price
+            context['min_price'] = max_price-1
+        else:
+            products = products_list.filter(category=request.GET.get('filter'))
+            context['active_filter'] = request.GET.get('filter')
+            max_price = products.aggregate(Max('price'))['price__max']
+            context['max_price'] = max_price
+            context['min_price'] = max_price-1
     else:
-        paginator = Paginator(products_list, 30)  # Show 10 products per page
+        paginator = Paginator(products_list, 30)
         context['page_range'] = paginator.page_range
         page_number = request.GET.get('page')
         context['active_page'] = page_number
         products = paginator.get_page(page_number)
+        max_price = products_list.aggregate(Max('price'))['price__max']
+        context['max_price'] = max_price
+        context['min_price'] = max_price-1
 
+    context['products'] = products
+
+    template = loader.get_template("products/listing.html")
+    return HttpResponse(template.render(context, request))
+
+
+def listing_vendor(request, vendor):
+    if request.method != "GET":
+        return HttpResponse('Invalid request')
+    elif request.user != "guest":
+        context = {
+            "username": request.user.username,
+            "cart_quantity": request.user.cart_quantity,
+            "type": request.user.account_type
+        }
+    else:
+        context = {
+            "username": None,
+            "cart_quantity": None,
+            "type": None
+        }
+
+    vendor = User.objects.get(username=vendor)
+    products = Product.objects.filter(vendor=vendor)
     context['products'] = products
 
     template = loader.get_template("products/listing.html")
@@ -78,17 +120,6 @@ def product(request, product_id):
     context["images"] = product.images
 
     template = loader.get_template("products/product.html")
-    return HttpResponse(template.render(context, request))
-
-
-def vendor_products(request, vendor):
-    context = {
-        "username": request.user.username,
-        "cart_quantity": request.user.cart_quantity,
-        "type": request.user.account_type
-    }
-
-    template = loader.get_template("products/products.html")
     return HttpResponse(template.render(context, request))
 
 

@@ -9,7 +9,8 @@
 <div class="container listing-page">
 
     <div class="row">
-        <div class="Navigation-Bar col-1">
+
+        <div class="Navigation-Bar col-4 col-md-3 col-lg-2">
             <h3>Categories</h3>
             <nav class="mt-4">
                 <ul class="nav-list">
@@ -25,12 +26,45 @@
                         <label class="form-check-label" for="{{ category }}">{{ category }}</label>
                     </li>
                     {% endfor %}
+                    <li class="nav-list-styling">
+                        <label for="min-price" class="form-label">Min price: </label>
+                        {% if min_filter %}
+                        <span class="min-price-txt">${{ min_filter }}</span>
+                        <input type="range" class="form-range min-price" id="min-price" name="min-price" min="0"
+                            max="{{ min_price }}" step="1" value="{{ min_filter }}" oninput="editMinPrice(this)">
+                        {% else %}
+                        <span class="min-price-txt">$0</span>
+                        <input type="range" class="form-range min-price" id="min-price" name="min-price" min="0"
+                            max="{{ min_price }}" step="1" value="0" oninput="editMinPrice(this)">
+                        {% endif %}
+                    </li>
+
+                    <li class="nav-list-styling">
+                        <label for="max-price" class="form-label">Max price: </label>
+                        {% if max_filter %}
+                        <span class="max-price-txt">${{ max_filter }}</span>
+                        <input type="range" class="form-range max-price" id="max-price" name="max-price" min="1"
+                            max="{{ max_price }}" step="1" value="{{ max_filter }}" oninput="editMaxPrice(this)">
+                        {% else %}
+                        <span class="max-price-txt">$1</span>
+                        <input type="range" class="form-range max-price" id="max-price" name="max-price" min="1"
+                            max="{{ max_price }}" step="1" value="1" oninput="editMaxPrice(this)">
+                        {% endif %}
+                    </li>
+
+                    <li class="nav-list-styling">
+                        <button class="btn btn-secondary" onclick="resetFilterPrice()">Reset</button>
+                        {% if not min_filter or not active_filter %}
+                        {% if not active_filter %}
+                        <button class="btn btn-primary" onclick="submitFilterPrice()">Submit</button>
+                        {% endif %}
+                        {% endif %}
+                    </li>
                 </ul>
             </nav>
         </div>
 
-        <div class="Product-Listing-Cards col">
-
+        <div class="Product-Listing-Cards col-8 col-md-9 col-lg-10">
             {% for product in products %}
             <div class="card pd-card">
                 <input type="hidden" class="pd-category" value="{{ product.category }}">
@@ -46,6 +80,7 @@
             </div>
             {% endfor %}
         </div>
+
     </div>
 
     <div class="columns col-centered">

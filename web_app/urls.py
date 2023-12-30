@@ -47,7 +47,7 @@ urlpatterns = [
 
     # product
     path('products/', products.listing),
-    path('products/vendor/<str:vendor>', products.vendor_products),
+    path('products/vendor/<str:vendor>', products.listing_vendor),
     path('products/<int:product_id>', products.product),
     path('product/<int:product_id>', products.product),
 

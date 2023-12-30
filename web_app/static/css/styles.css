@@ -792,6 +792,7 @@ body {
 
     .card {
         width: calc(33% - 20px);
+        height: auto;
         margin: 10px 1%;
         box-sizing: border-box;
         border: 1px solid #ccc;
