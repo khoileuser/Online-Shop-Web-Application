@@ -1,0 +1,148 @@
+{% load static %}
+
+{% include "partials/header.html" %}
+
+<div class="dummy"></div>
+
+<div class="container product-container rounded shadow-sm">
+    <div class="single-product">
+        <div class="row">
+            <div class="col-6">
+                <div class="large-img d-flex justify-content-center">
+                    <img src="{% static 'images/products/' %}{{ images.0 }}" class="large-image img-fluid"
+                        alt="large-img">
+                </div>
+                <div class="extra-img row gap-1 mt-3">
+                    {% for image in images %}
+                    <div class="col">
+                        <div class="small-img d-flex justify-content-center">
+                            <img src="{% static 'images/products/' %}{{ image }}" class="img-fluid" alt="small-img"
+                                onclick="changeLargeImg(this)">
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-6">
+                <nav class="breadcrumb">
+                    <a href="/products" class="breadcrumbs__item">Products</a>
+                    <a href="/products/?filter={{ category }}" class="breadcrumbs__item is-active">{{ category }}</a>
+                </nav>
+
+                <h3 class="name mt-2">{{ name }}</h3>
+                <h4 class="price mt-4">${{ price }}</h4>
+
+                {% if type != "V" %}
+                <div class="row mt-4 pd-action">
+                    <div class="col-3 pt-1 text-end">
+                        <span class="quantity-text">Quantity: </span>
+                    </div>
+                    <div
+                        class="col-9 col-sm-6 col-lg-5 col-xl-4 pd-quantity-input d-flex flex-row justify-content-center align-items-center">
+                        <div class="input-group d-flex flex-row">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-number"
+                                    onclick="editQuantity('{{ product_id }}', 'remove', 1, true, true)">
+                                    <i class="bi bi-dash"></i>
+                                </button>
+                            </div>
+
+                            <input type="number" step="any" name="quant[1]" style="text-align:center;"
+                                class="text-center form-control input-number pd-quantity-input-box-{{ product_id }}"
+                                value="1" min="1" onfocus="this.oldvalue = this.value;"
+                                onchange="editQuantity('{{ product_id }}', 'edit', 1, true);this.oldvalue = this.value;">
+
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-number"
+                                    onclick="editQuantity('{{ product_id }}', 'add', 1, true)">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="row buttons mt-4">
+                            <div class="col-6 col-md-5">
+                                <button type="button" onclick="addToCart('{{ product_id }}', true)"
+                                    class="btn btn-primary add-cart-btn anm-btn w-100">
+                                    <span>Add to Cart</span></button>
+                            </div>
+                            <div class="col-6 col-md-5">
+                                <form class="checkout-form" method="POST" action="/checkout/">
+                                    <input type="hidden" id="mode" name="mode" value="buy_now">
+                                    <input type="hidden" id="product_id" name="product_id" value="{{ product_id }}">
+                                    <input type="hidden" class="checkout-quantity" id="quantity" name="quantity">
+                                    <button type="button" onclick="checkOutProduct('{{ product_id }}')"
+                                        class="btn btn-primary buy-now-btn anm-btn w-100">
+                                        <span>Buy Now</span></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="row product-description mt-5">
+            <h3>Product Description <i class="fa-solid fa-indent"></i></h3>
+            <p class="mt-3">{{ description }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="container vendor-container rounded shadow-sm mt-4">
+    <div class="row p-4">
+        <div class="col-2">
+            <img src="{% static 'images/avatar/' %}{{ vendor_avatar }}" class="img-fluid rounded-circle"
+                alt="vendor-avatar">
+        </div>
+        <div class="col-10 d-flex flex-column justify-content-center">
+            <div>
+                <h3 class="vendor-name">{{ vendor_name }}</h3>
+                <a class="btn btn-primary view-more-btn mt-2" href="/products/vendor/{{ vendor_username }}">View
+                    More</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container related-products mt-4 rounded shadow-sm">
+    <div class="small-container img-fluid">
+        <div class="row row-2">
+            <h2>Related Products</h2>
+            <p>View more</p>
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <img src="https://vcdn-vnexpress.vnecdn.net/2021/07/07/Aventador-Ultimae-Coupe-1-3961-1625659942.jpg"
+                    style="max-width: 100%; height: auto">
+                <h4>Red Printed T-Shirt</h4>
+                <p>$50.00</p>
+            </div>
+            <div class="col-3">
+                <img src="https://static-images.vnncdn.net/files/publish/2023/8/23/aventador-svj-1-713.jpg"
+                    style="max-width: 100%; height: auto">
+                <h4>Red Printed T-Shirt</h4>
+                <p>$50.00</p>
+            </div>
+            <div class="col-3">
+                <img src="https://cms-i.autodaily.vn/du-lieu/2019/03/04/lamborghini-aventador-svj-2.jpg"
+                    style="max-width: 100%; height: auto">
+                <h4>Red Printed T-Shirt</h4>
+                <p>$50.00</p>
+            </div>
+            <div class="col-3">
+                <img src="https://media.ed.edmunds-media.com/lamborghini/aventador/2022/oem/2022_lamborghini_aventador_convertible_ultimae-roadster_fq_oem_1_1600.jpg"
+                    style="max-width: 100%; height: auto">
+                <h4>Red Printed T-Shirt</h4>
+                <p>$50.00</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "partials/footer.html" %}

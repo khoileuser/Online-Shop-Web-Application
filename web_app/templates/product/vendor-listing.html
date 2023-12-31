@@ -1,0 +1,42 @@
+{% load static %}
+
+{% load math %}
+
+{% include "partials/header.html" %}
+
+<div class="dummy"></div>
+
+<div class="container-fluid listing-page">
+    <div class="row">
+
+        <div class="Product-Listing-Cards col">
+            <div class="row d-flex justify-content-center">
+                {% if products %}
+                {% for product in products %}
+                <div class="col-10 col-md-5 col-lg-3 col-xl-2 m-2 card pd-card">
+                    <input type="hidden" class="pd-category" value="{{ product.category }}">
+                    <a href="/product/{{ product.id }}">
+                        <div class="card-image">
+                            <img src="{% static 'images/products/' %}{{ product.images.0 }}" alt="Product Image">
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title">{{ product.name }}</div>
+                            <div class="card-price">${{ product.price }}</div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="col-12 no-products rounded shadow-sm text-center">
+                    <h3>No products found</h3>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+{% include "partials/footer.html" %}
