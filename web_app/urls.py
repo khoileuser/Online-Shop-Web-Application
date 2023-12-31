@@ -46,14 +46,13 @@ urlpatterns = [
     path('orders/', order.view_orders),
 
     # product
-    path('products/', products.listing),
-    path('products/vendor/<str:vendor>', products.listing_vendor),
-    path('products/<int:product_id>', products.product),
-    path('product/<int:product_id>', products.product),
-
-    # product management
-    path('addproduct/', products.add_product),
-    path('updateproduct/', products.add_product),
+    path('products/', product.listing),
+    path('products/vendor/<str:vendor>', product.listing_vendor),
+    path('products/<int:product_id>', product.view_product),
+    path('product/<int:product_id>', product.view_product),
+    path('product/add/', product.add_product),
+    path('product/update/<int:product_id>', product.update_product),
+    path('product/delete/<int:product_id>', product.delete_product),
 
     # testing
     path('execute/', views.execute),
