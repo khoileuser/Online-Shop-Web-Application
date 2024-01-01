@@ -976,3 +976,8 @@ function addImg(input) {
     previewCol.appendChild(previewInput);
     previewRow.appendChild(previewCol);
 }
+
+function editAvatar(input) {
+    var avatar = document.querySelector('.avatar-img');
+    avatar.src = URL.createObjectURL(input.files[0]);
+}

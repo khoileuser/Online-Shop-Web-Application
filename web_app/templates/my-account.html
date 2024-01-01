@@ -90,13 +90,25 @@
             <div class="avatar col-4 col-lg-3 d-flex flex-column justify-content-center align-items-center">
                 <div class="image">
                     {% if avatar %}
-                    <img src="{% static 'images/avatar/' %}{{ avatar }}" alt="user-image">
+                    <img class="avatar-img img-fluid rounded-circle" src="{% static 'images/avatar/' %}{{ avatar }}"
+                        alt="user-image">
                     {% else %}
-                    <img src="{% static 'images/avatar/default.jpg' %}" alt="user-image">
+                    <img class="avatar-img img-fluid rounded-circle" src="{% static 'images/avatar/default.jpg' %}"
+                        alt="user-image">
                     {% endif %}
                 </div>
                 <div class="mt-4">
-                    <button class="btn btn-primary">Upload avatar</button>
+                    <form action="/me/update/avatar" method="POST" enctype="multipart/form-data">
+                        <div class="input-group">
+                            <input type="file" class="form-control" name="avatar" onchange="editAvatar(this)" required>
+                            <button class="btn btn-primary" type="submit">Save</button>
+                        </div>
+                    </form>
+                    <form action="/me/update/avatar" method="POST" enctype="multipart/form-data">
+                        <div class="text-center mt-2">
+                            <button class="btn btn-secondary" type="submit">Remove</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 

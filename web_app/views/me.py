@@ -6,9 +6,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.contrib.auth.hashers import make_password, check_password
 from django.forms.models import model_to_dict
+from django.core.files.storage import FileSystemStorage
 
 from web_app.models import User, Cart
 from web_app.data import *
+
+from os import remove, getcwd
+
+fs = FileSystemStorage()
 
 
 def my_account(request):
@@ -104,15 +109,35 @@ def update_account(request, field):
     elif request.user == "guest":
         return redirect("/signin")
 
+    # Update user name
     if field == "name":
         request.user.name = request.POST["name"]
         request.user.save()
+
+    # Update user password
     elif field == "password":
         if check_password(request.POST["old-password"], request.user.password):
             request.user.password = make_password(request.POST["new-password"])
             request.user.save()
         else:
             return HttpResponse('wrong password', content_type="text/plain")
+
+    # Update user avatar
+    elif field == "avatar":
+        try:
+            avatar = request.FILES['avatar']
+            if request.user.avatar:
+                remove(getcwd() + '/web_app/static/images/avatar/' +
+                       request.user.avatar)
+            fs.save(getcwd() + '/web_app/static/images/avatar/' +
+                    avatar.name, avatar)
+            request.user.avatar = avatar.name
+        except:
+            if request.user.avatar:
+                remove(getcwd() + '/web_app/static/images/avatar/' +
+                       request.user.avatar)
+            request.user.avatar = None
+        request.user.save()
     else:
         return HttpResponse("Invalid request")
 
