@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
-from web_app.models import Cart, Product
 from django.views.decorators.csrf import csrf_exempt
+
+from web_app.models import Cart, Product
 
 
 def view_cart(request):

@@ -4,11 +4,12 @@ from django.template import loader
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
-from web_app.models import User, Cart
 from django.contrib.auth.hashers import make_password, check_password
-from secrets import token_urlsafe
 
-import re
+from web_app.models import User, Cart
+
+from re import match
+from secrets import token_urlsafe
 
 
 @csrf_exempt
@@ -92,11 +93,11 @@ def sign_up(request):
             return HttpResponse("Name must be lower than 255 characters and not empty.")
 
         username = request.POST["username"]
-        if len(username) < 4 or len(username) > 25 or re.match(r'^[a-zA-Z0-9]+$', username) is None:
+        if len(username) < 4 or len(username) > 25 or match(r'^[a-zA-Z0-9]+$', username) is None:
             return HttpResponse("Usernames must contain only letters and digits and between 4 and 25 characters.")
 
         password = request.POST["password"]
-        if re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,4096}$', password) is None:
+        if match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,4096}$', password) is None:
             return HttpResponse("Passwords must contain at least one uppercase, one lowercase, one digit, one special character and at least 8 characters long.")
         hashed_pwd = make_password(password)
 

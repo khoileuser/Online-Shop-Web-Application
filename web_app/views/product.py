@@ -6,12 +6,13 @@ from django.core.paginator import Paginator
 from django.db.models import Max
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
+
 from web_app.models import Product, User
+
+from thefuzz import process
 
 from os import getcwd, listdir, remove
 from shutil import rmtree
-
-from thefuzz import process
 
 fs = FileSystemStorage()
 
