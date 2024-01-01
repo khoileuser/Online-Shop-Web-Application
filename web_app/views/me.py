@@ -63,6 +63,16 @@ def my_account(request):
 
 @csrf_exempt
 def delete_accout(request):
+    """
+    The `delete_account` function deletes a user's account along with their associated cards, addresses,
+    products in their cart, and session data, and then redirects to the homepage.
+
+    :param request: The "request" parameter is an object that represents the HTTP request made by the
+    client. It contains information about the request, such as the method used (GET, POST, etc.), user
+    information, session data, and more. In this case, the function is expecting a request object to be
+    passed
+    :return: a redirect to the root URL ("/").
+    """
     if request.method != "POST":
         return HttpResponse("Invalid method")
     elif request.user == "guest":

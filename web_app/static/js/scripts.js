@@ -977,6 +977,12 @@ function addImg(input) {
     previewRow.appendChild(previewCol);
 }
 
+/**
+ * The function `editAvatar` updates the source of an HTML image element with the selected file from an
+ * input element.
+ * @param input - The input parameter is the file input element that allows the user to select an image
+ * file from their device.
+ */
 function editAvatar(input) {
     var avatar = document.querySelector('.avatar-img');
     avatar.src = URL.createObjectURL(input.files[0]);
