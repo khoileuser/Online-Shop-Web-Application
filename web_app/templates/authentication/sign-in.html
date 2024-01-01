@@ -83,16 +83,18 @@
                 <div class="col d-flex align-items-center justify-content-center">
                     <form class="w-50 signin-form" method="POST" action="/signin/">
                         <h1 class="mb-3 heading">SIGN IN</h1>
-                        <div class="form-outline mb-3">
-                            <label for="username">Username</label>
+                        <div class="form-floating mb-3">
                             <input type="text" id="username" name="username" class="form-control username"
-                                placeholder="Username" oninput="signInEdit()" required />
+                                placeholder="Username" oninput="signInEdit()" onkeypress="handleKeyPress(event, 'auth')"
+                                required>
+                            <label for="username">Username</label>
                         </div>
 
-                        <div class="form-outline mb-4">
-                            <label for="password">Password</label>
+                        <div class="form-floating mb-4">
                             <input type="password" id="password" name="password" class="form-control password"
-                                placeholder="Password" oninput="signInEdit()" required />
+                                placeholder="Password" oninput="signInEdit()" onkeypress="handleKeyPress(event, 'auth')"
+                                required />
+                            <label for="password">Password</label>
                         </div>
 
                         <div class="d-grid mb-3">

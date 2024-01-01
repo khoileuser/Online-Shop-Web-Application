@@ -467,13 +467,12 @@ body {
 
     .anm-btn {
         background-image: var(--blue-gradient);
-        border-color: var(--blue-gradient);
+        border-color: none;
         transition: all 0.25s;
     }
 
     .anm-btn:hover {
         background-image: var(--pink-gradient);
-        border-color: var(--pink-gradient);
     }
 
     .anm-btn span {
@@ -874,5 +873,15 @@ body {
     .no-products {
         background-color: white;
         padding: 100px;
+    }
+}
+
+.add-pd-page {
+    background-color: white;
+
+    .del-col-btn {
+        position: absolute;
+        top: -15px;
+        right: 0
     }
 }

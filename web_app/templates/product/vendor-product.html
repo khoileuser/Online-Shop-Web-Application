@@ -7,7 +7,7 @@
 <div class="modal fade add-card-modal" id="delPd" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="delPdLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form method="POST" action="product/delete/{{ product_id }}">
+        <form method="POST" action="/product/delete/{{ product_id }}">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="delPdLabel">Do you want to delete this product?</h1>
@@ -61,7 +61,7 @@
                             </div>
                             <div class="col-6 col-md-5">
                                 <a type="button" href="/product/update/{{ product_id }}" class="btn btn-primary w-100">
-                                    <span>Update</span>
+                                    <span>Edit</span>
                                 </a>
                             </div>
                         </div>

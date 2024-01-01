@@ -1,102 +1,113 @@
+{% load static %}
+
 {% include "partials/header.html" %}
 
-<!DOCTYPE html>
-<html> 
-    <body>
-        <body class="basic_information-container">
-            <div class="name">
-                <h3>Basic information</h3>
-            </div>
-            <div class="basic-item">
-                <div class="row">
-                    <div class="col-md-3">Image of the product</div>
-                    <div class="col-md-9">
-                        <p>Scale of image: 1:1</p>
-                        <form action="/upload-image" method="post" enctype="multipart/form-data">
-                            <input type="file" id="imageUpload" name="imageUpload" accept="image/*">
-                            <input type="submit" value="Tải lên">
-                        </form>                  
-                    </div>
+<div class="dummy"></div>
+
+<div class="container add-pd-page rounded shadow-sm p-5">
+    <div class="heading">
+        <h3>Basic information</h3>
+    </div>
+
+    <form method="POST" action="/product/update/{{ id }}" enctype="multipart/form-data">
+
+        <div class="row mt-4">
+            <div class="col-3 d-flex align-items-center">Product's images</div>
+            <div class="col-9">
+                <div class="input-group">
+                    <label class="input-group-text" for="image-upload">Upload</label>
+                    <input name="product-img" type="file" class="form-control product-img" id="image-upload"
+                        accept='image/*' onchange="addImg(this)">
                 </div>
             </div>
-            <div class="basic-item">
-                <div class="row">
-                    <div class="col-md-3">Name of the product</div>
-                    <div class="col-md-9">
-                        <input type="text" id="fullName" name="fullName">
+            <div class="col-12 mt-4">
+                <input type="hidden" class="img-range" name="img-range" value="{{ img_range }}">
+                <div class="row preview-img">
+
+                    {% for i, image in img_range_images %}
+                    <div class="col-2 d-flex justify-content-center align-items-center position-relative">
+                        <button class="btn btn-primary del-col-btn position-absolute"
+                            onclick="removeImg(this.parentElement)">
+                            X
+                        </button>
+                        <img src="{% static 'images/products/' %}{{ image }}" alt="preview image"
+                            class="img-fluid rounded">
+                        <input type="text" class="d-none img-input-hidden" name="preview-img-{{ i }}"
+                            value="{{ image }}">
                     </div>
+                    {% endfor %}
+
                 </div>
-            </div>
-            <div class="basic-item">
-                <div class="row">
-                    <div class="col-md-3">Thể loại sản phẩm</div>
-                    <div class="col-md-9">
-                        <select id="category" name="category">
-                            <option value="technology">Electronic accessory</option>
-                            <option value="fashion">Kitchen</option>
-                            <option value="food">Fashion</option>
-                            <option value="sports">House</option>
-                            <option value="sports">Baby</option>
-                            <option value="sports">Books</option>
-                            <option value="sports">Luggage</option>
-                            <option value="sports">Beauty</option>
-                            <option value="sports">Shoes</option>
-                            <option value="sports">Pet supplies</option>
-                            <option value="sports">Sport</option>
-                            <option value="sports">Watches</option>
-                            <option value="sports">Healthcare</option>
-                            <option value="sports">Automotive</option>
-                            <option value="sports">Arts and crafts</option>
-                            <!-- Các option khác có thể được thêm vào đây -->
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="basic-item">
-                <div class="row">
-                    <div class="col-md-3">
-                        <label for="message">Miêu tả sản phẩm</label>
-                    </div>
-                    <div class="col-md-9">
-                        <textarea id="message" name="message" rows="10" cols="90"></textarea>
-                    </div>
-                </div>
-            </div>
-        
-        <div class="information-button-container">
-            <div class="button">
-                <button type="button" value="Click here">Cancel</button>
-            </div>
-            <div class="button">
-                <button type="button" value="Click here">Save and hide</button>
-            </div>
-            <div class="button">
-                <button type="button" value="Click here">Save and show</button>
             </div>
         </div>
-    </body>
-    <style>
-        .basic_information-container{
-            border: 3px solid black;
 
-            width: 70%;
-            height: 700px;
-            margin-top: 0;
-            margin-bottom: 0;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .basic-item{
-            margin-bottom: 40px;
-        }
-        .information-button-container-flex{
-            float: right;
-            display: flex;
-        }
-        .information-button-container-flex button{
-            margin-right: 10px;
-        }
-    </style>
-</html>
+        <div class=" row mt-4">
+            <div class="col-3 d-flex align-items-center">Product's name</div>
+            <div class="col-9">
+                <div class="form-floating">
+                    <input type="text" class="form-control" name="pd-name" placeholder="Product name" value="{{ name }}"
+                        required>
+                    <label for="pd-name">Name</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-3 d-flex align-items-center">Product's price</div>
+            <div class="col-9">
+                <div class="form-floating">
+                    <input type="text" class="form-control" name="pd-price" placeholder="Product price"
+                        value="{{ price }}" required>
+                    <label for="pd-price">$Price</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-3 d-flex align-items-center">Product's category</div>
+            <div class="col-4">
+                <div class="form-floating">
+                    <select name="pd-category" class="form-select" id="floatingSelect" onchange="editCategory(this)"
+                        required>
+                        <option value="{{ pd_category }}">{{ pd_category }}</option>
+                        {% for category in categories %}
+                        {% if category != pd_category %}
+                        <option value="{{ category }}">{{ category }}</option>
+                        {% endif %}
+                        {% endfor %}
+                        <option value="other">Other...</option>
+                    </select>
+                    <label for="floatingSelect">Select exist category</label>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="form-floating">
+                    <input name="pd-new-category" type="text" class="form-control pd-category" id="pd-category"
+                        placeholder="Product category" disabled>
+                    <label for="pd-category">Create new category</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-3 mt-4">Product's description</div>
+            <div class="col-9">
+                <div class="form-floating">
+                    <textarea name="pd-description" class="form-control" placeholder="Product description"
+                        id="floatingTextarea2" style="height: 400px">{{ description }}</textarea>
+                    <label for="floatingTextarea2">Description</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5 d-flex justify-content-end">
+            <div>
+                <button type="button" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+
+    </form>
+</div>
 
 {% include "partials/footer.html" %}

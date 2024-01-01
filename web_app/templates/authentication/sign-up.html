@@ -90,41 +90,38 @@
                 <div class="col d-flex align-items-center justify-content-center">
                     <form class="w-50 signup-form" method="POST" action="/signup/">
                         <h1 class="mb-3 heading">SIGN UP</h1>
-                        <div class="form-outline mb-3">
-                            <label for="username">Name</label>
+                        <div class="form-floating mb-3">
                             <input type="text" id="name" name="name" class="form-control name" placeholder="Name"
-                                oninput="signUpEditName()" required />
+                                oninput="signUpEditName()" required>
+                            <label for="username">Name</label>
                             <i class="name-danger caution text-danger">*Name must be lower than 255 characters and not
                                 empty.</i>
                         </div>
 
-                        <div class="form-outline mb-3">
-                            <label for="username">Username</label>
+                        <div class="form-floating mb-3">
                             <input type="text" id="username" name="username" class="form-control username"
-                                placeholder="Username" oninput="signUpEditUsername()" required />
+                                placeholder="Username" oninput="signUpEditUsername()" required>
+                            <label for="username">Username</label>
                             <i class="username-danger caution text-danger">*Usernames must contain only letters and
-                                digits and between
-                                4
-                                and 25 characters.</i>
+                                digits and between 4 and 25 characters.</i>
                         </div>
 
-                        <div class="form-outline mb-3">
-                            <label for="password">Password</label>
+                        <div class="form-floating mb-3">
                             <input type="password" id="password" name="password" class="form-control password"
-                                placeholder="Password" oninput="signUpEditPassword()" required />
+                                placeholder="Password" oninput="signUpEditPassword()" required>
+                            <label for="password">Password</label>
                             <i class="password-danger caution text-danger">*Passwords must contain at least one
-                                uppercase, one
-                                lowercase, one digit, one special character and at least 8 characters long.</i>
+                                uppercase, one lowercase, one digit, one special character and at least 8 characters
+                                long.</i>
                         </div>
 
-                        <div class="form-outline mb-4">
+                        <div class="form-floating mb-4">
                             <label for="confirm-password">Confirm password</label>
                             <input type="password" id="confirm-password" name="confirm-password"
                                 class="form-control confirm-password" placeholder="Confirm password"
                                 oninput="signUpConfirmPassword()" required />
                             <i class="confirm-password-danger caution text-danger">*Password confirmation doesn't match
-                                the
-                                password</i>
+                                the password</i>
                         </div>
 
                         <div class="container row check-boxes align-items-center mb-3">

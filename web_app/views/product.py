@@ -4,9 +4,16 @@ from django.template import loader
 from django.shortcuts import redirect
 from django.core.paginator import Paginator
 from django.db.models import Max
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import FileSystemStorage
 from web_app.models import Product, User
 
+from os import getcwd, listdir, remove
+from shutil import rmtree
+
 from thefuzz import process
+
+fs = FileSystemStorage()
 
 
 def listing(request):
@@ -90,22 +97,30 @@ def listing(request):
 
 
 def listing_vendor(request, vendor):
+    """
+    The function "listing_vendor" retrieves a list of products owned by a specific vendor and renders
+    them in a template.
+
+    :param request: The request object contains information about the current HTTP request, such as the
+    method (GET, POST, etc.) and user information
+    :param vendor: The "vendor" parameter is the username of the vendor whose products we want to list
+    :return: an HttpResponse object.
+    """
     if request.method != "GET":
         return HttpResponse('Invalid request')
-    elif request.user != "guest":
+    elif request.user.account_type == "V":
         context = {
             "username": request.user.username,
             "cart_quantity": request.user.cart_quantity,
             "type": request.user.account_type
         }
     else:
-        context = {
-            "username": None,
-            "cart_quantity": None,
-            "type": None
-        }
+        return HttpResponse('Invalid request')
 
-    vendor = User.objects.get(username=vendor)
+    try:
+        vendor = User.objects.get(username=vendor)
+    except:
+        return HttpResponse('You are not vendor')
     products = Product.objects.filter(owner=vendor)
     context['products'] = products
 
@@ -140,7 +155,11 @@ def view_product(request, product_id):
             "type": None
         }
 
-    product = Product.objects.get(id=product_id)
+    try:
+        product = Product.objects.get(id=product_id)
+    except:
+        return HttpResponse('Invalid product id')
+
     context["product_id"] = product.id
     context["category"] = product.category
     context["name"] = product.name
@@ -161,15 +180,154 @@ def view_product(request, product_id):
     return HttpResponse(template.render(context, request))
 
 
+@csrf_exempt
 def add_product(request):
-    template = loader.get_template("product/add-product.html")
-    return HttpResponse(template.render())
+    """
+    The `add_product` function handles the logic for adding a new product to the system, including
+    validating the user's account type, retrieving categories for the product, and saving the product
+    details and images.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    user. It contains information about the request, such as the user making the request, the method
+    used (GET or POST), and any data sent with the request
+    :return: an HttpResponse object or redirects to another page.
+    """
+    if request.user.account_type == "V":
+        context = {
+            "username": request.user.username,
+            "cart_quantity": request.user.cart_quantity,
+            "type": request.user.account_type
+        }
+    else:
+        return HttpResponse('Invalid request')
+
+    # If the request method is GET, retrieve categories and render the add product page
+    if request.method == "GET":
+        categories = Product.objects.values_list(
+            'category', flat=True).distinct()
+        context['categories'] = categories
+        template = loader.get_template("product/add-product.html")
+        return HttpResponse(template.render(context, request))
+
+    # If the request method is POST, retrieve product details and images and save them to the database
+    elif request.method == "POST":
+        name = request.POST["pd-name"]
+        price = float(request.POST["pd-price"])
+        category = request.POST["pd-category"]
+        if category == 'other':
+            category = request.POST["pd-new-category"]
+        description = request.POST["pd-description"]
+
+        product = Product.objects.create(
+            name=name, price=price, category=category, description=description, owner=request.user)
+
+        images = []
+        for i in range(int(request.POST["img-range"])):
+            upload_img = request.FILES["preview-img-"+str(i)]
+            fs.save(getcwd() + '/web_app/static/images/products/' +
+                    str(product.id) + '/' + upload_img.name, upload_img)
+            images.append(str(product.id) + '/' + upload_img.name)
+        product.images = images
+        product.save()
+
+        return redirect('/product/'+str(product.id))
+    else:
+        return HttpResponse('Invalid request')
 
 
-def update_product(request):
-    template = loader.get_template("product/update-product.html")
-    return HttpResponse(template.render())
+@csrf_exempt
+def update_product(request, product_id):
+    if request.user.account_type == "V":
+        context = {
+            "username": request.user.username,
+            "cart_quantity": request.user.cart_quantity,
+            "type": request.user.account_type
+        }
+    else:
+        return HttpResponse('Invalid request')
+
+    try:
+        product = Product.objects.get(id=product_id)
+    except:
+        return HttpResponse('Invalid product id')
+
+    # If the request method is GET, retrieve categories and render the update product page
+    if request.method == "GET":
+        context['id'] = product.id
+        context['name'] = product.name
+        context['price'] = product.price
+        context['pd_category'] = product.category
+        context['description'] = product.description
+        categories = Product.objects.values_list(
+            'category', flat=True).distinct()
+        context['categories'] = categories
+        img_range_images = zip(range(len(product.images)), product.images)
+        context['img_range_images'] = img_range_images
+        context['img_range'] = len(product.images)
+
+        template = loader.get_template("product/update-product.html")
+        return HttpResponse(template.render(context, request))
+
+    # If the request method is POST, retrieve product details and images and save them to the database
+    elif request.method == "POST":
+        name = request.POST["pd-name"]
+        price = float(request.POST["pd-price"])
+        category = request.POST["pd-category"]
+        if category == 'other':
+            category = request.POST["pd-new-category"]
+        description = request.POST["pd-description"]
+
+        images = []
+        for i in range(int(request.POST["img-range"])):
+            try:
+                upload_img = request.FILES["preview-img-"+str(i)]
+                fs.save(getcwd() + '/web_app/static/images/products/' +
+                        str(product.id) + '/' + upload_img.name, upload_img)
+                images.append(str(product.id) + '/' + upload_img.name)
+            except:
+                images.append(request.POST["preview-img-"+str(i)])
+
+        if images == []:
+            rmtree(getcwd() + '/web_app/static/images/products/' + str(product.id))
+        else:
+            for image in listdir(getcwd() + '/web_app/static/images/products/' + str(product.id)):
+                if str(product.id) + '/' + image not in images:
+                    remove(getcwd() + '/web_app/static/images/products/' +
+                           str(product.id) + '/' + image)
+
+        product.name = name
+        product.price = price
+        product.category = category
+        product.description = description
+        product.images = images
+        product.save()
+
+        return redirect('/product/'+str(product.id))
+    else:
+        return HttpResponse('Invalid request')
 
 
-def delete_product(request):
-    return HttpResponse(200)
+@csrf_exempt
+def delete_product(request, product_id):
+    """
+    This function deletes a product if the request is a POST request and the user is a vendor.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the request method (e.g., GET, POST), user session, user
+    agent, and more
+    :param product_id: The product_id parameter is the unique identifier of the product that needs to be
+    deleted
+    :return: an HttpResponse object or redirecting to a specific URL.
+    """
+    if request.method != "POST":
+        return HttpResponse('Invalid request')
+    elif request.user.account_type != "V":
+        return HttpResponse('Invalid request')
+
+    product = Product.objects.get(id=product_id)
+    if product.owner == request.user:
+        rmtree(getcwd() + '/web_app/static/images/products/' + str(product.id))
+        product.delete()
+    else:
+        return HttpResponse('You are not the owner of this product')
+    return redirect('/products/vendor/' + request.user.username)

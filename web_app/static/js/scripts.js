@@ -866,9 +866,14 @@ function submitFilterPrice() {
  * @param event - The event parameter is an object that represents the event that occurred, in this
  * case, a key press event. It contains information about the event, such as the key that was pressed.
  */
-function handleKeyPress(event) {
+function handleKeyPress(event, input) {
     if (event.key === 'Enter') {
-        submitSearch();
+        if (input == 'search') {
+            submitSearch();
+        }
+        else if (input == 'auth') {
+            signIn();
+        }
     }
 }
 
@@ -901,4 +906,73 @@ window.onload = function () {
         var search = queryString.get('search');
         document.querySelector('.search-input').value = search;
     }
+}
+
+/**
+ * The function enables the input field for category if the value is 'other'.
+ * @param input - The input parameter is the HTML input element that triggered the event.
+ */
+function editCategory(input) {
+    if (input.value == 'other') {
+        document.querySelector('.pd-category').removeAttribute("disabled");
+    }
+}
+
+/**
+ * The function removes an image element from the DOM and updates the value of an input range element.
+ * @param col - The `col` parameter represents the column element that needs to be removed from the
+ * DOM.
+ */
+function removeImg(col) {
+    col.remove();
+    const imgRange = parseInt(document.querySelector('.img-range').value);
+    document.querySelector('.img-range').value = imgRange - 1;
+
+    var previewRow = document.querySelector('.preview-img');
+    var previewCols = previewRow.querySelectorAll('.col-2');
+    for (i = 0; i < previewCols.length; i++) {
+        previewCols[i].querySelector('.img-input-hidden').name = 'preview-img-' + i;
+    }
+}
+
+/**
+ * The function `addImg` is used to add an image preview to a specified container element.
+ * @param input - The `input` parameter is the file input element that the user interacts with to
+ * select an image file.
+ */
+function addImg(input) {
+    var previewRow = document.querySelector('.preview-img');
+
+    var previewCol = document.createElement('div');
+    previewCol.classList.add('col-2');
+    previewCol.classList.add('d-flex');
+    previewCol.classList.add('justify-content-center');
+    previewCol.classList.add('align-items-center');
+    previewCol.style.position = 'relative';
+
+    var deleteButton = document.createElement('button');
+    deleteButton.innerHTML = 'X';
+    deleteButton.classList.add('btn');
+    deleteButton.classList.add('btn-primary');
+    deleteButton.classList.add('del-col-btn');
+    deleteButton.setAttribute('onclick', 'removeImg(' + previewCol + ')');
+    previewCol.appendChild(deleteButton);
+
+    var previewImg = document.createElement('img');
+    previewImg.src = URL.createObjectURL(input.files[0]);
+    previewImg.setAttribute('alt', 'preview image')
+    previewImg.classList.add('img-fluid');
+    previewImg.classList.add('rounded');
+
+    var previewInput = document.createElement('input');
+    previewInput.classList.add('d-none');
+    previewInput.classList.add('img-input-hidden');
+    previewInput.type = 'file';
+    previewInput.name = 'preview-img-' + previewRow.childElementCount;
+    previewInput.files = input.files;
+
+    document.querySelector('.img-range').value = previewRow.childElementCount + 1;
+    previewCol.appendChild(previewImg);
+    previewCol.appendChild(previewInput);
+    previewRow.appendChild(previewCol);
 }
