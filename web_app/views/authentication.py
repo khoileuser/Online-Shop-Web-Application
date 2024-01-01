@@ -109,8 +109,7 @@ def sign_up(request):
             return HttpResponse("Invalid credentials")
         user.save()
 
-        cart = Cart(owner=user, total_price=0)
-        cart.save()
+        Cart.objects.create(owner=user)
 
         return_session(request, user)
         return redirect("/")

@@ -83,7 +83,10 @@ def add_to_cart(request, product_id, quantity):
         return redirect("/signin")
 
     product = Product.objects.get(id=product_id)
-    cart = Cart.objects.get(owner=request.user)
+    try:
+        cart = Cart.objects.get(owner=request.user)
+    except:
+        cart = Cart.objects.create(owner=request.user)
     exist = None
     try:
         exist = cart.products.all().get(product_id=product_id)
@@ -136,7 +139,6 @@ def remove_from_cart(request, product_id, quantity):
     elif request.user == "guest":
         return redirect("/signin")
 
-    product = Product.objects.get(id=product_id)
     cart = Cart.objects.get(owner=request.user)
     exist = None
     try:

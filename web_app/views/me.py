@@ -4,11 +4,10 @@ from django.template import loader
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from web_app.models import User
 from django.contrib.auth.hashers import make_password, check_password
 from django.forms.models import model_to_dict
 
-
+from web_app.models import User, Cart
 from web_app.data import *
 
 
@@ -58,7 +57,37 @@ def my_account(request):
 
 
 @csrf_exempt
-def update(request, field):
+def delete_accout(request):
+    if request.method != "POST":
+        return HttpResponse("Invalid method")
+    elif request.user == "guest":
+        return redirect("/signin")
+
+    cards = request.user.cards.all()
+    for card in cards:
+        card.delete()
+    addresses = request.user.addresses.all()
+    for address in addresses:
+        address.delete()
+
+    cart = Cart.objects.get(owner=request.user)
+    for product in cart.products.all():
+        product.delete()
+
+    request.user.delete()
+
+    fields = ["user_id", "token"]
+    for field in fields:
+        try:
+            del request.session[field]
+        except KeyError:
+            continue
+
+    return redirect("/")
+
+
+@csrf_exempt
+def update_account(request, field):
     """
     The function updates the name or password of a user based on the request and field provided.
 
