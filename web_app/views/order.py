@@ -201,6 +201,8 @@ def checkout(request):
     """
     if request.user == "guest":
         return redirect("/signin")
+    elif request.user.account_type != "C":
+        return HttpResponse('You are not a customer')
 
     if request.method == "POST":
         mode = request.POST['mode']
@@ -231,6 +233,8 @@ def place_order(request):
         return HttpResponse('Invalid request')
     elif request.user == "guest":
         return redirect("/signin")
+    elif request.user.account_type != "C":
+        return HttpResponse('You are not a customer')
 
     # retrieve the context from the session and delete it from the session
     context = request.session.get('context')
@@ -330,6 +334,8 @@ def view_order(request, order_id):
         return HttpResponse('Invalid request')
     elif request.user == "guest":
         return redirect("/signin")
+    elif request.user.account_type != "C":
+        return HttpResponse('You are not a customer')
 
     order = Order.objects.get(id=order_id)
     if order.owner != request.user:
@@ -377,6 +383,8 @@ def view_orders(request):
         return HttpResponse('Invalid request')
     elif request.user == "guest":
         return redirect("/signin")
+    elif request.user.account_type != "C":
+        return HttpResponse('You are not a customer')
 
     _orders = Order.objects.filter(owner=request.user).order_by('id')
     orders = []

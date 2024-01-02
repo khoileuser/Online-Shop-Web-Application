@@ -57,8 +57,56 @@ def my_account(request):
     context['names'] = names_data
     context['phones'] = phones_data
 
-    template = loader.get_template('my-account.html')
+    template = loader.get_template('me/my-account.html')
     return HttpResponse(template.render(context, request))
+
+
+def wishlist(request):
+    if request.method != "GET":
+        return HttpResponse("Invalid method")
+    elif request.user == "guest":
+        return redirect("/signin")
+    elif request.user.account_type != "C":
+        return HttpResponse('You are not a customer')
+
+    context = {
+        "username": request.user.username,
+        "cart_quantity": request.user.cart_quantity,
+        "type": request.user.account_type
+    }
+
+    wishlist = request.user.wishlist.all().order_by('id')
+
+    # append all vendor exist in user's cart
+    vendors = []
+    [vendors.append(wishlist_product.owner)
+     for wishlist_product in wishlist if wishlist_product.owner not in vendors]
+
+    # group vendor
+    products_by_vendor = []
+    for vendor in vendors:
+        # group products by vendor
+        _wishlist_products = [
+            wishlist_product for wishlist_product in wishlist if wishlist_product.owner == vendor]
+        products_by_vendor.append({
+            'vendor': {
+                "id": vendor.id,
+                "name": vendor.name,
+                "username": vendor.username
+            },
+            'cart_products': _wishlist_products,
+        })
+
+    template = loader.get_template('me/wishlist.html')
+    return HttpResponse(template.render(context, request))
+
+
+def add_to_wishlist(request, product_id):
+    pass
+
+
+def remove_from_wishlist(request, product_id):
+    pass
 
 
 @csrf_exempt

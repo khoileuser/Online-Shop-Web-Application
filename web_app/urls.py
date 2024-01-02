@@ -19,6 +19,9 @@ urlpatterns = [
     # my account
     path('my-account/', me.my_account),
     path('me/', me.my_account),
+    path('wishlist/', me.wishlist),
+    path('wishlist/add/<int:product_id>', me.add_to_wishlist),
+    path('wishlist/remove/<int:product_id>', me.remove_from_wishlist),
     path('me/update/<str:field>', me.update_account),
     path('me/delete/', me.delete_accout),
     path('me/address/add/', me.address_add),

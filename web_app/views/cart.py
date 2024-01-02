@@ -21,6 +21,8 @@ def view_cart(request):
         return HttpResponse("Invalid method")
     elif request.user == "guest":
         return redirect("/signin")
+    elif request.user.account_type != "C":
+        return HttpResponse('You are not a customer')
 
     # get user's cart
     try:
@@ -86,6 +88,8 @@ def add_to_cart(request, product_id, quantity):
         return HttpResponse("Invalid method")
     elif request.user == "guest":
         return redirect("/signin")
+    elif request.user.account_type != "C":
+        return HttpResponse('You are not a customer')
 
     product = Product.objects.get(id=product_id)
     try:
@@ -143,6 +147,8 @@ def remove_from_cart(request, product_id, quantity):
         return HttpResponse("Invalid method")
     elif request.user == "guest":
         return redirect("/signin")
+    elif request.user.account_type != "C":
+        return HttpResponse('You are not a customer')
 
     cart = Cart.objects.get(owner=request.user)
     exist = None

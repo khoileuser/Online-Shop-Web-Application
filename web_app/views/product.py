@@ -109,19 +109,17 @@ def listing_vendor(request, vendor):
     """
     if request.method != "GET":
         return HttpResponse('Invalid request')
-    elif request.user.account_type == "V":
-        context = {
-            "username": request.user.username,
-            "cart_quantity": request.user.cart_quantity,
-            "type": request.user.account_type
-        }
-    else:
-        return HttpResponse('Invalid request')
+
+    context = {
+        "username": request.user.username,
+        "cart_quantity": request.user.cart_quantity,
+        "type": request.user.account_type
+    }
 
     try:
         vendor = User.objects.get(username=vendor)
     except:
-        return HttpResponse('You are not vendor')
+        return HttpResponse('Not found')
     products = Product.objects.filter(owner=vendor)
     context['products'] = products
 
@@ -198,14 +196,14 @@ def add_product(request):
     used (GET or POST), and any data sent with the request
     :return: an HttpResponse object or redirects to another page.
     """
-    if request.user.account_type == "V":
-        context = {
-            "username": request.user.username,
-            "cart_quantity": request.user.cart_quantity,
-            "type": request.user.account_type
-        }
-    else:
-        return HttpResponse('Invalid request')
+    if request.user.account_type != "V":
+        return HttpResponse('You are not a vendor')
+
+    context = {
+        "username": request.user.username,
+        "cart_quantity": request.user.cart_quantity,
+        "type": request.user.account_type
+    }
 
     # If the request method is GET, retrieve categories and render the add product page
     if request.method == "GET":
@@ -243,14 +241,14 @@ def add_product(request):
 
 @csrf_exempt
 def update_product(request, product_id):
-    if request.user.account_type == "V":
-        context = {
-            "username": request.user.username,
-            "cart_quantity": request.user.cart_quantity,
-            "type": request.user.account_type
-        }
-    else:
-        return HttpResponse('Invalid request')
+    if request.user.account_type != "V":
+        return HttpResponse('You are not a vendor')
+
+    context = {
+        "username": request.user.username,
+        "cart_quantity": request.user.cart_quantity,
+        "type": request.user.account_type
+    }
 
     try:
         product = Product.objects.get(id=product_id)
@@ -328,7 +326,7 @@ def delete_product(request, product_id):
     if request.method != "POST":
         return HttpResponse('Invalid request')
     elif request.user.account_type != "V":
-        return HttpResponse('Invalid request')
+        return HttpResponse('You are not a vendor')
 
     product = Product.objects.get(id=product_id)
     if product.owner == request.user:

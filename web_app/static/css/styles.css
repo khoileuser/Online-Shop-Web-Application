@@ -760,7 +760,8 @@ body {
     }
 }
 
-.cart-page {
+.cart-page,
+.wishlist-page {
     .cart-container {
         background-color: white;
 

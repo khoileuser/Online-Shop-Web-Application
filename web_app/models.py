@@ -15,7 +15,7 @@ class Address(models.Model):
     is_default = models.BooleanField(default=False)
 
 
-# The `Card` class represents a credit card with attributes such as card number, cardholder name,
+# The Card class represents a credit card with attributes such as card number, cardholder name,
 # expiration date, card type, cvc, and a flag indicating if it is the default card.
 class Card(models.Model):
     CARD_TYPE_CHOICES = (
@@ -53,6 +53,7 @@ class User(models.Model):
     cart_quantity = models.IntegerField(default=0)
     addresses = models.ManyToManyField(Address)
     cards = models.ManyToManyField(Card)
+    wishlist = models.ManyToManyField("Product")
 
 
 # The above class represents a Product model with fields for owner, name, price, images, description,
@@ -66,7 +67,7 @@ class Product(models.Model):
     category = models.CharField(max_length=255, null=True)
 
 
-# The `CartProduct` class represents a product in a shopping cart with a reference to the product and
+# The CartProduct class represents a product in a shopping cart with a reference to the product and
 # the quantity of that product.
 class CartProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -80,7 +81,7 @@ class Cart(models.Model):
     products = models.ManyToManyField(CartProduct)
 
 
-# The `Order` class represents an order made by a user, containing information such as the owner,
+# The Order class represents an order made by a user, containing information such as the owner,
 # products, address, card, total price, and status.
 class Order(models.Model):
     ORDER_STATUSES = [
