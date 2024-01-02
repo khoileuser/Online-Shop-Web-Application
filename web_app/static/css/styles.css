@@ -697,6 +697,10 @@ body {
             height: 20vh;
             width: 20vw;
         }
+
+        .btn-number {
+            border: 1px solid rgba(21, 24, 41, 1) !important;
+        }
     }
 
     .checkout-container {

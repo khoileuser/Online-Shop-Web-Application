@@ -51,8 +51,9 @@
                     </span>
                 </div>
 
-                <div class="col-8 col-md-4 col-lg-3 pd-quantity">
-                    <div class="pd-quantity-input">
+                <div
+                    class="col-8 col-md-4 col-lg-3 pd-quantity d-flex flex-row justify-content-center align-items-center">
+                    <div class="pd-quantity-input d-flex flex-row">
                         <div class="input-group">
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-default btn-number"
@@ -85,7 +86,7 @@
             </div>
 
             <div class="col-1 pd-remove d-none d-lg-flex justify-content-center align-items-center mb-3">
-                <button class="btn anm-btn pd-remove-btn"
+                <button class="btn anm-btn pd-remove-btn btn-danger"
                     onclick="editQuantity('{{ cart_product.product.id }}', 'remove', 'all')">Remove</button>
             </div>
         </div>
