@@ -58,6 +58,7 @@
                                             onclick="submitSearch()">Search</button>
                                     </div>
                                 </ul>
+
                             </div>
                         </li>
 
@@ -96,7 +97,7 @@
                                         <a class="dropdown-item" href="/orders">My Orders</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="/wishlist">Wishlist</a>
+                                        <a class="dropdown-item" href="/wishlist/{{ username }}">Wishlist</a>
                                     </li>
                                     {% else %}
                                     <li>

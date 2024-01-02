@@ -198,6 +198,11 @@ def view_product(request, product_id):
     context["vendor_username"] = product.owner.username
     context["vendor_avatar"] = product.owner.avatar
 
+    if request.user.wishlist.filter(id=product.id).exists():
+        context['is_wishlist'] = True
+    else:
+        context['is_wishlist'] = False
+
     related_products = []
     products = Product.objects.filter(
         category=product.category).order_by('?')

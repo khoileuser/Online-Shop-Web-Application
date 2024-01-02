@@ -108,9 +108,14 @@
                 <button class="btn anm-btn pd-remove-btn btn-danger" data-bs-toggle="modal"
                     data-bs-target="#removeCartPd">Remove</button>
             </div>
+
+            {% if not forloop.last %}
+            <div class="col-12 border-bottom"></div>
+            {% endif %}
+
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
     {% endfor %}
 
     {% else %}

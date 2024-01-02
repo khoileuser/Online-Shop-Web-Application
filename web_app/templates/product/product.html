@@ -24,10 +24,30 @@
                 </div>
             </div>
             <div class="col-6">
-                <nav class="breadcrumb">
-                    <a href="/products" class="breadcrumbs__item">Products</a>
-                    <a href="/products/?filter={{ category }}" class="breadcrumbs__item is-active">{{ category }}</a>
-                </nav>
+                <div class="row d-flex justify-content-between">
+                    <div class="col">
+                        <nav class="breadcrumb">
+                            <a href="/products" class="breadcrumbs__item">Products</a>
+                            <a href="/products/?filter={{ category }}" class="breadcrumbs__item is-active">
+                                {{ category }}</a>
+                        </nav>
+                    </div>
+                    <div class="col d-flex justify-content-end">
+                        {% if is_wishlist %}
+                        <form method="POST" action="/wishlist/remove/{{ product_id }}">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-heart-fill"></i>
+                            </button>
+                        </form>
+                        {% else %}
+                        <form method="POST" action="/wishlist/add/{{ product_id }}">
+                            <button type="submit" class="btn btn-outline-secondary">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
 
                 <h3 class="name mt-4">{{ name }}</h3>
                 <h4 class="price mt-5">${{ price }}</h4>
@@ -76,11 +96,6 @@
                                     <button type="button" onclick="checkOutProduct('{{ product_id }}')"
                                         class="btn btn-primary buy-now-btn anm-btn w-100">
                                         <span>Buy Now</span></button>
-                                </form>
-                            </div>
-                            <div class="col-2">
-                                <form class="wishlist-add-form" method="POST" action="/wishlist/add/{{ product_id }}">
-
                                 </form>
                             </div>
                         </div>
