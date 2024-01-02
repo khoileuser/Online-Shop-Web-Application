@@ -206,12 +206,13 @@ def address_add(request):
         is_default=is_empty,
     )
 
-    try:
+    path = request.META.get('HTTP_REFERER')
+    if '/checkout/' in path:
         context = request.session.get("context")
         context["address"] = model_to_dict(address)
         request.session["context"] = context
         return redirect('/checkout/')
-    except:
+    elif '/my-account/' in path or '/me/' in path:
         return redirect(request.META['HTTP_REFERER'])
 
 
@@ -306,7 +307,8 @@ def card_add(request):
         is_default=is_empty,
     )
 
-    try:
+    path = request.META.get('HTTP_REFERER')
+    if '/checkout/' in path:
         context = request.session.get("context")
         expiration_date = month_map[card.expiration_date[:2]
                                     ] + ' 20' + card.expiration_date[-2:]
@@ -319,7 +321,7 @@ def card_add(request):
         }
         request.session["context"] = context
         return redirect('/checkout/')
-    except:
+    elif '/my-account/' in path or '/me/' in path:
         return redirect(request.META['HTTP_REFERER'])
 
 

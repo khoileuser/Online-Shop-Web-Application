@@ -47,6 +47,7 @@ urlpatterns = [
 
     # order
     path('checkout/', order.checkout),
+    path('checkout/change/<str:field>', order.checkout_change),
     path('order/place/', order.place_order),
     path('order/<int:order_id>', order.view_order),
     path('orders/<int:order_id>', order.view_order),

@@ -8,6 +8,147 @@
 
 {% include "partials/add-modal.html" %}
 
+<div class="modal fade" id="changeAddress" tabindex="-1" aria-labelledby="changeAddressLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changeAddressLabel">Change address</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    {% for address in addresses %}
+                    <div class="row">
+                        <div class="col-12 mt-2">
+                            <div class="row p-2">
+                                <div class="col-2 text-end pt-1">Phone number</div>
+                                <div class="col-4">
+                                    {% if '+' not in address.phone_number_code %}
+                                    <input class="form-control" type="text"
+                                        value="(+{{ address.phone_number_code }}) {{ address.phone_number }}" readonly>
+                                    {% else %}
+                                    <input class="form-control" type="text"
+                                        value="({{ address.phone_number_code }}) {{ address.phone_number }}" readonly>
+                                    {% endif %}
+                                </div>
+                                <div class="col-2 text-end pt-1">Country</div>
+                                <div class="col-4">
+                                    <input class="form-control" type="text" value="{{ address.country }}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="row p-2">
+                                <div class="col-2 text-end pt-1">Address</div>
+                                <div class="col-4">
+                                    <input class="form-control" type="text" value="{{ address.address }}" readonly>
+                                </div>
+                                <div class="col-2 text-end pt-1">City</div>
+                                <div class="col-4">
+                                    <input class="form-control" type="text" value="{{ address.city }}" readonly>
+                                </div>
+                            </div>
+
+                            <div class="row p-2">
+                                <div class="col-2 text-end pt-1">State</div>
+                                <div class="col-4">
+                                    <input class="form-control" type="text" value="{{ address.state }}" readonly>
+                                </div>
+                                <div class="col-2 text-end pt-1">Postal code</div>
+                                <div class="col-4">
+                                    <input class="form-control" type="text" value="{{ address.postal_code }}" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 text-center mb-3">
+                            <form method="POST" action="/checkout/change/address">
+                                <input type="hidden" name="address_id" value="{{ address.id }}">
+                                <button type="submit" class="btn btn-primary">
+                                    Select
+                                </button>
+                            </form>
+                        </div>
+
+                        {% if not forloop.last %}
+                        <div class="col-12 border-bottom"></div>
+                        {% endif %}
+
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="changeCard" tabindex="-1" aria-labelledby="changeCardLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changeCardLabel">Change card</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    {% for card in cards %}
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="row p-2">
+                                {% if card.card_type == "VISA" %}
+                                <div class="col-4 visa-logo rounded d-flex align-items-center justify-content-center">
+                                    <img src="{% static 'images/Visa_Brandmark_Blue_RGB_2021.png' %}"
+                                        class="img-fluid p-1" alt="visa-logo">
+                                </div>
+                                <div class="col-8 d-flex align-items-center">
+                                    <div class="row">
+                                        <div class="col-12">Visa ending in {{ card.card_number }}</div>
+                                        <div class="col-12">Expires {{ card.expiration_date }}</div>
+                                    </div>
+                                </div>
+
+                                {% elif card.card_type == "MC" %}
+                                <div
+                                    class="col-4 mastercard-logo rounded d-flex align-items-center justify-content-center">
+                                    <img src="{% static 'images/mc_symbol_opt_73_3x.png' %}" class="img-fluid"
+                                        alt="mastercard-logo">
+                                </div>
+                                <div class="col-8 d-flex align-items-center">
+                                    <div class="row">
+                                        <div class="col-12">Mastercard ending in {{ card.card_number }}</div>
+                                        <div class="col-12">Expires {{ card.expiration_date }}</div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-3 d-flex align-items-center justify-content-center">
+                            <form method="POST" action="/checkout/change/card">
+                                <input type="hidden" name="card_id" value="{{ card.id }}">
+                                <button type="submit" class="btn btn-primary">
+                                    Select
+                                </button>
+                            </form>
+                        </div>
+
+                        {% if not forloop.last %}
+                        <div class="col-12 border-bottom"></div>
+                        {% endif %}
+
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container checkout-page">
     <div class="row child-container rounded shadow-sm p-4">
         <div class="text-center">
@@ -58,6 +199,11 @@
                     <input class="form-control" type="text" value="{{ address.postal_code }}" readonly>
                 </div>
             </div>
+        </div>
+        <div class="col-12 text-center">
+            <button type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#changeAddress">
+                Change address
+            </button>
         </div>
         {% else %}
         <div class="text-center">
@@ -123,49 +269,64 @@
                     </span>
                 </div>
             </div>
+
+            {% if not forloop.last %}
+            <div class="col-12 border-bottom"></div>
+            {% endif %}
+
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
     {% endfor %}
 
     <div class="row child-container rounded shadow-sm mt-4 p-4">
         <!-- Payment Methods -->
+        <div class="methods">
+            <h4>Payment method</h4>
+        </div>
         {% if card %}
         <div class="col-8">
-            <div class="methods">
-                <h4>Payment method</h4>
-            </div>
             <div class="row p-2">
-                {% if card.card_type == "VISA" %}
-                <div class="col-2 visa-logo rounded d-flex align-items-center justify-content-center">
-                    <img src="{% static 'images/Visa_Brandmark_Blue_RGB_2021.png' %}" class="img-fluid p-1"
-                        alt="visa-logo">
-                </div>
-                <div class="col-10 d-flex align-items-center">
+                <div class="col-6">
                     <div class="row">
-                        <div class="col-12">Visa ending in {{ card.card_number }}</div>
-                        <div class="col-12">Expires {{ card.expiration_date }}</div>
-                    </div>
-                </div>
+                        {% if card.card_type == "VISA" %}
+                        <div class="col-4 visa-logo rounded d-flex align-items-center justify-content-center">
+                            <img src="{% static 'images/Visa_Brandmark_Blue_RGB_2021.png' %}" class="img-fluid p-1"
+                                alt="visa-logo">
+                        </div>
+                        <div class="col-8 d-flex align-items-center">
+                            <div class="row">
+                                <div class="col-12">Visa ending in {{ card.card_number }}</div>
+                                <div class="col-12">Expires {{ card.expiration_date }}</div>
+                            </div>
+                        </div>
 
-                {% elif card.card_type == "MC" %}
-                <div class="col-2 mastercard-logo rounded d-flex align-items-center justify-content-center">
-                    <img src="{% static 'images/mc_symbol_opt_73_3x.png' %}" class="img-fluid" alt="mastercard-logo">
-                </div>
-                <div class="col-10 d-flex align-items-center">
-                    <div class="row">
-                        <div class="col-12">Mastercard ending in {{ card.card_number }}</div>
-                        <div class="col-12">Expires {{ card.expiration_date }}</div>
+                        {% elif card.card_type == "MC" %}
+                        <div class="col-4 mastercard-logo rounded d-flex align-items-center justify-content-center">
+                            <img src="{% static 'images/mc_symbol_opt_73_3x.png' %}" class="img-fluid"
+                                alt="mastercard-logo">
+                        </div>
+                        <div class="col-8 d-flex align-items-center">
+                            <div class="row">
+                                <div class="col-12">Mastercard ending in {{ card.card_number }}</div>
+                                <div class="col-12">Expires {{ card.expiration_date }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
-                {% endif %}
+                <div class="col-6 d-flex align-items-center justify-content-start">
+                    <div>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#changeCard">
+                            Change
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         {% else %}
         <div class="col-8 text-start">
-            <div class="methods">
-                <h4>Payment method</h4>
-            </div>
             <button type="button" class="btn btn-primary m-3 mb-4" data-bs-toggle="modal" data-bs-target="#addCard">
                 Add new card
             </button>

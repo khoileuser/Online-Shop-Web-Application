@@ -152,30 +152,35 @@ def parse_checkout_context(request, mode):
 
     _address = None
     _card = None
+    addresses = []
+    cards = []
 
     # get default address
     for address in request.user.addresses.all():
         if address.is_default:
             _address = address
-            break
+        addresses.append(model_to_dict(address))
 
     # get default card
     for card in request.user.cards.all():
+        # reparse card info to prevent security issues
+        expiration_date = month_map[card.expiration_date[:2]
+                                    ] + ' 20' + card.expiration_date[-2:]
+        _card_ = {
+            'id': card.id,
+            'card_type': card.card_type,
+            'card_number': card.card_number[-4:],
+            'expiration_date': expiration_date,
+            'is_default': card.is_default
+        }
         if card.is_default:
-            # reparse card info to prevent security issues
-            expiration_date = month_map[card.expiration_date[:2]
-                                        ] + ' 20' + card.expiration_date[-2:]
-            _card = {
-                'id': card.id,
-                'card_type': card.card_type,
-                'card_number': card.card_number[-4:],
-                'expiration_date': expiration_date,
-                'is_default': card.is_default
-            }
-            break
+            _card = _card_
+        cards.append(_card_)
 
     context['address'] = model_to_dict(_address) if _address else None
     context['card'] = _card
+    context['addresses'] = addresses
+    context['cards'] = cards
 
     # get names and phones if there is no (default) address
     if not _address:
@@ -213,6 +218,36 @@ def checkout(request):
 
     template = loader.get_template("order/checkout.html")
     return HttpResponse(template.render(context, request))
+
+
+@csrf_exempt
+def checkout_change(request, field):
+    if request.method != "POST":
+        return HttpResponse('Invalid request')
+    elif request.user == "guest":
+        return redirect("/signin")
+    elif request.user.account_type != "C":
+        return HttpResponse('You are not a customer')
+
+    context = request.session.get('context')
+    if field == 'address':
+        address = Address.objects.get(id=request.POST['address_id'])
+        context['address'] = model_to_dict(address)
+    elif field == 'card':
+        card = Card.objects.get(id=request.POST['card_id'])
+        expiration_date = month_map[card.expiration_date[:2]
+                                    ] + ' 20' + card.expiration_date[-2:]
+        context['card'] = {
+            'id': card.id,
+            'card_type': card.card_type,
+            'card_number': card.card_number[-4:],
+            'expiration_date': expiration_date,
+            'is_default': card.is_default
+        }
+
+    request.session['context'] = context
+
+    return redirect(request.META['HTTP_REFERER'])
 
 
 @csrf_exempt
