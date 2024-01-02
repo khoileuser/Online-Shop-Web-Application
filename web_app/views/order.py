@@ -1,10 +1,8 @@
-from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
-from django.db import transaction
 
 from web_app.models import Cart, Product, Order, Address, Card
 from web_app.data import *

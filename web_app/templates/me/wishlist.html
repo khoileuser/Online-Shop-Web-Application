@@ -9,7 +9,30 @@
 <div class="container wishlist-page">
     <div class="text-center">
         <div class="wishlist-heading mt-2 mb-3 rounded shadow-sm p-3">
-            <h3>{{ owner_name }}'s Wishlist</h3>
+            <div class="row">
+                <div class="col-10">
+                    <h3 class="d-inline-block">{{ owner_name }}'s Wishlist</h3>
+                </div>
+                <div class="col-1">
+                    <button class="btn btn-secondary d-inline-block mb-2" onclick="copyURL()">
+                        <i class="bi bi-copy"></i>
+                    </button>
+                </div>
+            </div>
+            {% if is_owner %}
+            {% if share %}
+            <form action="/wishlist/share/false" method="POST" class="pt-2">
+                <input type="hidden" class="sharing" value="true">
+                <button class="btn btn-danger" type="submit">Turn off sharing</button>
+            </form>
+            {% else %}
+            <form action="/wishlist/share/true" method="POST" class="pt-2">
+                <input type="hidden" class="sharing" value="false">
+                <button class="btn btn-primary" type="submit">Turn on
+                    sharing</button>
+            </form>
+            {% endif %}
+            {% endif %}
         </div>
     </div>
 
@@ -52,12 +75,12 @@
                 </div>
             </div>
 
-            {% if is_owner %}
             <div class="col-6 col-lg-2 pd-add d-flex justify-content-center align-items-center mb-3">
                 <button class="btn anm-btn add-to-cart-btn btn-primary"
                     onclick="addToCart('{{ cart_product.id }}', false)">Add to Cart</button>
             </div>
 
+            {% if is_owner %}
             <div class="col-6 col-lg-1 pd-remove d-flex justify-content-center align-items-center mb-3">
                 <form method="POST" action="/wishlist/remove/{{ cart_product.id }}">
                     <button class="btn anm-btn pd-remove-btn btn-danger" type="submit">Remove</button>

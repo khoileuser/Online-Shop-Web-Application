@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import redirect
@@ -198,10 +197,11 @@ def view_product(request, product_id):
     context["vendor_username"] = product.owner.username
     context["vendor_avatar"] = product.owner.avatar
 
-    if request.user.wishlist.filter(id=product.id).exists():
-        context['is_wishlist'] = True
-    else:
-        context['is_wishlist'] = False
+    if request.user != "guest":
+        if request.user.wishlist.filter(id=product.id).exists():
+            context['is_wishlist'] = True
+        else:
+            context['is_wishlist'] = False
 
     related_products = []
     products = Product.objects.filter(

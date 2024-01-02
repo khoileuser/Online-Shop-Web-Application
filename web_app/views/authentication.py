@@ -1,7 +1,5 @@
-from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.hashers import make_password, check_password
@@ -105,7 +103,7 @@ def sign_up(request):
 
         try:
             user = User(name=name, username=username, password=hashed_pwd,
-                        account_type=account_type, avatar=None)
+                        account_type=account_type, avatar=None, share_wishlist=False)
         except:
             return HttpResponse("Invalid credentials")
         user.save()

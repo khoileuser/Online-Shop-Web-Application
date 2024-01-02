@@ -376,11 +376,16 @@ function addToCart(productid, getQuantity = false) {
     if (getQuantity) {
         _quantity = document.querySelector('.pd-quantity-input-box-' + productid).value;
     }
-    fetch('/cart/add/' + productid + '/quantity/' + _quantity, {
-        method: 'POST'
-    });
-    var quantity = document.querySelector('.cart-count');
-    quantity.innerHTML = parseInt(quantity.innerHTML.trim()) + 1;
+    try {
+        var quantity = document.querySelector('.cart-count');
+        quantity.innerHTML = parseInt(quantity.innerHTML.trim()) + 1;
+        fetch('/cart/add/' + productid + '/quantity/' + _quantity, {
+            method: 'POST'
+        });
+    }
+    catch {
+        window.location.href = '/signin';
+    }
 }
 
 /**
@@ -1017,4 +1022,18 @@ function addImg(input) {
 function editAvatar(input) {
     var avatar = document.querySelector('.avatar-img');
     avatar.src = URL.createObjectURL(input.files[0]);
+}
+
+function copyURL() {
+    navigator.clipboard.writeText(window.location.href);
+    var sharing = document.querySelector('.sharing').value
+    if (sharing == 'false') {
+        fetch('/wishlist/share/true', {
+            method: 'POST'
+        })
+            .then(() => {
+                location.reload();
+            })
+            .catch(err => console.error(err));
+    }
 }

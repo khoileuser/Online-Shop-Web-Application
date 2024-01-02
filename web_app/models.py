@@ -54,6 +54,7 @@ class User(models.Model):
     addresses = models.ManyToManyField(Address)
     cards = models.ManyToManyField(Card)
     wishlist = models.ManyToManyField("Product")
+    share_wishlist = models.BooleanField(default=False)
 
 
 # The above class represents a Product model with fields for owner, name, price, images, description,
