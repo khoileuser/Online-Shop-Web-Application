@@ -169,10 +169,7 @@ def view_product(request, product_id):
     context["images"] = product.images
     context["vendor_name"] = product.owner.name
     context["vendor_username"] = product.owner.username
-    if product.owner.avatar:
-        context["vendor_avatar"] = product.owner.avatar
-    else:
-        context["vendor_avatar"] = 'default.jpg'
+    context["vendor_avatar"] = product.owner.avatar
 
     related_products = []
     products = Product.objects.filter(

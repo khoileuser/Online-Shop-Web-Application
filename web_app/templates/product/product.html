@@ -96,8 +96,12 @@
 <div class="container vendor-container rounded shadow-sm mt-4">
     <div class="row p-4">
         <div class="col-2">
+            {% if vendor_avatar %}
             <img src="{% static 'images/avatar/' %}{{ vendor_avatar }}" class="img-fluid rounded-circle"
                 alt="vendor-avatar">
+            {% else %}
+            <img src="{% static 'images/avatar/default.jpg' %}" class="img-fluid rounded-circle" alt="vendor-avatar">
+            {% endif %}
         </div>
         <div class="col-10 d-flex flex-column justify-content-center">
             <div>
