@@ -119,24 +119,23 @@ body {
         width: 28px;
         height: 28px;
         height: auto;
-        overflow: hidden;
 
         .material-icons {
             position: relative;
-            top: 4px;
+            top: -7px;
             z-index: 1;
             font-size: 24px;
-            color: white;
+            color: var(--text-header);
         }
 
         .count {
             position: absolute;
-            top: 0;
-            right: 0;
+            top: -7px;
+            right: -3px;
             z-index: 2;
             font-size: 11px;
             border-radius: 50%;
-            background: #d60b28;
+            background: var(--pink-gradient);
             width: 16px;
             height: 16px;
             line-height: 16px;

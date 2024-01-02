@@ -23,7 +23,11 @@ def view_cart(request):
         return redirect("/signin")
 
     # get user's cart
-    cart = Cart.objects.get(owner=request.user)
+    try:
+        cart = Cart.objects.get(owner=request.user)
+    except:
+        cart = Cart.objects.create(owner=request.user)
+
     cart_products = cart.products.all().order_by('id')
 
     # append all vendor exist in user's cart
