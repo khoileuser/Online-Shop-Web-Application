@@ -1,0 +1,70 @@
+{% load js %}
+
+{% load static %}
+
+{% include "partials/header.html" %}
+
+<div class="dummy"></div>
+
+<div class="container wishlist-page">
+    {% if products_by_vendor %}
+    {% for vendor in products_by_vendor %}
+    <div class="row rounded cart-container mb-4 shadow-sm">
+        <div class="vendorname border-bottom p-3">
+            <a href="/products/vendor/{{ vendor.vendor.username }}" class="text-decoration-none text-reset">
+                <span class="text">
+                    <i class="bi bi-shop-window"></i>
+                    {{ vendor.vendor.name }}
+                    <i class="bi bi-chevron-right"></i>
+                </span>
+            </a>
+        </div>
+
+        {% for cart_product in vendor.cart_products %}
+        <div class="row vendor-products p-3">
+            <div class="col pd-img d-flex justify-content-center align-items-center mb-3">
+                <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
+                    <div class="image">
+                        <img class="img-fluid" src="{% static 'images/products/' %}{{ cart_product.product.images.0 }}"
+                            alt="product-img">
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-7 col-md-8 pd-info d-flex align-items-center mb-3">
+                <div class="col pd-name text-start">
+                    <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
+                        {{ cart_product.product.name }}
+                    </a>
+                </div>
+
+                <div class="col pd-price text-center">
+                    $
+                    <span class="pd-price-{{ cart_product.product.id }}">
+                        {{ cart_product.product.price }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-1 pd-add d-flex justify-content-center align-items-center mb-3">
+                <button class="btn anm-btn add-to-cart-btn btn-primary"
+                    onclick="addToCart('{{ product_id }}', true)">Add to Cart</button>
+            </div>
+
+            <div class="col-1 pd-remove d-flex justify-content-center align-items-center mb-3">
+                <button class="btn anm-btn pd-remove-btn btn-danger"
+                    onclick="editQuantity('{{ cart_product.product.id }}', 'remove', 'all')">Remove</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endfor %}
+
+    {% else %}
+    <div class="row rounded cart-container empty-cart text-center shadow-sm">
+        <h2>You haven't add any products to your wishlist yet.</h2>
+    </div>
+    {% endif %}
+</div>
+
+{% include "partials/footer.html" %}
