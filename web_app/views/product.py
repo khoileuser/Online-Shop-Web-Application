@@ -174,6 +174,14 @@ def view_product(request, product_id):
     else:
         context["vendor_avatar"] = 'default.jpg'
 
+    related_products = []
+    products = Product.objects.filter(
+        category=product.category).order_by('?')
+    for p in products:
+        if p.id != product.id:
+            related_products.append(p)
+    context['related_products'] = related_products[:8]
+
     if product.owner == request.user:
         template = loader.get_template("product/vendor-product.html")
     else:
