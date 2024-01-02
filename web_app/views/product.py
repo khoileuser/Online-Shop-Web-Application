@@ -17,6 +17,31 @@ from shutil import rmtree
 fs = FileSystemStorage()
 
 
+def fuzzy_search(search_query, products_input):
+    product_names = products_input.values_list('name', flat=True)
+
+    # query search with fuzzy matching
+    best_matches = process.extractBests(
+        search_query, product_names, score_cutoff=70, limit=60)
+    best_match_names = [match[0] for match in best_matches]
+
+    # add items that contain the search query as a substring
+    for product_name in product_names:
+        if search_query.lower() in product_name.lower():
+            best_match_names.append(product_name)
+
+    best_match_names = list(set(best_match_names))  # remove duplicates
+
+    if best_match_names == []:
+        products = None
+        max_price = 0
+    else:
+        products = products_input.filter(name__in=best_match_names)
+        max_price = products.aggregate(Max('price'))['price__max']
+
+    return products, max_price
+
+
 def listing(request):
     """
     The `listing` function is a view function in Django that handles the rendering of a product listing
@@ -48,22 +73,26 @@ def listing(request):
     context['categories'] = categories
     products_list = _products.all().order_by('?')
 
+    if request.GET.get('search') and request.GET.get('filter'):
+        # If the filter is 'price'
+        if request.GET.get('filter') == 'price':
+            context['active_filter'] = 'price'
+            products = products_list
+            context['max_filter'] = int(request.GET.get('max'))
+            context['min_filter'] = int(request.GET.get('min'))
+        # If the filter is other (category)
+        else:
+            products = products_list.filter(category=request.GET.get('filter'))
+            context['active_filter'] = request.GET.get('filter')
+
+        search_query = request.GET.get('search')
+        products, max_price = fuzzy_search(search_query, products)
+
     # If there is a search query in the request
-    if request.GET.get('search'):
+    elif request.GET.get('search'):
         context['active_filter'] = 'search'
         search_query = request.GET.get('search')
-        product_names = _products.values_list('name', flat=True)
-
-        # query search with fuzzy matching
-        best_matches = process.extractBests(
-            search_query, product_names, score_cutoff=60, limit=60)
-        best_match_names = [match[0] for match in best_matches]
-        if best_match_names == []:
-            products = None
-            max_price = 0
-        else:
-            products = _products.filter(name__in=best_match_names)
-            max_price = products.aggregate(Max('price'))['price__max']
+        products, max_price = fuzzy_search(search_query, products_list)
 
     # If there is a filter in the request
     elif request.GET.get('filter'):

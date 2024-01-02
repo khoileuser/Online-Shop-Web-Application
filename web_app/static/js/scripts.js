@@ -778,7 +778,15 @@ function filterCategory(input) {
                 checkbox.checked = false;
             }
         })
-        window.location.href = '?filter=' + input.value;
+        if (window.location.href.includes('?search')) {
+            var paramString = window.location.href.split('?')[1];
+            var queryString = new URLSearchParams(paramString);
+            var search = queryString.get('search');
+            window.location.href = '?filter=' + input.value + '&search=' + search;
+        }
+        else {
+            window.location.href = '?filter=' + input.value;
+        }
     }
     else {
         window.location.href = '?page=1';
@@ -857,7 +865,15 @@ function resetFilterPrice() {
 function submitFilterPrice() {
     var min = parseInt(document.querySelector('.min-price').value);
     var max = parseInt(document.querySelector('.max-price').value);
-    window.location.href = '?filter=price&min=' + min + '&max=' + max;
+    if (window.location.href.includes('?search')) {
+        var paramString = window.location.href.split('?')[1];
+        var queryString = new URLSearchParams(paramString);
+        var search = queryString.get('search');
+        window.location.href = '?filter=price&min=' + min + '&max=' + max + '&search=' + search;
+    }
+    else {
+        window.location.href = '?filter=price&min=' + min + '&max=' + max;
+    }
 }
 
 /**
@@ -884,7 +900,22 @@ function handleKeyPress(event, input) {
 function submitSearch() {
     var search = document.querySelector('.search-input');
     if (window.location.pathname.includes('/products')) {
-        window.location.href = '?search=' + search.value;
+        if (window.location.href.includes('?filter')) {
+            var paramString = window.location.href.split('?')[1];
+            var queryString = new URLSearchParams(paramString);
+            var filter = queryString.get('filter');
+            if (filter == 'price') {
+                var min = queryString.get('min');
+                var max = queryString.get('max');
+                window.location.href = '?filter=' + filter + '&min=' + min + '&max=' + max + '&search=' + search.value;
+            }
+            else {
+                window.location.href = '?filter=' + filter + '&search=' + search.value;
+            }
+        }
+        else {
+            window.location.href = '?search=' + search.value;
+        }
     }
     else {
         window.location.href = '/products?search=' + search.value;
