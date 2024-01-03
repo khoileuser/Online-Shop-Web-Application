@@ -69,12 +69,18 @@
                             </form>
                         </div>
 
-                        {% if not forloop.last %}
                         <div class="col-12 border-bottom"></div>
-                        {% endif %}
 
                     </div>
                     {% endfor %}
+                    <div class="row mt-3">
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#addAddress">
+                                Add new address
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -134,12 +140,18 @@
                             </form>
                         </div>
 
-                        {% if not forloop.last %}
                         <div class="col-12 border-bottom"></div>
-                        {% endif %}
 
                     </div>
                     {% endfor %}
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <button type="button" class="btn btn-primary m-3 mb-2" data-bs-toggle="modal"
+                                data-bs-target="#addCard">
+                                Add new card
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -201,14 +213,15 @@
             </div>
         </div>
         <div class="col-12 text-center">
-            <button type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#changeAddress">
+            <button type="button" class="btn btn-primary m-3 mb-2" data-bs-toggle="modal"
+                data-bs-target="#changeAddress">
                 Change address
             </button>
         </div>
         {% else %}
         <div class="text-center">
-            <button type="button" class="btn btn-primary m-3 mb-4" data-bs-toggle="modal" data-bs-target="#addAddress">
-                Add address
+            <button type="button" class="btn btn-primary m-3 mb-2" data-bs-toggle="modal" data-bs-target="#addAddress">
+                Add new address
             </button>
         </div>
         {% endif %}

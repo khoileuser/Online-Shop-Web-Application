@@ -182,10 +182,9 @@ def parse_checkout_context(request, mode):
     context['addresses'] = addresses
     context['cards'] = cards
 
-    # get names and phones if there is no (default) address
-    if not _address:
-        context['names'] = names_data
-        context['phones'] = phones_data
+    # get names and phones for adding new address
+    context['names'] = names_data
+    context['phones'] = phones_data
 
     return context
 
