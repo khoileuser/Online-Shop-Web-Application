@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinLengthValidator, MinValueValidator, MaxValueValidator
 
 
 # The Address class represents a model with fields for phone number code, phone number, address, city,
@@ -66,6 +66,17 @@ class Product(models.Model):
     images = models.JSONField(default=list, null=True)
     description = models.TextField(blank=True)
     category = models.CharField(max_length=255, null=True)
+    stock = models.IntegerField(default=0)
+
+
+# The Review class represents a user's review of a product, including the user, product, content, and
+# rating.
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    content = models.TextField()
+    rating = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)])
 
 
 # The CartProduct class represents a product in a shopping cart with a reference to the product and
