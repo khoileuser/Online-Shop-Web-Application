@@ -4,6 +4,82 @@
 
 <div class="dummy"></div>
 
+<div class="modal fade rating-modal" id="ratingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="ratingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ratingModalLabel">Leave a Review</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/product/review/{{ product_id }}" method="POST">
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row review-row rating p-2">
+                            <div class="col-2 author-avatar">
+                                {% if user.avatar %}
+                                <img src="{% static 'images/avatar/' %}{{ user.avatar }}"
+                                    class="img-fluid rounded-circle" alt="review-author-avatar">
+                                {% else %}
+                                <img src="{% static 'images/avatar/default.jpg' %}" class="img-fluid rounded-circle"
+                                    alt="review-author-avatar">
+                                {% endif %}
+                            </div>
+                            <div class="col-10 author-name d-flex align-items-center">
+                                <h4>{{ user.name }}</h4>
+                            </div>
+                            <div class="col-4 d-flex align-items-center">
+                                Product's quality
+                            </div>
+                            <div class="col-8 review-rating">
+                                <div class="rating">
+                                    <label>
+                                        <input type="radio" name="stars" value="1">
+                                        <span class="icon">★</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="stars" value="2">
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="stars" value="3">
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="stars" value="4">
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="stars" value="5">
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                        <span class="icon">★</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 review-content">
+                                <textarea class="form-control" id="review-content" rows="3" name="content"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="container product-container rounded shadow-sm">
     <div class="single-product">
         <div class="row">
@@ -131,6 +207,106 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="container review-container rounded shadow-sm mt-4">
+    {% if first_review %}
+    <div class="row review-row p-4">
+        <div class="col-1 author-avatar d-flex align-items-center">
+            {% if first_review.author.avatar %}
+            <img src="{% static 'images/avatar/' %}{{ first_review.author.avatar }}" class="img-fluid rounded-circle"
+                alt="review-author-avatar">
+            {% else %}
+            <img src="{% static 'images/avatar/default.jpg' %}" class="img-fluid rounded-circle"
+                alt="review-author-avatar">
+            {% endif %}
+        </div>
+        <div class="col-11 author-name d-flex flex-column justify-content-center">
+            <h4>{{ first_review.author.name }}</h4>
+            {% if first_review.rating == 1 %}
+            <span class="icon">★</span>
+            {% elif first_review.rating == 2 %}
+            <span class="icon">★★</span>
+            {% elif first_review.rating == 3 %}
+            <span class="icon">★★★</span>
+            {% elif first_review.rating == 4 %}
+            <span class="icon">★★★★</span>
+            {% elif first_review.rating == 5 %}
+            <span class="icon">★★★★★</span>
+            {% endif %}
+            <p>{{ first_review.date }}</p>
+        </div>
+        <div class="col-12 review-content">
+            <p>{{ first_review.content }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if reviews %}
+    <div class="text-center border-top border-bottom p-2 view-more-section mb-4">
+        <a class="" role="button" data-bs-toggle="collapse" href="#reviewCollapse" onclick="toggleReview(this)">
+            <input class="current" type="hidden" value="off">
+            <span class="text">View more</span><span class="icon" style="margin-left: 5px;"><i
+                    class="bi bi-chevron-down"></i></span>
+        </a>
+    </div>
+    <div class="collapse review-collapse mb-5" id="reviewCollapse">
+        <div class="card card-body">
+            {% for review in reviews %}
+            <div class="row review-row p-2">
+                <div class="col-1 author-avatar d-flex align-items-center">
+                    {% if review.author.avatar %}
+                    <img src="{% static 'images/avatar/' %}{{ review.author.avatar }}" class="img-fluid rounded-circle"
+                        alt="review-author-avatar">
+                    {% else %}
+                    <img src="{% static 'images/avatar/default.jpg' %}" class="img-fluid rounded-circle"
+                        alt="review-author-avatar">
+                    {% endif %}
+                </div>
+
+                <div class="col-11 author-name d-flex flex-column justify-content-center">
+                    <h4>{{ review.author.name }}</h4>
+                    {% if review.rating == 1 %}
+                    <span class="icon">★</span>
+                    {% elif review.rating == 2 %}
+                    <span class="icon">★★</span>
+                    {% elif review.rating == 3 %}
+                    <span class="icon">★★★</span>
+                    {% elif review.rating == 4 %}
+                    <span class="icon">★★★★</span>
+                    {% elif review.rating == 5 %}
+                    <span class="icon">★★★★★</span>
+                    {% endif %}
+                    <p>{{ review.date }}</p>
+                </div>
+
+                <div class="col-12 review-content">
+                    <p>{{ review.content }}</p>
+                </div>
+
+                {% if not forloop.last %}
+                <div class="col-12 border-bottom"></div>
+                {% endif %}
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if not first_review %}
+    <div class="no-review text-center p-5">
+        <h3>No reviews yet</h3>
+    </div>
+    {% endif %}
+
+    {% if allow_review %}
+    <div class="text-center pb-5">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ratingModal">
+            Add Review
+        </button>
+    </div>
+    {% endif %}
 </div>
 
 {% if related_products %}

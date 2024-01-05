@@ -61,6 +61,7 @@ urlpatterns = [
     path('product/add/', product.add_product),
     path('product/update/<int:product_id>', product.update_product),
     path('product/delete/<int:product_id>', product.delete_product),
+    path('product/review/<int:product_id>', product.add_review),
 
     # testing
     path('execute/', views.execute),

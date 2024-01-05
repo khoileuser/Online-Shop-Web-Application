@@ -72,8 +72,9 @@ class Product(models.Model):
 # The Review class represents a user's review of a product, including the user, product, content, and
 # rating.
 class Review(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now=True)
     content = models.TextField()
     rating = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)])

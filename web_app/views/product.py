@@ -6,7 +6,7 @@ from django.db.models import Max
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
 
-from web_app.models import Product, User
+from web_app.models import Product, User, Review, Order
 
 from thefuzz import process
 
@@ -203,19 +203,76 @@ def view_product(request, product_id):
         else:
             context['is_wishlist'] = False
 
-    related_products = []
-    products = Product.objects.filter(
-        category=product.category).order_by('?')
-    for p in products:
-        if p.id != product.id:
-            related_products.append(p)
+    products = Product.objects.filter(category=product.category).order_by('?')
+    related_products = [p for p in products if p.id != product.id]
     context['related_products'] = related_products[:8]
+
+    query_reviews = Review.objects.filter(product=product)
+    reviews = []
+    for review in query_reviews:
+        reviews.append({
+            "author": {
+                "name": review.author.name,
+                "avatar": review.author.avatar,
+            },
+            "product": review.product,
+            "date": review.date.strftime("%B %d, %Y"),
+            "content": review.content,
+            "rating": review.rating,
+        })
+    if reviews != []:
+        context['first_review'] = reviews[0]
+    if len(reviews) > 1:
+        context['reviews'] = reviews[1:]
+    else:
+        context['reviews'] = []
+    context['allow_review'] = False
+    if request.user != "guest":
+        if request.user.account_type == "C":
+            orders = Order.objects.filter(owner=request.user)
+            for order in orders:
+                products = [
+                    cart_product.product for cart_product in order.products.all()]
+                if product in products:
+                    context['allow_review'] = True
 
     if product.owner == request.user:
         template = loader.get_template("product/vendor-product.html")
     else:
         template = loader.get_template("product/product.html")
     return HttpResponse(template.render(context, request))
+
+
+@csrf_exempt
+def add_review(request, product_id):
+    """
+    The function "add_review" adds a review to a product if the request is a POST request and the user
+    is a customer.
+
+    :param request: The request parameter is an object that represents the HTTP request made by the
+    user. It contains information such as the user's session, cookies, headers, and other data related
+    to the request
+    :param product_id: The product_id parameter is the unique identifier of the product that is being
+    reviewed. It is used to retrieve the specific product from the database
+    :return: an HttpResponse object or redirects to another page.
+    """
+    if request.method != "POST":
+        return HttpResponse('Invalid request')
+    elif request.user.account_type != "C":
+        return HttpResponse('You are not a customer')
+
+    try:
+        product = Product.objects.get(id=product_id)
+    except:
+        return HttpResponse('Invalid product id')
+
+    content = request.POST["content"]
+    stars = int(request.POST["stars"])
+
+    review = Review.objects.create(
+        author=request.user, product=product, content=content, rating=stars)
+
+    return redirect('/product/'+str(product.id))
 
 
 @csrf_exempt

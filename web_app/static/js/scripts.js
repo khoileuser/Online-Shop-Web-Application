@@ -1037,3 +1037,15 @@ function copyURL() {
             .catch(err => console.error(err));
     }
 }
+
+function toggleReview(input) {
+    var current = input.querySelector('.current');
+    if (current.value == 'off') {
+        current.value = 'on';
+        input.querySelector('.icon').innerHTML = '<i class="bi bi-chevron-up"></i>';
+    }
+    else {
+        current.value = 'off';
+        input.querySelector('.icon').innerHTML = '<i class="bi bi-chevron-down"></i>';
+    }
+}
