@@ -12,6 +12,7 @@ from thefuzz import process
 
 from os import getcwd, listdir, remove
 from shutil import rmtree
+from math import ceil
 
 fs = FileSystemStorage()
 
@@ -128,8 +129,8 @@ def listing(request):
         max_price = products_list.aggregate(Max('price'))['price__max']
 
     context['products'] = products
-    context['max_price'] = max_price
-    context['min_price'] = max_price-1
+    context['max_price'] = ceil(max_price)
+    context['min_price'] = ceil(max_price-1)
 
     template = loader.get_template("product/listing.html")
     return HttpResponse(template.render(context, request))

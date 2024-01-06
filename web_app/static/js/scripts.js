@@ -497,8 +497,10 @@ function selectAll() {
         if (checkoutMode == 'selected') {
             productIds.value = newProductIds;
         }
-        document.querySelector('.checkout-btn').removeAttribute("disabled");
-        document.querySelector('.checkout-mode').value = checkoutMode;
+        if (pdCheckboxes.length != 0) {
+            document.querySelector('.checkout-btn').removeAttribute("disabled");
+            document.querySelector('.checkout-mode').value = checkoutMode;
+        }
     }
     else {
         productIds.value = "";
@@ -815,7 +817,7 @@ function filterCategory(input) {
                 checkbox.checked = false;
             }
         })
-        if (window.location.href.includes('?search')) {
+        if (window.location.href.includes('search=')) {
             var paramString = window.location.href.split('?')[1];
             var queryString = new URLSearchParams(paramString);
             var search = queryString.get('search');
@@ -837,7 +839,7 @@ function filterCategory(input) {
  * @returns nothing (undefined).
  */
 function filterProductPrice(min, max) {
-    if (window.location.href.includes('?filter') || window.location.href.includes('?search')) {
+    if (window.location.href.includes('filter=') || window.location.href.includes('search=')) {
         if (min == 0 && max == 0) {
             var products = document.querySelectorAll('.pd-card');
             products.forEach(function filterProduct(product) {
@@ -889,9 +891,11 @@ function editMaxPrice(input) {
  */
 function resetFilterPrice() {
     document.querySelector('.min-price').value = "0";
-    document.querySelector('.max-price').value = "1";
     document.querySelector(".min-price-txt").innerHTML = "$0";
-    document.querySelector(".max-price-txt").innerHTML = "$1";
+
+    var maxPriceFilter = document.querySelector('.max-price').max;
+    document.querySelector('.max-price').value = maxPriceFilter;
+    document.querySelector(".max-price-txt").innerHTML = "$" + maxPriceFilter;
     filterProductPrice(0, 0);
 }
 
@@ -902,7 +906,7 @@ function resetFilterPrice() {
 function submitFilterPrice() {
     var min = parseInt(document.querySelector('.min-price').value);
     var max = parseInt(document.querySelector('.max-price').value);
-    if (window.location.href.includes('?search')) {
+    if (window.location.href.includes('search=')) {
         var paramString = window.location.href.split('?')[1];
         var queryString = new URLSearchParams(paramString);
         var search = queryString.get('search');
@@ -937,7 +941,7 @@ function handleKeyPress(event, input) {
 function submitSearch() {
     var search = document.querySelector('.search-input');
     if (window.location.pathname.includes('/products')) {
-        if (window.location.href.includes('?filter')) {
+        if (window.location.href.includes('filter=')) {
             var paramString = window.location.href.split('?')[1];
             var queryString = new URLSearchParams(paramString);
             var filter = queryString.get('filter');
@@ -1075,14 +1079,14 @@ function toggleReview(input) {
 
 /* The above code is a JavaScript code snippet that is executed when the window loads. */
 window.onload = function () {
-    if (window.location.href.includes('?filter=price')) {
+    if (window.location.href.includes('filter=price')) {
         var paramString = window.location.href.split('?')[1];
         var queryString = new URLSearchParams(paramString);
         var min = queryString.get('min');
         var max = queryString.get('max');
         filterProductPrice(min, max);
     }
-    else if (window.location.href.includes('?search=')) {
+    else if (window.location.href.includes('search=')) {
         var paramString = window.location.href.split('?')[1];
         var queryString = new URLSearchParams(paramString);
         var search = queryString.get('search');
