@@ -299,7 +299,7 @@
             <h4>Payment method</h4>
         </div>
         {% if card %}
-        <div class="col-8">
+        <div class="col-12 col-md-8">
             <div class="row p-2">
                 <div class="col-8 col-lg-6">
                     <div class="row">
@@ -340,7 +340,7 @@
             </div>
         </div>
         {% else %}
-        <div class="col-8 text-start">
+        <div class="col-12 col-md-8 text-start">
             <button type="button" class="btn btn-primary m-3 mb-4 no-card-btn" data-bs-toggle="modal"
                 data-bs-target="#addCard">
                 Add new card
@@ -348,15 +348,29 @@
         </div>
         {% endif %}
 
-        <div class="col-4 col-lg-4 d-flex gap-4 flex-row justify-content-center align-items-center">
+        <div
+            class="place-order-section col-12 col-md-4 d-flex gap-4 flex-row justify-content-center align-items-center">
             <div class="checkout-total-price">
                 Total: ${{ total_price }}
             </div>
 
             <div class="checkout-place-order-btn">
                 <form method="POST" action="/order/place/">
-                    <button type="submit" class="btn btn-primary anm-btn place-order-btn" disabled>
-                        <span>Place Order</span>
+                    <button type="button" class="truck-button btn btn-primary anm-btn place-order-btn"
+                        onclick="placeOrderBtn(this)" disabled>
+                        <span class="default">Place Order</span>
+                        <span class="success">
+                            Order Placed
+                            <svg viewbox="0 0 12 10">
+                                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                            </svg>
+                        </span>
+                        <div class="truck">
+                            <div class="wheel"></div>
+                            <div class="back"></div>
+                            <div class="front"></div>
+                            <div class="box"></div>
+                        </div>
                     </button>
                 </form>
             </div>
@@ -364,5 +378,7 @@
 
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.0.1/dist/gsap.min.js"></script>
 
 {% include "partials/footer.html" %}

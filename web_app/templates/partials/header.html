@@ -85,13 +85,15 @@
                         {% else %}
                         <li class="nav-item">
                             <div class="dropdown">
-                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="btn btn-secondary dropdown-toggle anm-btn user-menu-btn" href="#"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="user"> {{ username }} </span>
                                 </a>
 
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="/me">My Account</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="/me">My Account</a>
+                                    </li>
                                     {% if type == 'C' %}
                                     <li>
                                         <a class="dropdown-item" href="/orders">My Orders</a>

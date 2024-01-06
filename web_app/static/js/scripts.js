@@ -392,10 +392,29 @@ function addToCart(productid, getQuantity = false) {
         _quantity = document.querySelector('.pd-quantity-input-box-' + productid).value;
     }
     try {
-        var quantity = document.querySelector('.cart-count');
-        quantity.innerHTML = parseInt(quantity.innerHTML.trim()) + 1;
-        fetch('/cart/add/' + productid + '/quantity/' + _quantity, {
+        var fetchPromise = fetch('/cart/add/' + productid + '/quantity/' + _quantity, {
             method: 'POST'
+        });
+
+        var animationPromise = new Promise(function (resolve) {
+            var button = document.querySelector('.add-cart-btn');
+            button.classList.add("clicked");
+            setTimeout(function () {
+                button.classList.remove('clicked');
+            }, 2500);
+            resolve();
+        });
+
+        Promise.all([fetchPromise, animationPromise]).then(function (values) {
+            var response = values[0];
+            if (response.ok) {
+                response.json().then(function (data) {
+                    if (data.cart_plus) {
+                        var quantity = document.querySelector('.cart-count');
+                        quantity.innerHTML = parseInt(quantity.innerHTML.trim()) + 1;
+                    }
+                });
+            }
         });
     }
     catch {
@@ -1077,7 +1096,122 @@ function toggleReview(input) {
     }
 }
 
-/* The above code is a JavaScript code snippet that is executed when the window loads. */
+function placeOrderBtn(button) {
+    var box = button.querySelector('.box');
+    var truck = button.querySelector('.truck');
+
+    var form = button.parentElement;
+    var formData = new FormData(form);
+
+    var fetchPromise = fetch(form.action, {
+        method: form.method,
+        body: formData
+    });
+
+    var animationPromise = new Promise(function (resolve) {
+        if (!button.classList.contains('done')) {
+            if (!button.classList.contains('animation')) {
+                button.classList.add('animation');
+
+                gsap.to(button, {
+                    '--box-s': 1,
+                    '--box-o': 1,
+                    duration: .3,
+                    delay: .5
+                });
+
+                gsap.to(box, {
+                    x: 0,
+                    duration: .4,
+                    delay: .7
+                });
+
+                gsap.to(button, {
+                    '--hx': -5,
+                    '--bx': 50,
+                    duration: .18,
+                    delay: .92
+                });
+
+                gsap.to(box, {
+                    y: 0,
+                    duration: .1,
+                    delay: 1.15
+                });
+
+                gsap.set(button, {
+                    '--truck-y': 0,
+                    '--truck-y-n': -26
+                });
+
+                gsap.to(button, {
+                    '--truck-y': 1,
+                    '--truck-y-n': -25,
+                    duration: .2,
+                    delay: 1.25,
+                    onComplete() {
+                        gsap.timeline({
+                            onComplete() {
+                                button.classList.add('done');
+                            }
+                        }).to(truck, {
+                            x: 0,
+                            duration: .4
+                        }).to(truck, {
+                            x: 40,
+                            duration: 1
+                        }).to(truck, {
+                            x: 20,
+                            duration: .6
+                        }).to(truck, {
+                            x: 96,
+                            duration: .4
+                        });
+                        gsap.to(button, {
+                            '--progress': 1,
+                            duration: 2.4,
+                            ease: "power2.in"
+                        });
+
+                        resolve()
+                    }
+                });
+
+            }
+
+        } else {
+            button.classList.remove('animation', 'done');
+            gsap.set(truck, {
+                x: 4
+            });
+            gsap.set(button, {
+                '--progress': 0,
+                '--hx': 0,
+                '--bx': 0,
+                '--box-s': .5,
+                '--box-o': 0,
+                '--truck-y': 0,
+                '--truck-y-n': -26
+            });
+            gsap.set(box, {
+                x: -24,
+                y: -6
+            });
+        }
+    });
+
+    Promise.all([fetchPromise, animationPromise]).then(function (values) {
+        var response = values[0];
+        if (response.ok) {
+            // If the response is done, redirect the user
+            response.json().then(function (data) {
+                window.location.href = data.redirectUrl;
+            });
+        }
+    });
+}
+
+
 window.onload = function () {
     if (window.location.href.includes('filter=price')) {
         var paramString = window.location.href.split('?')[1];
@@ -1097,6 +1231,32 @@ window.onload = function () {
         var card = document.querySelector('.no-card-btn');
         if (address == null && card == null) {
             document.querySelector('.place-order-btn').removeAttribute("disabled");
+        }
+    }
+    else if (window.location.href.includes('/product/')) {
+        var sliderContainer = document.getElementById('slider-container');
+        var sliderImages = document.getElementsByClassName('slider-image-img');
+
+        if (sliderImages.length <= 4) {
+            sliderContainer.style.overflowX = 'hidden';
+        }
+
+        else {
+            var scrollAmount = 0;
+            function autoSlide() {
+                if (scrollAmount < sliderContainer.scrollWidth - sliderContainer.clientWidth) {
+                    scrollAmount += sliderContainer.clientWidth / 4;
+                } else {
+                    scrollAmount = 0;
+                }
+
+                sliderContainer.scrollTo({
+                    top: 0,
+                    left: scrollAmount,
+                    behavior: 'smooth'
+                });
+            }
+            setInterval(autoSlide, 2500);
         }
     }
 }

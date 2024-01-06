@@ -83,28 +83,28 @@
 <div class="container product-container rounded shadow-sm">
     <div class="single-product">
         <div class="row">
-            <div class="col-6">
+            <div class="col-12 col-md-6">
                 <div class="large-img d-flex justify-content-center">
                     <img src="{% static 'images/products/' %}{{ images.0 }}" class="large-image img-fluid"
                         alt="large-img">
                 </div>
-                <div class="extra-img row gap-1 mt-3">
+                <div id="slider-container" class="extra-img row gap-1 mt-5 slider-container flex-nowrap">
                     {% for image in images %}
-                    <div class="col">
+                    <div class="col-auto slider-image">
                         <div class="small-img d-flex justify-content-center">
-                            <img src="{% static 'images/products/' %}{{ image }}" class="img-fluid" alt="small-img"
-                                onclick="changeLargeImg(this)">
+                            <img src="{% static 'images/products/' %}{{ image }}" class="img-fluid slider-image-img"
+                                alt="small-img" onclick="changeLargeImg(this)">
                         </div>
                     </div>
                     {% endfor %}
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-12 col-md-6 pd-info-right">
                 <div class="row d-flex justify-content-between">
                     <div class="col">
                         <nav class="breadcrumb">
-                            <a href="/products" class="breadcrumbs__item">Products</a>
-                            <a href="/products/?filter={{ category }}" class="breadcrumbs__item is-active">
+                            <a href="/products" class="breadcrumbs-item">Products</a>
+                            <a href="/products/?filter={{ category }}" class="breadcrumbs-item is-active">
                                 {{ category }}</a>
                         </nav>
                     </div>
@@ -196,7 +196,10 @@
                                 {% else %}
                                 <button type="button" onclick="addToCart('{{ product_id }}', true)"
                                     class="btn btn-outline-secondary add-cart-btn anm-btn w-100">
-                                    <span>Add to Cart</span>
+                                    <span class="add-to-cart-text">Add to Cart</span>
+                                    <span class="added">Added</span>
+                                    <i class="bi bi-cart-fill"></i>
+                                    <i class="bi bi-box-seam-fill"></i>
                                 </button>
                                 {% endif %}
                             </div>
@@ -226,8 +229,8 @@
         </div>
 
         <div class="row product-description mt-5">
-            <h3>Product Description <i class="fa-solid fa-indent"></i></h3>
-            <p class="mt-3">{{ description|linebreaks }}</p>
+            <h3>Product Description</h3>
+            <p>{{ description|linebreaks }}</p>
         </div>
     </div>
 </div>

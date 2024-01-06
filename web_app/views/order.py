@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -132,19 +132,18 @@ def parse_checkout_context(request, mode):
         context["quantity"] = request.POST["quantity"]
         product = Product.objects.get(id=request.POST["product_id"])
         quantity = int(request.POST["quantity"])
-        products_by_vendor = {
-            product.owner.id: {
-                'vendor': {
-                    "name": product.owner.name,
-                    "username": product.owner.username
-                },
-                'cart_products': [
-                    {
-                        'product': model_to_dict(product),
-                        'quantity': quantity
-                    }],
-            }
-        }
+        products_by_vendor = [{
+            'vendor': {
+                "id": product.owner.id,
+                "name": product.owner.name,
+                "username": product.owner.username
+            },
+            'cart_products': [
+                {
+                    'product': model_to_dict(product),
+                    'quantity': quantity
+                }],
+        }]
         total_price = product.price * quantity
 
     context["products_by_vendor"] = products_by_vendor
@@ -377,7 +376,7 @@ def place_order(request):
     else:
         return HttpResponse('Invalid request')
 
-    return redirect('/order/' + str(order.id))
+    return JsonResponse({'redirectUrl': '/order/' + str(order.id)})
 
 
 def view_order(request, order_id):

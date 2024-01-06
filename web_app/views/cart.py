@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
@@ -119,14 +119,18 @@ def add_to_cart(request, product_id, quantity):
     except:
         pass
     if exist:
-        exist.quantity += quantity
-        exist.save()
+        if exist.product.stock > exist.quantity:
+            exist.quantity += quantity
+            if exist.product.stock < exist.quantity:
+                exist.quantity = exist.product.stock
+            exist.save()
+        return JsonResponse({'cart_plus': False})
     else:
         cart.products.create(product=product, quantity=quantity)
         user = request.user
         user.cart_quantity += 1
         user.save()
-    return HttpResponse(200)
+        return JsonResponse({'cart_plus': True})
 
 
 def del_product(product, user):
