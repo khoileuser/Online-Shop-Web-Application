@@ -126,7 +126,15 @@
                 </div>
 
                 <h3 class="name mt-4">{{ name }}</h3>
-                <h4 class="price mt-5">${{ price }}</h4>
+
+                <div class="row mt-5">
+                    <div class="col">
+                        <h2 class="price">${{ price }}</h2>
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <h4>Stock: <span class="pd-stock-{{ product_id }}">{{ stock }}</span></h4>
+                    </div>
+                </div>
 
                 {% if type != "V" %}
                 <div class="row mt-5 pd-action">
@@ -135,6 +143,25 @@
                     </div>
                     <div
                         class="col-9 col-sm-6 col-lg-5 col-xl-4 pd-quantity-input d-flex flex-row justify-content-center align-items-center">
+                        {% if stock == 0 %}
+                        <div class="input-group d-flex flex-row">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-number" disabled>
+                                    <i class="bi bi-dash"></i>
+                                </button>
+                            </div>
+
+                            <input type="number" step="any" name="quant[1]" style="text-align:center;"
+                                class="text-center form-control input-number pd-quantity-input-box-{{ product_id }}"
+                                value="1" min="1" disabled>
+
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default btn-number" disabled>
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        {% else %}
                         <div class="input-group d-flex flex-row">
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-default btn-number"
@@ -146,7 +173,7 @@
                             <input type="number" step="any" name="quant[1]" style="text-align:center;"
                                 class="text-center form-control input-number pd-quantity-input-box-{{ product_id }}"
                                 value="1" min="1" onfocus="this.oldvalue = this.value;"
-                                onchange="editQuantity('{{ product_id }}', 'edit', 1, true);this.oldvalue = this.value;">
+                                oninput="editQuantity('{{ product_id }}', 'edit', 1, true);this.oldvalue = this.value;">
 
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-default btn-number"
@@ -155,24 +182,40 @@
                                 </button>
                             </div>
                         </div>
+                        {% endif %}
                     </div>
 
                     <div class="col-12">
                         <div class="row buttons mt-5">
                             <div class="col-5 col-md-5">
+                                {% if stock == 0 %}
+                                <button type="button" class="btn btn-outline-secondary add-cart-btn anm-btn w-100"
+                                    disabled>
+                                    <span>Add to Cart</span>
+                                </button>
+                                {% else %}
                                 <button type="button" onclick="addToCart('{{ product_id }}', true)"
                                     class="btn btn-outline-secondary add-cart-btn anm-btn w-100">
-                                    <span>Add to Cart</span></button>
+                                    <span>Add to Cart</span>
+                                </button>
+                                {% endif %}
                             </div>
                             <div class="col-5 col-md-5">
+                                {% if stock == 0 %}
+                                <button type="button" class="btn btn-primary buy-now-btn anm-btn w-100" disabled>
+                                    <span>Buy Now</span>
+                                </button>
+                                {% else %}
                                 <form class="checkout-form" method="POST" action="/checkout/">
                                     <input type="hidden" id="mode" name="mode" value="buy_now">
                                     <input type="hidden" id="product_id" name="product_id" value="{{ product_id }}">
                                     <input type="hidden" class="checkout-quantity" id="quantity" name="quantity">
                                     <button type="button" onclick="checkOutProduct('{{ product_id }}')"
                                         class="btn btn-primary buy-now-btn anm-btn w-100">
-                                        <span>Buy Now</span></button>
+                                        <span>Buy Now</span>
+                                    </button>
                                 </form>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

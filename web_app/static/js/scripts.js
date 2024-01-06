@@ -256,6 +256,9 @@ function changeLargeImg(image) {
  * @returns The fetch request is being returned.
  */
 function doFetch(action, productid, quantity, reload = false) {
+    if (quantity <= 0) {
+        return;
+    }
     return fetch('/cart/' + action + '/' + productid + '/quantity/' + quantity, {
         method: 'POST'
     }).then(function (response) {
@@ -296,12 +299,19 @@ function updateCartCount() {
  */
 function editQuantity(productid, action, _quantity, noUpdate = false, limit = false) {
     var quantity = document.querySelector('.pd-quantity-input-box-' + productid);
+    var stock = document.querySelector('.pd-stock-' + productid);
     var updateQuantity = null;
     var reload = false;
 
     if (action == 'add') {
-        quantity.value = parseInt(quantity.value) + parseInt(_quantity);
-        updateQuantity = _quantity
+        if (parseInt(quantity.value) < parseInt(stock.innerHTML.trim())) {
+            quantity.value = parseInt(quantity.value) + parseInt(_quantity);
+            updateQuantity = _quantity;
+        }
+        else {
+            customAlert("You cannot add more than the available stock.", "alert-warning")
+            return;
+        }
     }
     else if (action == 'remove') {
         if (_quantity == 'all') {
@@ -317,20 +327,25 @@ function editQuantity(productid, action, _quantity, noUpdate = false, limit = fa
             }
             quantity.value = parseInt(quantity.value) - parseInt(_quantity);
         }
-        updateQuantity = _quantity
+        updateQuantity = _quantity;
     }
     else if (action == 'edit') {
         if (parseInt(quantity.value) > parseInt(quantity.oldvalue)) {
-            const calcQuantity = (parseInt(quantity.value) - parseInt(quantity.oldvalue))
+            const calcQuantity = (parseInt(quantity.value) - parseInt(quantity.oldvalue));
             var action = 'add';
-            updateQuantity = calcQuantity
+            updateQuantity = calcQuantity;
+            if (parseInt(quantity.value) >= parseInt(stock.innerHTML.trim())) {
+                quantity.value = stock.innerHTML.trim();
+                customAlert("You cannot add more than the available stock.", "alert-warning")
+                updateQuantity = parseInt(stock.innerHTML.trim()) - parseInt(quantity.oldvalue);
+            }
         }
         else if (parseInt(quantity.value) < parseInt(quantity.oldvalue)) {
-            const calcQuantity = (parseInt(quantity.oldvalue) - parseInt(quantity.value))
+            const calcQuantity = (parseInt(quantity.oldvalue) - parseInt(quantity.value));
             var action = 'remove';
             updateCartCount();
             reload = true;
-            updateQuantity = calcQuantity
+            updateQuantity = calcQuantity;
         }
     }
 
@@ -346,7 +361,7 @@ function editQuantity(productid, action, _quantity, noUpdate = false, limit = fa
             cartPrice.innerHTML = (parseFloat(cartPrice.innerHTML.trim()) + updateQuantity * pdPrice).toFixed(2);
         }
         else if (action == 'remove') {
-            const calced = (parseFloat(cartPrice.innerHTML.trim()) - updateQuantity * pdPrice).toFixed(2)
+            const calced = (parseFloat(cartPrice.innerHTML.trim()) - updateQuantity * pdPrice).toFixed(2);
             if (calced <= 0 || calced == 'NaN') {
                 cartPrice.innerHTML = 0;
             }
@@ -468,11 +483,22 @@ function selectAll() {
     var productIds = document.querySelector('.checkout-pd-ids');
 
     if (selectAllCheckbox.checked) {
+        var checkoutMode = 'all';
+        var newProductIds = "";
         pdCheckboxes.forEach(function checkCheckbox(checkbox) {
-            checkbox.checked = true;
+            if (checkbox.value == 'out-of-stock') {
+                checkoutMode = 'selected';
+            }
+            else {
+                checkbox.checked = true;
+                newProductIds = newProductIds + checkbox.value + ',';
+            }
         })
+        if (checkoutMode == 'selected') {
+            productIds.value = newProductIds;
+        }
         document.querySelector('.checkout-btn').removeAttribute("disabled");
-        document.querySelector('.checkout-mode').value = 'all';
+        document.querySelector('.checkout-mode').value = checkoutMode;
     }
     else {
         productIds.value = "";
@@ -487,7 +513,13 @@ function selectAll() {
 function checkOutCart() {
     const selectAllCheckbox = document.querySelector('.select-all');
     if (selectAllCheckbox.checked) {
-        document.querySelector('.checkout-mode').value = 'all';
+        try {
+            document.querySelector('.out-of-stock-warning');
+            document.querySelector('.checkout-mode').value = 'selected';
+        }
+        catch {
+            document.querySelector('.checkout-mode').value = 'all';
+        }
     }
     else {
         document.querySelector('.checkout-mode').value = 'selected';
@@ -927,23 +959,6 @@ function submitSearch() {
     }
 }
 
-/* The above code is a JavaScript code snippet that is executed when the window loads. */
-window.onload = function () {
-    if (window.location.href.includes('?filter=price')) {
-        var paramString = window.location.href.split('?')[1];
-        var queryString = new URLSearchParams(paramString);
-        var min = queryString.get('min');
-        var max = queryString.get('max');
-        filterProductPrice(min, max);
-    }
-    else if (window.location.href.includes('?search=')) {
-        var paramString = window.location.href.split('?')[1];
-        var queryString = new URLSearchParams(paramString);
-        var search = queryString.get('search');
-        document.querySelector('.search-input').value = search;
-    }
-}
-
 /**
  * The function enables the input field for category if the value is 'other'.
  * @param input - The input parameter is the HTML input element that triggered the event.
@@ -1024,6 +1039,10 @@ function editAvatar(input) {
     avatar.src = URL.createObjectURL(input.files[0]);
 }
 
+/**
+ * The function `copyURL` copies the current URL to the clipboard and updates the sharing status on the
+ * wishlist if it is set to false.
+ */
 function copyURL() {
     navigator.clipboard.writeText(window.location.href);
     var sharing = document.querySelector('.sharing').value
@@ -1038,6 +1057,10 @@ function copyURL() {
     }
 }
 
+/**
+ * The function toggles the state of a review input and updates the icon accordingly.
+ * @param input - The input parameter is expected to be an HTML element that contains a review toggle.
+ */
 function toggleReview(input) {
     var current = input.querySelector('.current');
     if (current.value == 'off') {
@@ -1047,5 +1070,29 @@ function toggleReview(input) {
     else {
         current.value = 'off';
         input.querySelector('.icon').innerHTML = '<i class="bi bi-chevron-down"></i>';
+    }
+}
+
+/* The above code is a JavaScript code snippet that is executed when the window loads. */
+window.onload = function () {
+    if (window.location.href.includes('?filter=price')) {
+        var paramString = window.location.href.split('?')[1];
+        var queryString = new URLSearchParams(paramString);
+        var min = queryString.get('min');
+        var max = queryString.get('max');
+        filterProductPrice(min, max);
+    }
+    else if (window.location.href.includes('?search=')) {
+        var paramString = window.location.href.split('?')[1];
+        var queryString = new URLSearchParams(paramString);
+        var search = queryString.get('search');
+        document.querySelector('.search-input').value = search;
+    }
+    else if (window.location.href.includes('/checkout')) {
+        var address = document.querySelector('.no-address-btn');
+        var card = document.querySelector('.no-card-btn');
+        if (address == null && card == null) {
+            document.querySelector('.place-order-btn').removeAttribute("disabled");
+        }
     }
 }

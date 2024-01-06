@@ -17,6 +17,16 @@ fs = FileSystemStorage()
 
 
 def fuzzy_search(search_query, products_input):
+    """
+    The `fuzzy_search` function takes a search query and a list of products, performs fuzzy matching on
+    the product names, and returns the matching products and the maximum price among them.
+
+    :param search_query: The search query is the input string that the user wants to search for in the
+    products. It can be a single word or a phrase
+    :param products_input: The `products_input` parameter is expected to be a queryset or a list of
+    products. Each product should have a `name` and `price` attribute
+    :return: The function `fuzzy_search` returns two values: `products` and `max_price`.
+    """
     product_names = products_input.values_list('name', flat=True)
 
     # query search with fuzzy matching
@@ -187,6 +197,7 @@ def view_product(request, product_id):
     except:
         return HttpResponse('Invalid product id')
 
+    # get product details
     context["product_id"] = product.id
     context["category"] = product.category
     context["name"] = product.name
@@ -196,17 +207,21 @@ def view_product(request, product_id):
     context["vendor_name"] = product.owner.name
     context["vendor_username"] = product.owner.username
     context["vendor_avatar"] = product.owner.avatar
+    context["stock"] = product.stock
 
+    # check if product is in wishlist
     if request.user != "guest":
         if request.user.wishlist.filter(id=product.id).exists():
             context['is_wishlist'] = True
         else:
             context['is_wishlist'] = False
 
+    # get related products
     products = Product.objects.filter(category=product.category).order_by('?')
     related_products = [p for p in products if p.id != product.id]
     context['related_products'] = related_products[:8]
 
+    # get reviews
     query_reviews = Review.objects.filter(product=product)
     reviews = []
     for review in query_reviews:
@@ -226,6 +241,8 @@ def view_product(request, product_id):
         context['reviews'] = reviews[1:]
     else:
         context['reviews'] = []
+
+    # check if user can review
     context['allow_review'] = False
     if request.user != "guest":
         if request.user.account_type == "C":
@@ -312,9 +329,10 @@ def add_product(request):
         if category == 'other':
             category = request.POST["pd-new-category"]
         description = request.POST["pd-description"]
+        stock = int(request.POST["pd-stock"])
 
         product = Product.objects.create(
-            name=name, price=price, category=category, description=description, owner=request.user)
+            name=name, price=price, category=category, description=description, owner=request.user, stock=stock)
 
         images = []
         for i in range(int(request.POST["img-range"])):
@@ -332,6 +350,17 @@ def add_product(request):
 
 @csrf_exempt
 def update_product(request, product_id):
+    """
+    The `update_product` function updates the details and images of a product in the database based on
+    the user's request.
+
+    :param request: The request object contains information about the current HTTP request, such as the
+    user making the request and the data sent with the request
+    :param product_id: The product_id parameter is the unique identifier of the product that needs to be
+    updated. It is used to retrieve the specific product from the database and make changes to its
+    details and images
+    :return: an HttpResponse object or redirects to another page.
+    """
     if request.user.account_type != "V":
         return HttpResponse('You are not a vendor')
 
@@ -351,6 +380,7 @@ def update_product(request, product_id):
         context['id'] = product.id
         context['name'] = product.name
         context['price'] = product.price
+        context['stock'] = product.stock
         context['pd_category'] = product.category
         context['description'] = product.description
         categories = Product.objects.values_list(
@@ -371,6 +401,7 @@ def update_product(request, product_id):
         if category == 'other':
             category = request.POST["pd-new-category"]
         description = request.POST["pd-description"]
+        stock = int(request.POST["pd-stock"])
 
         images = []
         for i in range(int(request.POST["img-range"])):
@@ -395,6 +426,7 @@ def update_product(request, product_id):
         product.category = category
         product.description = description
         product.images = images
+        product.stock = stock
         product.save()
 
         return redirect('/product/'+str(product.id))

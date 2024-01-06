@@ -221,6 +221,17 @@ def checkout(request):
 
 @csrf_exempt
 def checkout_change(request, field):
+    """
+    The function `checkout_change` handles the checkout process by updating the address or card
+    information based on the user's request.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the request method (e.g., GET, POST), user information,
+    session data, and other request-specific details
+    :param field: The "field" parameter is a string that specifies which field is being updated in the
+    checkout process. It can have two possible values: "address" or "card"
+    :return: a redirect response to the previous page.
+    """
     if request.method != "POST":
         return HttpResponse('Invalid request')
     elif request.user == "guest":
@@ -291,6 +302,13 @@ def place_order(request):
         order.save()
         order.products.set(checkout_products)
 
+        # update product stock
+        for cart_product in checkout_products:
+            cart_product.product.stock -= cart_product.quantity
+            if cart_product.product.stock < 0:
+                cart_product.product.stock = 0
+            cart_product.product.save()
+
         # clear all products from the user's cart
         cart.products.clear()
 
@@ -327,6 +345,12 @@ def place_order(request):
                 product=checkout_product.product, quantity=checkout_product.quantity)
             cart.products.remove(checkout_product)
 
+            # update product stock
+            checkout_product.product.stock -= checkout_product.quantity
+            if checkout_product.product.stock < 0:
+                checkout_product.product.stock = 0
+            checkout_product.product.save()
+
         # update user cart quantity
         user = request.user
         user.cart_quantity = cart.products.count()
@@ -344,6 +368,12 @@ def place_order(request):
                       card=card, total_price=total_price, status="A")
         order.save()
         order.products.create(product=product, quantity=quantity)
+
+        # update product stock
+        product.stock -= quantity
+        if product.stock < 0:
+            product.stock = 0
+        product.save()
     else:
         return HttpResponse('Invalid request')
 

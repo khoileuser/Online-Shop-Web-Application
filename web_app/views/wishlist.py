@@ -7,6 +7,16 @@ from web_app.models import User, Product
 
 
 def view_wishlist(request, username):
+    """
+    The `view_wishlist` function retrieves and organizes a user's wishlist products by vendor and
+    renders them in a template.
+
+    :param request: The request parameter is an object that represents the HTTP request made by the
+    user. It contains information such as the request method (GET, POST, etc.), headers, and user
+    session data
+    :param username: The username parameter is the username of the user whose wishlist is being viewed
+    :return: an HttpResponse object.
+    """
     if request.method != "GET":
         return HttpResponse("Invalid method")
 
@@ -65,6 +75,18 @@ def view_wishlist(request, username):
 
 @csrf_exempt
 def add_to_wishlist(request, product_id):
+    """
+    The function adds a product to the user's wishlist if the user is a customer and the request method
+    is POST.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    user. It contains information such as the method used (GET, POST, etc.), user session data, and any
+    data sent in the request
+    :param product_id: The product_id parameter is the unique identifier of the product that the user
+    wants to add to their wishlist
+    :return: a redirect to the previous page (HTTP_REFERER) after adding a product to the user's
+    wishlist.
+    """
     if request.method != "POST":
         return HttpResponse("Invalid method")
     elif request.user == "guest":
@@ -82,6 +104,18 @@ def add_to_wishlist(request, product_id):
 
 @csrf_exempt
 def remove_from_wishlist(request, product_id):
+    """
+    The function removes a product from a user's wishlist if the user is a customer and the request
+    method is POST.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information such as the method used (GET, POST, etc.), user information, and any
+    data sent with the request
+    :param product_id: The product_id parameter is the unique identifier of the product that the user
+    wants to remove from their wishlist
+    :return: a redirect to the previous page (the page specified in the 'HTTP_REFERER' header of the
+    request).
+    """
     if request.method != "POST":
         return HttpResponse("Invalid method")
     elif request.user == "guest":
@@ -101,6 +135,17 @@ def remove_from_wishlist(request, product_id):
 
 @csrf_exempt
 def share_toggle(request, value):
+    """
+    The function `share_toggle` updates the `share_wishlist` attribute of the user based on the value
+    provided and redirects the user to the previous page.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    client. It contains information about the request, such as the user making the request, the HTTP
+    method used (e.g., GET, POST), and any data sent with the request
+    :param value: The "value" parameter is a string that represents whether the user wants to toggle the
+    sharing of their wishlist. It can have two possible values: "true" or "false"
+    :return: a redirect to the previous page.
+    """
     if value == "true":
         request.user.share_wishlist = True
     elif value == "false":

@@ -581,7 +581,6 @@ body {
         background-color: #fafafa;
         border-radius: 0.25rem;
         padding: 15px;
-        font-size: 35px;
     }
 
     @media (max-width: 768px) {
@@ -894,6 +893,11 @@ body {
         display: inline-block;
         color: var(--text-header)
     }
+
+    .stock {
+        bottom: -30px;
+        left: 50px;
+    }
 }
 
 .checkout-page {
@@ -937,10 +941,6 @@ body {
 }
 
 .orders-page {
-    .heading {
-        background-color: white;
-    }
-
     .order-container {
         background-color: white;
 

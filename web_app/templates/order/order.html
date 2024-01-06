@@ -9,43 +9,43 @@
 <div class="container order-page">
     <!-- Status -->
     {% if status == "A" %}
-    <div class="row child-container rounded shadow-sm p-3 bg-success text-light">
-        <div class="col d-flex align-items-center">
+    <div class="rounded shadow-sm p-3 bg-success text-light d-flex flex-row justify-content-between">
+        <div class="d-flex align-items-center">
             <span>Your oder has been confirmed</span>
         </div>
-        <div class="col d-flex align-items-center justify-content-end">
-            <i class="bi bi-check h4"></i>
-            <h5 class="d-inline-block">Active</h5>
+        <div class="d-flex align-items-center">
+            <i class="bi bi-check h4 m-0"></i>
+            <h5 class="d-inline-block m-0">Active</h5>
         </div>
     </div>
     {% elif order.status == "G" %}
-    <div class="row child-container rounded shadow-sm p-3 bg-success text-light">
-        <div class="col d-flex align-items-center">
+    <div class="rounded shadow-sm p-3 bg-success text-light d-flex flex-row justify-content-between">
+        <div class="d-flex align-items-center">
             <span>Your oder is being delivered</span>
         </div>
-        <div class="col d-flex align-items-center justify-content-end">
-            <i class="bi bi-truck h4"></i>
-            <h5 class="d-inline-block">Delivering</h5>
+        <div class="d-flex align-items-center">
+            <i class="bi bi-truck h4 m-0"></i>
+            <h5 class="d-inline-block m-0">Delivering</h5>
         </div>
     </div>
     {% elif order.status == "D" %}
-    <div class="row child-container rounded shadow-sm p-3 bg-info text-black">
-        <div class="col d-flex align-items-center">
+    <div class="rounded shadow-sm p-3 bg-info text-black d-flex flex-row justify-content-between">
+        <div class="d-flex align-items-center">
             <span>Your oder has been delivered</span>
         </div>
-        <div class="col d-flex align-items-center justify-content-end">
-            <i class="bi bi-check2-square h4"></i>
-            <h5 class="d-inline-block">Delivered</h5>
+        <div class="d-flex align-items-center">
+            <i class="bi bi-check2-square h4 m-0"></i>
+            <h5 class="d-inline-block m-0">Delivered</h5>
         </div>
     </div>
     {% elif order.status == "C" %}
-    <div class="row child-container rounded shadow-sm p-3 bg-danger text-light">
-        <div class="col d-flex align-items-center">
+    <div class="rounded shadow-sm p-3 bg-danger text-light d-flex flex-row justify-content-between">
+        <div class="d-flex align-items-center">
             <span>Your oder has been cancaled</span>
         </div>
-        <div class="col d-flex align-items-center justify-content-end">
-            <i class="bi bi-x h4"></i>
-            <h5 class="d-inline-block">Canceled</h5>
+        <div class="d-flex align-items-center">
+            <i class="bi bi-x h4 m-0"></i>
+            <h5 class="d-inline-block m-0">Canceled</h5>
         </div>
     </div>
     {% endif %}
@@ -135,7 +135,7 @@
                     </span>
                 </div>
 
-                <div class="col-1 pd-quantity">
+                <div class="col-2 col-md-1 pd-quantity">
                     <div class="pd-quantity-input">
                         <div class="input-group">
                             <input
@@ -169,7 +169,7 @@
         <!-- Payment Methods -->
         <div class="col-8">
             <div class="row p-2">
-                <div class="col-6">
+                <div class="col-12 col-sm-10 col-lg-6">
                     <div class="row">
                         {% if card.card_type == "VISA" %}
                         <div class="col-4 visa-logo rounded d-flex align-items-center justify-content-center">

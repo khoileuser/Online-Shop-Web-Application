@@ -47,8 +47,16 @@
                     <a href="/products/?filter={{ category }}" class="breadcrumbs__item is-active">{{ category }}</a>
                 </nav>
 
-                <h3 class="name mt-3">{{ name }}</h3>
-                <h4 class="price mt-5">${{ price }}</h4>
+                <h3 class="name mt-4">{{ name }}</h3>
+
+                <div class="row mt-5">
+                    <div class="col">
+                        <h2 class="price">${{ price }}</h2>
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <h4 class="stock">Stock: {{ stock }}</h4>
+                    </div>
+                </div>
 
                 <div class="row mt-5 pd-action">
                     <div class="col-12">

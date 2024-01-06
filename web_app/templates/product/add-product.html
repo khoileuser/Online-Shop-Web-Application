@@ -10,12 +10,12 @@
     <form method="POST" action="/product/add/" enctype="multipart/form-data">
 
         <div class="row mt-4">
-            <div class="col-3 d-flex align-items-center">Product's images</div>
+            <div class="col-3 d-flex align-items-center">Images</div>
             <div class="col-9">
                 <div class="input-group">
                     <label class="input-group-text" for="image-upload">Upload</label>
                     <input name="product-img" type="file" class="form-control product-img" id="image-upload"
-                        accept='image/*' onchange="addImg(this)" required>
+                        accept='image/*' oninput="addImg(this)" required>
                 </div>
             </div>
             <div class="col-12 mt-4">
@@ -26,7 +26,7 @@
         </div>
 
         <div class="row mt-4">
-            <div class="col-3 d-flex align-items-center">Product's name</div>
+            <div class="col-3 d-flex align-items-center">Name</div>
             <div class="col-9">
                 <div class="form-floating">
                     <input type="text" class="form-control" name="pd-name" placeholder="Product name" required>
@@ -36,20 +36,30 @@
         </div>
 
         <div class="row mt-4">
-            <div class="col-3 d-flex align-items-center">Product's price</div>
+            <div class="col-3 d-flex align-items-center">Price</div>
             <div class="col-9">
                 <div class="form-floating">
-                    <input type="text" class="form-control" name="pd-price" placeholder="Product price" required>
+                    <input type="number" class="form-control" name="pd-price" placeholder="Product price" required>
                     <label for="pd-price">$Price</label>
                 </div>
             </div>
         </div>
 
         <div class="row mt-4">
-            <div class="col-3 d-flex align-items-center">Product's category</div>
+            <div class="col-3 d-flex align-items-center">Stock</div>
+            <div class="col-9">
+                <div class="form-floating">
+                    <input type="number" class="form-control" name="pd-stock" placeholder="Product stokc" required>
+                    <label for="pd-price">Quantity</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-3 d-flex align-items-center">Category</div>
             <div class="col-4">
                 <div class="form-floating">
-                    <select name="pd-category" class="form-select" id="floatingSelect" onchange="editCategory(this)"
+                    <select name="pd-category" class="form-select" id="floatingSelect" oninput="editCategory(this)"
                         required>
                         {% for category in categories %}
                         <option value="{{ category }}">{{ category }}</option>
@@ -69,7 +79,7 @@
         </div>
 
         <div class="row mt-4">
-            <div class="col-3 mt-4">Product's description</div>
+            <div class="col-3 mt-4">Description</div>
             <div class="col-9">
                 <div class="form-floating">
                     <textarea name="pd-description" class="form-control" placeholder="Product description"

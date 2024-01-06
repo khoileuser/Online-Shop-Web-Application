@@ -3,6 +3,8 @@ from django.template import loader
 
 from web_app.models import Product
 
+import random
+
 
 def index(request):
     if request.user != "guest":
@@ -31,4 +33,5 @@ def index(request):
 
 
 def execute(request):
-    return HttpResponse('ok')
+    product = Product.objects.all().filter(stock=0)
+    print(product)

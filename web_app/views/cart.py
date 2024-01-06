@@ -41,15 +41,32 @@ def view_cart(request):
     for vendor in vendors:
         # group products by vendor
         _cart_products = [
-            cart_product for cart_product in cart_products if cart_product.product.owner == vendor]
-        products_by_vendor.append({
-            'vendor': {
-                "id": vendor.id,
-                "name": vendor.name,
-                "username": vendor.username
-            },
-            'cart_products': _cart_products,
-        })
+            cart_product for cart_product in cart_products if cart_product.product.owner == vendor and cart_product.product.stock > 0]
+        if _cart_products != []:
+            products_by_vendor.append({
+                'vendor': {
+                    "id": vendor.id,
+                    "name": vendor.name,
+                    "username": vendor.username
+                },
+                'cart_products': _cart_products,
+            })
+
+    # get out of stock products
+    out_of_stock_products = []
+    for vendor in vendors:
+        # group products by vendor
+        _cart_products = [
+            cart_product for cart_product in cart_products if cart_product.product.owner == vendor and cart_product.product.stock == 0]
+        if _cart_products != []:
+            out_of_stock_products.append({
+                'vendor': {
+                    "id": vendor.id,
+                    "name": vendor.name,
+                    "username": vendor.username
+                },
+                'cart_products': _cart_products,
+            })
 
     # calculate total price of user's cart
     total_price = 0
@@ -63,6 +80,7 @@ def view_cart(request):
         "cart_quantity": request.user.cart_quantity,
         "type": request.user.account_type,
         "products_by_vendor": products_by_vendor,
+        "out_of_stock_products": out_of_stock_products,
         "total_price": round(total_price, 2)
     }
     return HttpResponse(template.render(context, request))

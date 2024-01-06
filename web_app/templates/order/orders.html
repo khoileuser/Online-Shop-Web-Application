@@ -7,18 +7,18 @@
 <div class="dummy"></div>
 
 <div class="container orders-page mt-4 mb-4">
-    <div class="row rounded heading shadow-sm mb-4 p-3">
-        <div class="col">
-            <span>My orders</span>
+    <div class="alert alert-info heading mb-4 d-flex flex-row justify-content-between" role="alert">
+        <div class="d-flex justify-content-center">
+            <h5 class="m-0">My orders</h5>
         </div>
-        <div class="col order-total text-end">
-            <span>
+        <div class="order-total d-flex justify-content-center">
+            <h5 class="m-0">
                 Total:
                 <span class="order-count">
                     {{ orders|length }}
                 </span>
                 <i class="bi bi-receipt"></i>
-            </span>
+            </h5>
         </div>
     </div>
 

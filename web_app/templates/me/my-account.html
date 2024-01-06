@@ -100,7 +100,7 @@
                 <div class="mt-4">
                     <form action="/me/update/avatar" method="POST" enctype="multipart/form-data">
                         <div class="input-group">
-                            <input type="file" class="form-control" name="avatar" onchange="editAvatar(this)" required>
+                            <input type="file" class="form-control" name="avatar" oninput="editAvatar(this)" required>
                             <button class="btn btn-primary" type="submit">Save</button>
                         </div>
                     </form>

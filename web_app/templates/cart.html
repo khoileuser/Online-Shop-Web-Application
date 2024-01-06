@@ -23,9 +23,9 @@
         {% for cart_product in vendor.cart_products %}
         <div class="row vendor-products p-3">
             <div class="col-1 d-flex justify-content-center align-items-center select-col">
-                <input type="checkbox"
+                <input type="checkbox" value="{{ cart_product.product.id }}"
                     class="form-check-input product-checkbox pd-checkbox-{{ cart_product.product.id }}"
-                    onchange="selectOne('{{ cart_product.product.id }}')">
+                    oninput="selectOne('{{ cart_product.product.id }}')">
             </div>
 
             <div class="col pd-img d-flex justify-content-center align-items-center mb-3">
@@ -51,8 +51,7 @@
                     </span>
                 </div>
 
-                <div
-                    class="col-8 col-md-4 col-lg-3 pd-quantity d-flex flex-row justify-content-center align-items-center">
+                <div class="col-6 col-sm-5 col-md-4 col-lg-3 pd-quantity position-relative">
                     <div class="pd-quantity-input d-flex flex-row">
                         <div class="input-group">
                             <div class="input-group-btn">
@@ -65,7 +64,8 @@
                             <input type="number" step="any" name="quant[1]"
                                 class="text-center form-control input-number pd-quantity-input-box-{{ cart_product.product.id }}"
                                 value="{{ cart_product.quantity }}" min="1" onfocus="this.oldvalue = this.value;"
-                                onchange="editQuantity('{{ cart_product.product.id }}', 'edit');this.oldvalue = this.value;">
+                                onchange="editQuantity('{{ cart_product.product.id }}', 'edit', oldvalue=this.oldvalue);this.oldvalue = this.value;">
+                            <!-- leave this onchange instead of oninput because fetch is required, oninput may overload backend -->
 
                             <div class="input-group-btn">
                                 <button type="button" class="btn btn-default btn-number"
@@ -75,6 +75,14 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="stock position-absolute">
+                        <span>Stock: </span>
+                        <span class="pd-stock-{{ cart_product.product.id }}">
+                            {{ cart_product.product.stock }}
+                        </span>
+                    </div>
+
                 </div>
 
                 <div class="col pd-total-price d-none d-lg-block text-center">
@@ -86,8 +94,9 @@
             </div>
 
             <div class="col-1 pd-remove d-none d-lg-flex justify-content-center align-items-center mb-3">
-                <div class="modal fade add-card-modal" id="removeCartPd" data-bs-backdrop="static"
-                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="removeCartPdLabel" aria-hidden="true">
+                <div class="modal fade add-card-modal" id="removeCartPd-{{ cart_product.product.id }}"
+                    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="removeCartPdLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -106,7 +115,7 @@
                     </div>
                 </div>
                 <button class="btn anm-btn pd-remove-btn btn-danger" data-bs-toggle="modal"
-                    data-bs-target="#removeCartPd">Remove</button>
+                    data-bs-target="#removeCartPd-{{ cart_product.product.id }}">Remove</button>
             </div>
 
             {% if not forloop.last %}
@@ -117,8 +126,107 @@
         {% endfor %}
     </div>
     {% endfor %}
+    {% endif %}
 
-    {% else %}
+    {% if out_of_stock_products %}
+    <div class="alert alert-warning out-of-stock-warning" role="alert">
+        <h5 class="alert-heading m-0">Some products are out of stock!</h5>
+    </div>
+    {% for vendor in out_of_stock_products %}
+    <div class="row rounded cart-container mb-4 shadow-sm">
+        <div class="vendorname border-bottom p-3">
+            <a href="/products/vendor/{{ vendor.vendor.username }}" class="text-decoration-none text-reset">
+                <span class="text">
+                    <i class="bi bi-shop-window"></i>
+                    {{ vendor.vendor.name }}
+                    <i class="bi bi-chevron-right"></i>
+                </span>
+            </a>
+        </div>
+
+        {% for cart_product in vendor.cart_products %}
+        <div class="row vendor-products p-3">
+            <div class="col-1 d-flex justify-content-center align-items-center select-col">
+                <input type="checkbox" value="out-of-stock"
+                    class="form-check-input product-checkbox pd-checkbox-{{ cart_product.product.id }}" disabled>
+            </div>
+
+            <div class="col pd-img d-flex justify-content-center align-items-center mb-3">
+                <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
+                    <div class="image">
+                        <img class="img-fluid" src="{% static 'images/products/' %}{{ cart_product.product.images.0 }}"
+                            alt="product-img" style="opacity: 0.5;">
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-7 col-md-8 pd-info d-flex align-items-center mb-3">
+                <div class="col pd-name text-start" style="color: rgba(0, 0, 0, 0.5);">
+                    <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
+                        {{ cart_product.product.name }}
+                    </a>
+                </div>
+
+                <div class="col pd-price text-center" style="color: rgba(0, 0, 0, 0.5);">
+                    $
+                    <span class="pd-price-{{ cart_product.product.id }}">
+                        {{ cart_product.product.price }}
+                    </span>
+                </div>
+
+                <div class="col-6 col-sm-5 col-md-4 col-lg-3 pd-quantity text-center"
+                    style="color: rgba(0, 0, 0, 0.5);">
+                    <div class="stock">
+                        <span>Stock: </span>
+                        <span class="pd-stock-{{ cart_product.product.id }}">
+                            {{ cart_product.product.stock }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col pd-out-of-stock d-none d-lg-block text-center">
+                    <span class="text-danger">
+                        Out of stock
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-1 pd-remove d-none d-lg-flex justify-content-center align-items-center mb-3">
+                <div class="modal fade add-card-modal" id="removeCartPd-{{ cart_product.product.id }}"
+                    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="removeCartPdLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="removeCartPdLabel">Do you want to remove this product?
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary w-25"
+                                    data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger w-25"
+                                    onclick="editQuantity('{{ cart_product.product.id }}', 'remove', 'all')">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn anm-btn pd-remove-btn btn-danger" data-bs-toggle="modal"
+                    data-bs-target="#removeCartPd-{{ cart_product.product.id }}">Remove</button>
+            </div>
+
+            {% if not forloop.last %}
+            <div class="col-12 border-bottom"></div>
+            {% endif %}
+
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    {% if not products_by_vendor and not out_of_stock_products %}
     <div class="row rounded cart-container empty-cart text-center shadow-sm">
         <h2>You haven't add any products to your cart yet.</h2>
     </div>
@@ -127,7 +235,7 @@
     <div class="row checkout-container rounded shadow-sm p-3">
         <div class="col d-flex align-items-center select-all-wrapper">
             <div calss="form-check">
-                <input type="checkbox" class="form-check-input select-all" id="select-all" onchange="selectAll()">
+                <input type="checkbox" class="form-check-input select-all" id="select-all" oninput="selectAll()">
                 <label class="form-check-label" for="select-all">Select All</label>
             </div>
         </div>
