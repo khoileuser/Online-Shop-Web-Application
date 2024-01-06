@@ -812,26 +812,6 @@ body {
     .caution {
         display: none;
     }
-
-    @media (max-width: 991px) {
-        font-size: small;
-
-        .info-tab {
-            .image img {
-                max-width: 20w;
-                max-height: 20vh;
-            }
-        }
-    }
-
-    @media (max-width: 768px) {
-        .info-tab {
-            .image img {
-                max-width: 10w;
-                max-height: 10vh;
-            }
-        }
-    }
 }
 
 .add-address-modal,
