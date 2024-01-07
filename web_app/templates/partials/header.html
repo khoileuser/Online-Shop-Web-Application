@@ -98,12 +98,20 @@
                                     <li>
                                         <a class="dropdown-item" href="/wishlist/{{ username }}">Wishlist</a>
                                     </li>
-                                    {% else %}
+                                    {% elif type == 'V' %}
                                     <li>
                                         <a class="dropdown-item" href="/products/vendor/{{ username }}">My Products</a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="/product/add">Add Product</a>
+                                    </li>
+                                    {% elif type == 'S' %}
+                                    <li>
+                                        <a class="dropdown-item" href="/orders">Orders</a>
+                                    </li>
+                                    {% elif type == 'A' %}
+                                    <li>
+                                        <a class="dropdown-item" href="/accounts">Accounts</a>
                                     </li>
                                     {% endif %}
                                     <li>

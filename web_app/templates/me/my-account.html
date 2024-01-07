@@ -8,6 +8,26 @@
 
 {% include "partials/add-modal.html" %}
 
+<div class="modal fade add-card-modal" id="deleteAccount" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="deleteAccountLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form action="/me/delete/" method="POST">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteAccountLabel">
+                        Do you want to delete your account?
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger w-25" type="submit">Delete</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="container me-container d-flex flex-wrap align-items-center justify-content-center gap-3">
     <!-- Profile -->
     <input type="radio" class="tab-radio" id="tab1" name="me-tabs" checked>
@@ -42,6 +62,10 @@
                             <input class="form-control" type="text" value="Customer" readonly>
                             {% elif type == 'V' %}
                             <input class="form-control" type="text" value="Vendor" readonly>
+                            {% elif type == 'S' %}
+                            <input class="form-control" type="text" value="Shipper" readonly>
+                            {% elif type == 'A' %}
+                            <input class="form-control" type="text" value="Admin" readonly>
                             {% endif %}
                         </div>
                     </div>
@@ -76,9 +100,8 @@
                         </div>
 
                         <div class="col text-center mt-4">
-                            <form action="/me/delete/" method="POST">
-                                <button class="btn btn-danger del-btn" type="submit">Delete account</button>
-                            </form>
+                            <button class="btn btn-danger del-btn" type="button" data-bs-toggle="modal"
+                                data-bs-target="#deleteAccount">Delete account</button>
                         </div>
                     </div>
 

@@ -40,7 +40,8 @@ class User(models.Model):
     ACCOUNT_TYPES = [
         ("V", "Vendor"),
         ("C", "Customer"),
-        ("S", "Shipper")
+        ("S", "Shipper"),
+        ("A", "Admin")
     ]
     tokens = models.JSONField(default=list, null=True)
     username = models.CharField(max_length=25, unique=True, validators=[

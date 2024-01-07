@@ -99,7 +99,15 @@ def sign_up(request):
             return HttpResponse("Passwords must contain at least one uppercase, one lowercase, one digit, one special character and at least 8 characters long.")
         hashed_pwd = make_password(password)
 
-        account_type = "V" if request.POST["accounttype"] == "vendor" else "C"
+        match request.POST["accounttype"]:
+            case "customer":
+                account_type = "C"
+            case "shipper":
+                account_type = "S"
+            case "vendor":
+                account_type = "V"
+            # case "admin":
+            #     account_type = "A"
 
         try:
             user = User(name=name, username=username, password=hashed_pwd,

@@ -50,6 +50,7 @@ urlpatterns = [
     path('checkout/change/<str:field>', order.checkout_change),
     path('order/place/', order.place_order),
     path('order/<int:order_id>', order.view_order),
+    path('order/<int:order_id>/status/<str:status>', order.set_order_status),
     path('orders/<int:order_id>', order.view_order),
     path('orders/', order.view_orders),
 

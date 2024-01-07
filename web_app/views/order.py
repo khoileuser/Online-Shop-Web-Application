@@ -444,10 +444,14 @@ def view_orders(request):
         return HttpResponse('Invalid request')
     elif request.user == "guest":
         return redirect("/signin")
-    elif request.user.account_type != "C":
-        return HttpResponse('You are not a customer')
+    elif request.user.account_type not in ["C", "S"]:
+        return HttpResponse('You are not a customer or a shipper')
 
-    _orders = Order.objects.filter(owner=request.user).order_by('id')
+    if request.user.account_type == "C":
+        _orders = Order.objects.filter(owner=request.user).order_by('id')
+    elif request.user.account_type == "S":
+        _orders = Order.objects.all().order_by('id')
+
     orders = []
     for order in _orders:
         vendors = get_vendors(order.products.all().order_by('id'))
@@ -470,3 +474,31 @@ def view_orders(request):
 
     template = loader.get_template("order/orders.html")
     return HttpResponse(template.render(context, request))
+
+
+@csrf_exempt
+def set_order_status(request, order_id, status):
+    """
+    The `set_order_status` function retrieves an order from the database and updates its status.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    user. It contains information such as the request method (GET, POST, etc.), user authentication
+    details, and any data sent with the request
+    :param order_id: The order_id parameter is the unique identifier of the order that the user wants to
+    view
+    :return: an HttpResponse object.
+    """
+    if request.method != "POST":
+        return HttpResponse('Invalid request')
+    elif request.user == "guest":
+        return redirect("/signin")
+    elif request.user.account_type != "S":
+        return HttpResponse('You are not a shipper')
+
+    order = Order.objects.get(id=order_id)
+    if status not in ["G", "D", "C"]:
+        return HttpResponse('Invalid status')
+    order.status = status
+    order.save()
+
+    return redirect(request.META['HTTP_REFERER'])
