@@ -4,8 +4,8 @@
 
 <div class="dummy"></div>
 
-<div class="modal fade add-card-modal" id="delPd" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="delPdLabel" aria-hidden="true">
+<div class="modal fade add-card-modal" id="delPd" data-bs-keyboard="false" tabindex="-1" aria-labelledby="delPdLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <form method="POST" action="/product/delete/{{ product_id }}">
             <div class="modal-content">
@@ -15,7 +15,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary w-25" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger w-25">Confirm</button>
+                    <button type="submit" class="btn btn-danger w-25">Delete</button>
                 </div>
             </div>
         </form>
@@ -43,8 +43,8 @@
             </div>
             <div class="col-6">
                 <nav class="breadcrumb">
-                    <a href="/products" class="breadcrumbs__item">Products</a>
-                    <a href="/products/?filter={{ category }}" class="breadcrumbs__item is-active">{{ category }}</a>
+                    <a href="/products" class="breadcrumbs-item">Products</a>
+                    <a href="/products/?filter={{ category }}" class="breadcrumbs-item is-active">{{ category }}</a>
                 </nav>
 
                 <h3 class="name mt-4">{{ name }}</h3>
@@ -62,13 +62,14 @@
                     <div class="col-12">
                         <div class="row buttons mt-4">
                             <div class="col-6 col-md-5">
-                                <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal"
+                                <button type="button" class="btn btn-danger w-100 del-btn" data-bs-toggle="modal"
                                     data-bs-target="#delPd">
                                     <span>Delete</span>
                                 </button>
                             </div>
                             <div class="col-6 col-md-5">
-                                <a type="button" href="/product/update/{{ product_id }}" class="btn btn-primary w-100">
+                                <a type="button" href="/product/update/{{ product_id }}"
+                                    class="btn btn-primary w-100 buy-now-btn">
                                     <span>Edit</span>
                                 </a>
                             </div>

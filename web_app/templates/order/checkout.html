@@ -63,7 +63,7 @@
                         <div class="col-12 text-center mb-3">
                             <form method="POST" action="/checkout/change/address">
                                 <input type="hidden" name="address_id" value="{{ address.id }}">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-info">
                                     Select
                                 </button>
                             </form>
@@ -134,7 +134,7 @@
                         <div class="col-3 d-flex align-items-center justify-content-center">
                             <form method="POST" action="/checkout/change/card">
                                 <input type="hidden" name="card_id" value="{{ card.id }}">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-info">
                                     Select
                                 </button>
                             </form>
@@ -213,14 +213,14 @@
             </div>
         </div>
         <div class="col-12 text-center">
-            <button type="button" class="btn btn-primary m-3 mb-2" data-bs-toggle="modal"
+            <button type="button" class="btn btn-primary m-3 mb-2 change-address-btn anm-btn" data-bs-toggle="modal"
                 data-bs-target="#changeAddress">
                 Change address
             </button>
         </div>
         {% else %}
         <div class="text-center">
-            <button type="button" class="btn btn-primary m-3 mb-2 no-address-btn" data-bs-toggle="modal"
+            <button type="button" class="btn btn-primary m-3 mb-2 no-address-btn anm-btn" data-bs-toggle="modal"
                 data-bs-target="#addAddress">
                 Add new address
             </button>
@@ -331,7 +331,7 @@
                 </div>
                 <div class="col-4 col-lg-6 d-flex align-items-center justify-content-start">
                     <div>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-primary change-card-btn anm-btn" data-bs-toggle="modal"
                             data-bs-target="#changeCard">
                             Change
                         </button>
@@ -341,7 +341,7 @@
         </div>
         {% else %}
         <div class="col-12 col-md-8 text-start">
-            <button type="button" class="btn btn-primary m-3 mb-4 no-card-btn" data-bs-toggle="modal"
+            <button type="button" class="btn btn-primary m-3 mb-4 no-card-btn anm-btn" data-bs-toggle="modal"
                 data-bs-target="#addCard">
                 Add new card
             </button>
@@ -351,7 +351,7 @@
         <div
             class="place-order-section col-12 col-md-4 d-flex gap-4 flex-row justify-content-center align-items-center">
             <div class="checkout-total-price">
-                Total: ${{ total_price }}
+                Total: $ {{ total_price }}
             </div>
 
             <div class="checkout-place-order-btn">

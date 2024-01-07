@@ -30,7 +30,7 @@ function clearImage() {
 scrolls the page, the function is triggered. */
 window.onscroll = function () {
     var navbar = document.querySelector('.navbar')
-    if (window.scrollY > 100) {
+    if (window.scrollY > 75) {
         navbar.classList.add('navbar-scrolled')
     }
     else {
@@ -443,12 +443,18 @@ function checkOutProduct(product_id) {
 function selectOne(product_id) {
     const calledCheckbox = document.querySelector('.pd-checkbox-' + product_id);
     var productIds = document.querySelector('.checkout-pd-ids');
+    var pdPrice = parseFloat(document.querySelector('.pd-price-' + product_id).innerHTML.trim());
+    var pdQuantity = parseInt(document.querySelector('.pd-quantity-input-box-' + product_id).value);
+    var cartTotalPrice = document.querySelector('.total-price');
 
     if (calledCheckbox.checked) {
         if (!productIds.value.includes(product_id)) {
             productIds.value = productIds.value + product_id + ',';
         }
         document.querySelector('.checkout-btn').removeAttribute("disabled");
+
+        // update total price
+        cartTotalPrice.innerHTML = (parseFloat(cartTotalPrice.innerHTML.trim()) + pdPrice * pdQuantity).toFixed(2);
 
         // check if all product checkboxes is checked, check select all
         var allChecked = false;
@@ -471,6 +477,9 @@ function selectOne(product_id) {
     }
     else {
         productIds.value = productIds.value.replace(product_id + ',', '');
+
+        // update total price
+        cartTotalPrice.innerHTML = (parseFloat(cartTotalPrice.innerHTML.trim()) - pdPrice * pdQuantity).toFixed(2);
 
         // check if there is no checked checkboxes, disable checkout button
         var anyChecked = false;
@@ -500,6 +509,7 @@ function selectAll() {
     const selectAllCheckbox = document.querySelector('.select-all');
     var pdCheckboxes = document.querySelectorAll('.product-checkbox');
     var productIds = document.querySelector('.checkout-pd-ids');
+    var cartTotalPrice = document.querySelector('.total-price');
 
     if (selectAllCheckbox.checked) {
         var checkoutMode = 'all';
@@ -509,6 +519,10 @@ function selectAll() {
                 checkoutMode = 'selected';
             }
             else {
+                var pdRow = checkbox.parentElement.parentElement;
+                var pdPrice = parseFloat(pdRow.querySelector('.pd-price-span').innerHTML.trim());
+                var pdQuantity = parseInt(pdRow.querySelector('.input-number').value);
+                cartTotalPrice.innerHTML = (parseFloat(cartTotalPrice.innerHTML.trim()) + pdPrice * pdQuantity).toFixed(2);
                 checkbox.checked = true;
                 newProductIds = newProductIds + checkbox.value + ',';
             }
@@ -526,6 +540,7 @@ function selectAll() {
         pdCheckboxes.forEach(function uncheckCheckbox(checkbox) {
             checkbox.checked = false;
         })
+        cartTotalPrice.innerHTML = "0.00";
         document.querySelector('.checkout-btn').setAttribute("disabled", "");
         document.querySelector('.checkout-mode').value = 'none';
     }
@@ -959,7 +974,11 @@ function handleKeyPress(event, input) {
  */
 function submitSearch() {
     var search = document.querySelector('.search-input');
-    if (window.location.pathname.includes('/products')) {
+    if (search.value.trim() == "") {
+        customAlert("Please enter a search query.", "alert-warning");
+        return;
+    }
+    else if (window.location.pathname.includes('/products')) {
         if (window.location.href.includes('filter=')) {
             var paramString = window.location.href.split('?')[1];
             var queryString = new URLSearchParams(paramString);
@@ -1067,7 +1086,6 @@ function editAvatar(input) {
  * wishlist if it is set to false.
  */
 function copyURL() {
-    navigator.clipboard.writeText(window.location.href);
     var sharing = document.querySelector('.sharing').value
     if (sharing == 'false') {
         fetch('/wishlist/share/true', {
@@ -1075,8 +1093,14 @@ function copyURL() {
         })
             .then(() => {
                 location.reload();
+                navigator.clipboard.writeText(window.location.href);
+                customAlert("URL copied to clipboard!", "alert-success");
             })
             .catch(err => console.error(err));
+    }
+    else {
+        navigator.clipboard.writeText(window.location.href);
+        customAlert("URL copied to clipboard!", "alert-success");
     }
 }
 

@@ -5,10 +5,11 @@
     --box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
     --border-radius: 1rem;
     --border-color: rgba(0, 0, 0, 0.125);
-    --pink-gradient: linear-gradient(90deg, rgba(253, 1, 130, 1) 0%, rgba(131, 37, 196, 1) 100%);
-    --blue-gradient: linear-gradient(90deg, rgba(58, 65, 110, 1) 0%, rgba(21, 24, 41, 1) 100%);
-    --combined-gradient: linear-gradient(90deg, rgba(253, 1, 130, 1) 0%, rgba(21, 24, 41, 1) 100%);
     --hover-from-dark: rgb(92, 94, 110);
+    --blue-gradient: linear-gradient(90deg, rgba(58, 65, 110, 1) 0%, rgba(21, 24, 41, 1) 100%);
+    --pink-gradient: linear-gradient(90deg, rgba(253, 1, 130, 1) 0%, rgba(131, 37, 196, 1) 100%);
+    --red-gradient: linear-gradient(45deg, #874da2 0%, #c43a30 100%);
+    --light-red-gradient: linear-gradient(to right, #ed6ea0 0%, #ec8c69 100%);
 }
 
 body {
@@ -214,6 +215,16 @@ body {
     .user-menu-btn:hover {
         background: var(--pink-gradient);
     }
+
+    .search-btn {
+        transition: 0.25s ease-in-out;
+    }
+
+    .search-btn:hover {
+        background: var(--blue-gradient);
+        color: white !important;
+        border: none;
+    }
 }
 
 .hero {
@@ -254,7 +265,7 @@ body {
     .btn-start-buying i {
         margin-left: 5px;
         font-size: 18px;
-        transition: 0.3s;
+        transition: 0.25s;
     }
 
     .btn-start-buying:hover i {
@@ -551,7 +562,8 @@ body {
 
 .product-container,
 .related-products,
-.vendor-container {
+.vendor-container,
+.add-pd-page {
     background-color: white;
 
     .pd-quantity-input {
@@ -642,7 +654,7 @@ body {
     .pd-card {
         box-sizing: border-box;
         border: 1px solid #ccc;
-        transition: transform 0.3s ease;
+        transition: transform 0.25s ease;
         text-decoration: none;
         width: 23%;
     }
@@ -707,30 +719,53 @@ body {
         font-size: large;
     }
 
-    .buy-now-btn {
+    .buy-now-btn,
+    .del-btn {
         position: relative;
         border: none;
         overflow: hidden;
-        background: var(--blue-gradient);
         color: white;
         z-index: 1;
     }
 
-    .buy-now-btn:before {
+    .buy-now-btn:before,
+    .del-btn:before {
         content: "";
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: var(--pink-gradient);
         opacity: 0;
         transition: opacity 0.25s;
         z-index: -1;
     }
 
-    .buy-now-btn:hover:before {
+    .del-btn {
+        background: var(--blue-gradient);
+    }
+
+    .del-btn:before {
+        background: var(--pink-gradient);
+    }
+
+    .buy-now-btn {
+        background: var(--red-gradient);
+    }
+
+    .buy-now-btn:before {
+        background: var(--light-red-gradient);
+    }
+
+    .buy-now-btn:hover:before,
+    .del-btn:hover:before {
         opacity: 1;
+    }
+
+    .del-col-btn {
+        position: absolute;
+        top: -15px;
+        right: 0
     }
 }
 
@@ -741,11 +776,11 @@ body {
     height: 100%;
     cursor: pointer;
     overflow: hidden;
-    transition: 0.3s ease-in-out;
+    transition: 0.25s ease-in-out;
 }
 
 .add-cart-btn:hover {
-    background: var(--combined-gradient);
+    background: var(--blue-gradient);
     border: none;
 }
 
@@ -991,6 +1026,54 @@ body {
     .caution {
         display: none;
     }
+
+    .del-btn,
+    .set-btn,
+    .add-btn {
+        position: relative;
+        border: none;
+        overflow: hidden;
+        color: white;
+        z-index: 1;
+    }
+
+    .del-btn:before,
+    .set-btn:before,
+    .add-btn:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.25s;
+        z-index: -1;
+    }
+
+    .del-btn,
+    .add-btn {
+        background: var(--blue-gradient);
+    }
+
+    .del-btn:before,
+    .add-btn:before {
+        background: var(--pink-gradient);
+    }
+
+    .set-btn {
+        background: var(--red-gradient);
+    }
+
+    .set-btn:before {
+        background: var(--light-red-gradient);
+    }
+
+    .del-btn:hover:before,
+    .set-btn:hover:before,
+    .add-btn:hover:before {
+        opacity: 1;
+    }
 }
 
 .add-address-modal,
@@ -1058,6 +1141,10 @@ body {
         left: 50px;
     }
 
+    .select-all-label {
+        margin-left: 10px;
+    }
+
     .checkout-btn {
         background: var(--blue-gradient);
         border: none;
@@ -1091,6 +1178,49 @@ body {
         transition: 0.5s;
         font-family: "bootstrap-icons";
         content: "\F231";
+    }
+
+    .pd-remove-btn,
+    .add-to-cart-btn {
+        position: relative;
+        border: none;
+        overflow: hidden;
+        color: white;
+        z-index: 1;
+    }
+
+    .pd-remove-btn:before,
+    .add-to-cart-btn:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.25s;
+        z-index: -1;
+    }
+
+    .add-to-cart-btn {
+        background: var(--red-gradient);
+    }
+
+    .add-to-cart-btn:before {
+        background: var(--light-red-gradient);
+    }
+
+    .pd-remove-btn {
+        background: var(--blue-gradient);
+    }
+
+    .pd-remove-btn:before {
+        background: var(--pink-gradient);
+    }
+
+    .pd-remove-btn:hover:before,
+    .add-to-cart-btn:hover:before {
+        opacity: 1;
     }
 }
 
@@ -1153,7 +1283,7 @@ body {
         -webkit-tap-highlight-color: transparent;
         transform-style: preserve-3d;
         transform: rotateX(var(--rx, 0deg)) translateZ(0);
-        transition: transform 0.5s, border-radius 0.3s linear var(--br-d, 0s);
+        transition: transform 0.5s, border-radius 0.25s linear var(--br-d, 0s);
     }
 
     .truck-button:before,
@@ -1182,7 +1312,7 @@ body {
         font-size: 14px;
         line-height: 24px;
         opacity: var(--o, 1);
-        transition: opacity 0.3s;
+        transition: opacity 0.25s;
     }
 
     .truck-button .success {
@@ -1406,13 +1536,39 @@ body {
         box-sizing: inherit;
     }
 
-    body {
-        min-height: 100vh;
-        display: flex;
-        font-family: 'Inter UI', 'Inter', Arial;
-        justify-content: center;
-        align-items: center;
-        background: #eceffc;
+    .no-address-btn,
+    .change-address-btn,
+    .no-card-btn,
+    .change-card-btn {
+        position: relative;
+        border: none;
+        overflow: hidden;
+        background: var(--red-gradient);
+        color: white;
+        z-index: 1;
+    }
+
+    .no-address-btn:before,
+    .change-address-btn:before,
+    .no-card-btn:before,
+    .change-card-btn:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--light-red-gradient);
+        opacity: 0;
+        transition: opacity 0.25s;
+        z-index: -1;
+    }
+
+    .no-address-btn:hover:before,
+    .change-address-btn:hover:before,
+    .no-card-btn:hover:before,
+    .change-card-btn:hover:before {
+        opacity: 1;
     }
 }
 
@@ -1476,7 +1632,7 @@ body {
     .pd-card {
         box-sizing: border-box;
         border: 1px solid #ccc;
-        transition: transform 0.3s ease;
+        transition: transform 0.25s ease;
         text-decoration: none;
     }
 
@@ -1549,14 +1705,48 @@ body {
         background-color: white;
         padding: 100px;
     }
-}
 
-.add-pd-page {
-    background-color: white;
+    .submit-btn,
+    .reset-btn {
+        width: 47.5%;
+        position: relative;
+        border: none;
+        overflow: hidden;
+        color: white;
+        z-index: 1;
+    }
 
-    .del-col-btn {
+    .submit-btn:before,
+    .reset-btn:before {
+        content: "";
         position: absolute;
-        top: -15px;
-        right: 0
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.25s;
+        z-index: -1;
+    }
+
+    .reset-btn {
+        background: var(--blue-gradient);
+    }
+
+    .reset-btn:before {
+        background: var(--pink-gradient);
+    }
+
+    .submit-btn {
+        background: var(--red-gradient);
+    }
+
+    .submit-btn:before {
+        background: var(--light-red-gradient);
+    }
+
+    .submit-btn:hover:before,
+    .reset-btn:hover:before {
+        opacity: 1;
     }
 }

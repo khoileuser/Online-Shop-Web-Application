@@ -49,10 +49,10 @@
                     </li>
 
                     <li class="nav-list-styling mb-4">
-                        <button class="btn btn-secondary" onclick="resetFilterPrice()">Reset</button>
+                        <button class="btn btn-secondary reset-btn" onclick="resetFilterPrice()">Reset</button>
                         {% if not min_filter or not active_filter %}
                         {% if not active_filter %}
-                        <button class="btn btn-primary" onclick="submitFilterPrice()">Submit</button>
+                        <button class="btn btn-primary submit-btn" onclick="submitFilterPrice()">Submit</button>
                         {% endif %}
                         {% endif %}
                     </li>

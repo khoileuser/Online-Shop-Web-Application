@@ -11,10 +11,10 @@
         <div class="wishlist-heading mt-2 mb-3 rounded shadow-sm p-3">
             <div class="row">
                 <div class="col-10">
-                    <h3 class="d-inline-block">{{ owner_name }}'s Wishlist</h3>
+                    <h4 class="d-inline-block">{{ owner_name }}'s Wishlist</h4>
                 </div>
                 <div class="col-1">
-                    <button class="btn btn-secondary d-inline-block mb-2" onclick="copyURL()">
+                    <button class="btn btn-secondary d-inline-block mb-2 pd-remove-btn" onclick="copyURL()">
                         <i class="bi bi-copy"></i>
                     </button>
                 </div>
@@ -23,13 +23,14 @@
             {% if share %}
             <form action="/wishlist/share/false" method="POST" class="pt-2">
                 <input type="hidden" class="sharing" value="true">
-                <button class="btn btn-danger" type="submit">Turn off sharing</button>
+                <button class="btn btn-danger anm-btn pd-remove-btn" type="submit">
+                    Turn off sharing</button>
             </form>
             {% else %}
             <form action="/wishlist/share/true" method="POST" class="pt-2">
                 <input type="hidden" class="sharing" value="false">
-                <button class="btn btn-primary" type="submit">Turn on
-                    sharing</button>
+                <button class="btn btn-primary anm-btn add-to-cart-btn" type="submit">
+                    Turn on sharing</button>
             </form>
             {% endif %}
             {% endif %}
@@ -52,7 +53,7 @@
         {% for cart_product in vendor.cart_products %}
         <div class="row vendor-products p-3">
             <div class="col pd-img d-flex justify-content-center align-items-center mb-3">
-                <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
+                <a href="/product/{{ cart_product.id }}" class="text-decoration-none text-reset">
                     <div class="image">
                         <img class="img-fluid" src="{% static 'images/products/' %}{{ cart_product.images.0 }}"
                             alt="product-img">
@@ -62,14 +63,14 @@
 
             <div class="col-7 pd-info d-flex align-items-center mb-3">
                 <div class="col pd-name text-start">
-                    <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
+                    <a href="/product/{{ cart_product.id }}" class="text-decoration-none text-reset">
                         {{ cart_product.name }}
                     </a>
                 </div>
 
                 <div class="col-3 pd-price text-center">
                     $
-                    <span class="pd-price-{{ cart_product.product.id }}">
+                    <span class="pd-price-{{ cart_product.id }}">
                         {{ cart_product.price }}
                     </span>
                 </div>

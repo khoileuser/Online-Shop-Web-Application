@@ -28,7 +28,7 @@
                     oninput="selectOne('{{ cart_product.product.id }}')">
             </div>
 
-            <div class="col pd-img d-flex justify-content-center align-items-center mb-3">
+            <div class="col-2 pd-img d-flex justify-content-center align-items-center mb-3">
                 <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
                     <div class="image">
                         <img class="img-fluid" src="{% static 'images/products/' %}{{ cart_product.product.images.0 }}"
@@ -37,16 +37,16 @@
                 </a>
             </div>
 
-            <div class="col-7 col-md-8 pd-info d-flex align-items-center mb-3">
+            <div class="col pd-info d-flex align-items-center mb-3">
                 <div class="col pd-name text-start">
                     <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
                         {{ cart_product.product.name }}
                     </a>
                 </div>
 
-                <div class="col pd-price text-center">
+                <div class="col-3 pd-price text-center">
                     $
-                    <span class="pd-price-{{ cart_product.product.id }}">
+                    <span class="pd-price-span pd-price-{{ cart_product.product.id }}">
                         {{ cart_product.product.price }}
                     </span>
                 </div>
@@ -85,7 +85,7 @@
 
                 </div>
 
-                <div class="col pd-total-price d-none d-lg-block text-center">
+                <div class="col-3 pd-total-price d-none d-lg-block text-center">
                     $
                     <span class="pd-total-price-{{ cart_product.product.id }}">
                         {{ cart_product.product.price|products_price:cart_product.quantity }}
@@ -93,10 +93,9 @@
                 </div>
             </div>
 
-            <div class="col-1 pd-remove d-none d-lg-flex justify-content-center align-items-center mb-3">
+            <div class="col-2 pd-remove d-none d-lg-flex justify-content-center align-items-center mb-3">
                 <div class="modal fade add-card-modal" id="removeCartPd-{{ cart_product.product.id }}"
-                    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="removeCartPdLabel"
-                    aria-hidden="true">
+                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="removeCartPdLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -109,12 +108,12 @@
                                 <button type="button" class="btn btn-secondary w-25"
                                     data-bs-dismiss="modal">Cancel</button>
                                 <button type="button" class="btn btn-danger w-25"
-                                    onclick="editQuantity('{{ cart_product.product.id }}', 'remove', 'all')">Confirm</button>
+                                    onclick="editQuantity('{{ cart_product.product.id }}', 'remove', 'all')">Remove</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button class="btn anm-btn pd-remove-btn btn-danger" data-bs-toggle="modal"
+                <button class="btn anm-btn add-to-cart-btn btn-danger" data-bs-toggle="modal"
                     data-bs-target="#removeCartPd-{{ cart_product.product.id }}">Remove</button>
             </div>
 
@@ -151,7 +150,7 @@
                     class="form-check-input product-checkbox pd-checkbox-{{ cart_product.product.id }}" disabled>
             </div>
 
-            <div class="col pd-img d-flex justify-content-center align-items-center mb-3">
+            <div class="col-2 pd-img d-flex justify-content-center align-items-center mb-3">
                 <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
                     <div class="image">
                         <img class="img-fluid" src="{% static 'images/products/' %}{{ cart_product.product.images.0 }}"
@@ -160,16 +159,16 @@
                 </a>
             </div>
 
-            <div class="col-7 col-md-8 pd-info d-flex align-items-center mb-3">
+            <div class="col pd-info d-flex align-items-center mb-3">
                 <div class="col pd-name text-start" style="color: rgba(0, 0, 0, 0.5);">
                     <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
                         {{ cart_product.product.name }}
                     </a>
                 </div>
 
-                <div class="col pd-price text-center" style="color: rgba(0, 0, 0, 0.5);">
+                <div class="col-3 pd-price text-center" style="color: rgba(0, 0, 0, 0.5);">
                     $
-                    <span class="pd-price-{{ cart_product.product.id }}">
+                    <span class="pd-price-span pd-price-{{ cart_product.product.id }}">
                         {{ cart_product.product.price }}
                     </span>
                 </div>
@@ -184,17 +183,16 @@
                     </div>
                 </div>
 
-                <div class="col pd-out-of-stock d-none d-lg-block text-center">
+                <div class="col-3 pd-out-of-stock d-none d-lg-block text-center">
                     <span class="text-danger">
                         Out of stock
                     </span>
                 </div>
             </div>
 
-            <div class="col-1 pd-remove d-none d-lg-flex justify-content-center align-items-center mb-3">
+            <div class="col-2 pd-remove d-none d-lg-flex justify-content-center align-items-center mb-3">
                 <div class="modal fade add-card-modal" id="removeCartPd-{{ cart_product.product.id }}"
-                    data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="removeCartPdLabel"
-                    aria-hidden="true">
+                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="removeCartPdLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -207,12 +205,12 @@
                                 <button type="button" class="btn btn-secondary w-25"
                                     data-bs-dismiss="modal">Cancel</button>
                                 <button type="button" class="btn btn-danger w-25"
-                                    onclick="editQuantity('{{ cart_product.product.id }}', 'remove', 'all')">Confirm</button>
+                                    onclick="editQuantity('{{ cart_product.product.id }}', 'remove', 'all')">Remove</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button class="btn anm-btn pd-remove-btn btn-danger" data-bs-toggle="modal"
+                <button class="btn anm-btn add-to-cart-btn btn-danger" data-bs-toggle="modal"
                     data-bs-target="#removeCartPd-{{ cart_product.product.id }}">Remove</button>
             </div>
 
@@ -236,7 +234,7 @@
         <div class="col d-flex align-items-center select-all-wrapper">
             <div calss="form-check">
                 <input type="checkbox" class="form-check-input select-all" id="select-all" oninput="selectAll()">
-                <label class="form-check-label" for="select-all">Select All</label>
+                <label class="form-check-label select-all-label" for="select-all">Select All</label>
             </div>
         </div>
 
@@ -244,7 +242,7 @@
             <div class="cart-total-price">
                 Total: <span class="dolar">$</span>
                 <span class="total-price">
-                    {{ total_price }}
+                    0.00
                 </span>
             </div>
 

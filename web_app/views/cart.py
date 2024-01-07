@@ -68,12 +68,6 @@ def view_cart(request):
                 'cart_products': _cart_products,
             })
 
-    # calculate total price of user's cart
-    total_price = 0
-    for cart_product in cart_products:
-        total_price = total_price + \
-            (cart_product.product.price * cart_product.quantity)
-
     template = loader.get_template("cart.html")
     context = {
         "username": request.user.username,
@@ -81,7 +75,6 @@ def view_cart(request):
         "type": request.user.account_type,
         "products_by_vendor": products_by_vendor,
         "out_of_stock_products": out_of_stock_products,
-        "total_price": round(total_price, 2)
     }
     return HttpResponse(template.render(context, request))
 
