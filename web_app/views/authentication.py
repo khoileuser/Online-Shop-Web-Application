@@ -198,3 +198,69 @@ def sign_out(request):
             except KeyError:
                 continue
     return redirect("/")
+
+
+def view_accounts(request):
+    """
+    The `view_accounts` function returns a list of all the users in the database.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    user. It contains information about the request, such as the user making the request, the session
+    data, and any data sent in the request body or query parameters
+    :return: a list of all the users in the database.
+    """
+    if request.method == "GET" and request.user.account_type == "A":
+        context = {
+            "username": request.user.username,
+            "type": request.user.account_type,
+            "users": User.objects.all().order_by("id")
+        }
+
+        template = loader.get_template('authentication/accounts.html')
+        return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponse("You are not an admin.")
+
+
+@csrf_exempt
+def update_account(request, account_id):
+    """
+    The `update_account` function updates the user's account information.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    user. It contains information about the request, such as the user making the request, the session
+    data, and any data sent in the request body or query parameters
+    :return: a redirect to the accounts ("/accounts").
+    """
+    if request.method == "POST" and request.user.account_type == "A":
+        username = request.POST["username-" + str(account_id)]
+        if len(username) < 4 or len(username) > 25 or match(r'^[a-zA-Z0-9]+$', username) is None:
+            return HttpResponse("Usernames must contain only letters and digits and between 4 and 25 characters.")
+
+        password = request.POST["password-" + str(account_id)]
+        if password != "":
+            if match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,4096}$', password) is None:
+                return HttpResponse("Passwords must contain at least one uppercase, one lowercase, one digit, one special character and at least 8 characters long.")
+            hashed_pwd = make_password(password)
+
+        match request.POST["accounttype-" + str(account_id)]:
+            case "customer":
+                account_type = "C"
+            case "shipper":
+                account_type = "S"
+            case "vendor":
+                account_type = "V"
+
+        try:
+            user = User.objects.get(id=account_id)
+            user.username = username
+            if password != "":
+                user.password = hashed_pwd
+            user.account_type = account_type
+            user.save()
+        except:
+            return HttpResponse("User not found.")
+
+        return redirect("/accounts")
+    else:
+        return HttpResponse("You are not an admin.")

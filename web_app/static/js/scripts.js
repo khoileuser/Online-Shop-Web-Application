@@ -1235,6 +1235,24 @@ function placeOrderBtn(button) {
     });
 }
 
+function updateAccount(user_id) {
+    const username = document.getElementById('floatingUsername-' + user_id);
+    if (username.value.length < 4 || username.value.length > 25 || ! /^[a-zA-Z0-9]+$/.test(username.value)) {
+        customAlert("Username must be between 4 and 25 characters long and can only contain letters and numbers.", "alert-warning");
+        return;
+    }
+
+    const password = document.getElementById('floatingPassword-' + user_id);
+    if (! /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,255}$/.test(password.value)) {
+        customAlert("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character.", "alert-warning");
+        return;
+    }
+
+    var form = username.parentElement.parentElement.parentElement.parentElement;
+    console.log(form)
+    form.submit();
+}
+
 
 window.onload = function () {
     if (window.location.href.includes('filter=price')) {

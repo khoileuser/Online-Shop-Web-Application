@@ -64,6 +64,10 @@ urlpatterns = [
     path('product/delete/<int:product_id>', product.delete_product),
     path('product/review/<int:product_id>', product.add_review),
 
+    # admin
+    path('accounts/', authentication.view_accounts),
+    path('account/update/<int:account_id>', authentication.update_account),
+
     # testing
     path('execute/', views.execute),
 ]

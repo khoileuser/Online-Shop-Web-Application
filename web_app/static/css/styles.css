@@ -1750,3 +1750,42 @@ body {
         opacity: 1;
     }
 }
+
+.accounts-page {
+    .tab-label {
+        padding: 10px 16px;
+        cursor: pointer;
+        color: var(--text-normal)
+    }
+
+    .tab-radio {
+        display: none;
+    }
+
+    .tab-content {
+        order: 1;
+        display: none;
+    }
+
+    .tab-radio:checked+.tab-label {
+        font-weight: bold;
+        color: var(--text-header);
+        border-bottom: 2px solid rgba(21, 24, 41, 1);
+    }
+
+    .tab-radio:checked+.tab-label+.tab-content {
+        display: initial;
+    }
+
+    width: 70vw;
+
+    .user-row {
+        background-color: white;
+    }
+
+    @media (max-width: 768px) {
+        .row-right {
+            margin-top: 20px;
+        }
+    }
+}

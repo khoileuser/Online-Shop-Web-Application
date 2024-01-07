@@ -1,0 +1,267 @@
+{% load static %}
+
+{% include "partials/header.html" %}
+
+<div class="dummy"></div>
+
+<div class="container accounts-page d-flex flex-wrap align-items-center justify-content-center gap-3">
+    <!-- Customer -->
+    <input type="radio" class="tab-radio" id="tab1" name="account-tabs" checked>
+    <label for="tab1" class="tab-label btn rounded">Customer</label>
+    <div class="container-fluid tab-content customer-tab">
+        {% for user in users %}
+        {% if user.account_type == "C" %}
+        <form class="update-form-{{ user.id }}" action="/account/update/{{ user.id }}" method="POST">
+            <div class="user-row row rounded shadow-sm p-4 mb-4">
+                <div class="col-2 avatar d-flex align-items-center">
+                    {% if user.avatar %}
+                    <img class="avatar-img img-fluid rounded-circle"
+                        src="{% static 'images/avatar/' %}{{ user.avatar }}" alt="user-image">
+                    {% else %}
+                    <img class="avatar-img img-fluid rounded-circle" src="{% static 'images/avatar/default.jpg' %}"
+                        alt="user-image">
+                    {% endif %}
+                </div>
+
+                <div class="col-10 col-md-4 info">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="floatingUsername-{{ user.id }}"
+                            name="username-{{ user.id }}" value="{{ user.username }}" placeholder="Username">
+                        <label for="floatingUsername-{{ user.id }}">Username</label>
+                    </div>
+
+                    <div class="form-floating mt-2">
+                        <input type="password" class="form-control" id="floatingPassword-{{ user.id }}"
+                            name="password-{{ user.id }}" placeholder="Password">
+                        <label for="floatingPassword-{{ user.id }}">Password</label>
+                    </div>
+                </div>
+
+                <div class="col-8 col-md-4 d-flex justify-content-center row-right">
+                    <div class="d-flex flex-column gap-2">
+                        <div class="account-type-label">
+                            Account Type:
+                        </div>
+                        <div class="col form-check gap-2">
+                            {% if user.account_type == "V" %}
+                            <input class="form-check-input" type="radio" value="vendor" name="accounttype-{{ user.id }}"
+                                id="vendorCheck-{{ user.id }}" checked>
+                            {% else %}
+                            <input class="form-check-input" type="radio" value="vendor" name="accounttype-{{ user.id }}"
+                                id="vendorCheck-{{ user.id }}">
+                            {% endif %}
+                            <label class="form-check-label" for="vendorCheck-{{ user.id }}">
+                                Vendor
+                            </label>
+                        </div>
+                        <div class="col form-check gap-2">
+                            {% if user.account_type == "C" %}
+                            <input class="form-check-input" type="radio" value="customer"
+                                name="accounttype-{{ user.id }}" id="customerCheck-{{ user.id }}" checked>
+                            {% else %}
+                            <input class="form-check-input" type="radio" value="customer"
+                                name="accounttype-{{ user.id }}" id="customerCheck-{{ user.id }}">
+                            {% endif %}
+                            <label class="form-check-label" for="customerCheck-{{ user.id }}">
+                                Customer
+                            </label>
+                        </div>
+                        <div class="col form-check gap-2">
+                            {% if user.account_type == "S" %}
+                            <input class="form-check-input" type="radio" value="shipper"
+                                name="accounttype-{{ user.id }}" id="shipperCheck-{{ user.id }}" checked>
+                            {% else %}
+                            <input class="form-check-input" type="radio" value="shipper"
+                                name="accounttype-{{ user.id }}" id="shipperCheck-{{ user.id }}">
+                            {% endif %}
+                            <label class="form-check-label" for="shipperCheck-{{ user.id }}">
+                                Shipper
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-2 d-flex align-items-center">
+                    <button class="btn btn-outline-secondary w-100" type="button"
+                        onclick="updateAccount('{{ user.id }}')">Save</button>
+                </div>
+            </div>
+        </form>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- Vendor -->
+    <input type="radio" class="tab-radio" id="tab2" name="account-tabs">
+    <label for="tab2" class="tab-label btn rounded">Vendor</label>
+    <div class="container-fluid tab-content vendor-tab">
+        {% for user in users %}
+        {% if user.account_type == "V" %}
+        <form class="update-form-{{ user.id }}" action="/account/update/{{ user.id }}" method="POST">
+            <div class="user-row row rounded shadow-sm p-4 mb-4">
+                <div class="col-2 avatar d-flex align-items-center">
+                    {% if user.avatar %}
+                    <img class="avatar-img img-fluid rounded-circle"
+                        src="{% static 'images/avatar/' %}{{ user.avatar }}" alt="user-image">
+                    {% else %}
+                    <img class="avatar-img img-fluid rounded-circle" src="{% static 'images/avatar/default.jpg' %}"
+                        alt="user-image">
+                    {% endif %}
+                </div>
+
+                <div class="col-10 col-md-4 info">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="floatingUsername-{{ user.id }}"
+                            name="username-{{ user.id }}" value="{{ user.username }}" placeholder="Username">
+                        <label for="floatingUsername-{{ user.id }}">Username</label>
+                    </div>
+
+                    <div class="form-floating mt-2">
+                        <input type="password" class="form-control" id="floatingPassword-{{ user.id }}"
+                            name="password-{{ user.id }}" placeholder="Password">
+                        <label for="floatingPassword-{{ user.id }}">Password</label>
+                    </div>
+                </div>
+
+                <div class="col-8 col-md-4 d-flex justify-content-center">
+                    <div class="d-flex flex-column gap-2">
+                        <div class="account-type-label">
+                            Account Type:
+                        </div>
+                        <div class="col form-check gap-2">
+                            {% if user.account_type == "V" %}
+                            <input class="form-check-input" type="radio" value="vendor" name="accounttype-{{ user.id }}"
+                                id="vendorCheck-{{ user.id }}" checked>
+                            {% else %}
+                            <input class="form-check-input" type="radio" value="vendor" name="accounttype-{{ user.id }}"
+                                id="vendorCheck-{{ user.id }}">
+                            {% endif %}
+                            <label class="form-check-label" for="vendorCheck-{{ user.id }}">
+                                Vendor
+                            </label>
+                        </div>
+                        <div class="col form-check gap-2">
+                            {% if user.account_type == "C" %}
+                            <input class="form-check-input" type="radio" value="customer"
+                                name="accounttype-{{ user.id }}" id="customerCheck-{{ user.id }}" checked>
+                            {% else %}
+                            <input class="form-check-input" type="radio" value="customer"
+                                name="accounttype-{{ user.id }}" id="customerCheck-{{ user.id }}">
+                            {% endif %}
+                            <label class="form-check-label" for="customerCheck-{{ user.id }}">
+                                Customer
+                            </label>
+                        </div>
+                        <div class="col form-check gap-2">
+                            {% if user.account_type == "S" %}
+                            <input class="form-check-input" type="radio" value="shipper"
+                                name="accounttype-{{ user.id }}" id="shipperCheck-{{ user.id }}" checked>
+                            {% else %}
+                            <input class="form-check-input" type="radio" value="shipper"
+                                name="accounttype-{{ user.id }}" id="shipperCheck-{{ user.id }}">
+                            {% endif %}
+                            <label class="form-check-label" for="shipperCheck-{{ user.id }}">
+                                Shipper
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-2 d-flex align-items-center">
+                    <button class="btn btn-outline-secondary w-100" type="button"
+                        onclick="updateAccount('{{ user.id }}')">Save</button>
+                </div>
+            </div>
+        </form>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- Shipper -->
+    <input type="radio" class="tab-radio" id="tab3" name="account-tabs">
+    <label for="tab3" class="tab-label btn rounded">Shipper</label>
+    <div class="container-fluid tab-content shipper-tab">
+        {% for user in users %}
+        {% if user.account_type == "S" %}
+        <form class="update-form-{{ user.id }}" action="/account/update/{{ user.id }}" method="POST">
+            <div class="user-row row rounded shadow-sm p-4 mb-4">
+                <div class="col-2 avatar d-flex align-items-center">
+                    {% if user.avatar %}
+                    <img class="avatar-img img-fluid rounded-circle"
+                        src="{% static 'images/avatar/' %}{{ user.avatar }}" alt="user-image">
+                    {% else %}
+                    <img class="avatar-img img-fluid rounded-circle" src="{% static 'images/avatar/default.jpg' %}"
+                        alt="user-image">
+                    {% endif %}
+                </div>
+
+                <div class="col-10 col-md-4 info">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="floatingUsername-{{ user.id }}"
+                            name="username-{{ user.id }}" value="{{ user.username }}" placeholder="Username">
+                        <label for="floatingUsername-{{ user.id }}">Username</label>
+                    </div>
+
+                    <div class="form-floating mt-2">
+                        <input type="password" class="form-control" id="floatingPassword-{{ user.id }}"
+                            name="password-{{ user.id }}" placeholder="Password">
+                        <label for="floatingPassword-{{ user.id }}">Password</label>
+                    </div>
+                </div>
+
+                <div class="col-8 col-md-4 d-flex justify-content-center">
+                    <div class="d-flex flex-column gap-2">
+                        <div class="account-type-label">
+                            Account Type:
+                        </div>
+                        <div class="col form-check gap-2">
+                            {% if user.account_type == "V" %}
+                            <input class="form-check-input" type="radio" value="vendor" name="accounttype-{{ user.id }}"
+                                id="vendorCheck-{{ user.id }}" checked>
+                            {% else %}
+                            <input class="form-check-input" type="radio" value="vendor" name="accounttype-{{ user.id }}"
+                                id="vendorCheck-{{ user.id }}">
+                            {% endif %}
+                            <label class="form-check-label" for="vendorCheck-{{ user.id }}">
+                                Vendor
+                            </label>
+                        </div>
+                        <div class="col form-check gap-2">
+                            {% if user.account_type == "C" %}
+                            <input class="form-check-input" type="radio" value="customer"
+                                name="accounttype-{{ user.id }}" id="customerCheck-{{ user.id }}" checked>
+                            {% else %}
+                            <input class="form-check-input" type="radio" value="customer"
+                                name="accounttype-{{ user.id }}" id="customerCheck-{{ user.id }}">
+                            {% endif %}
+                            <label class="form-check-label" for="customerCheck-{{ user.id }}">
+                                Customer
+                            </label>
+                        </div>
+                        <div class="col form-check gap-2">
+                            {% if user.account_type == "S" %}
+                            <input class="form-check-input" type="radio" value="shipper"
+                                name="accounttype-{{ user.id }}" id="shipperCheck-{{ user.id }}" checked>
+                            {% else %}
+                            <input class="form-check-input" type="radio" value="shipper"
+                                name="accounttype-{{ user.id }}" id="shipperCheck-{{ user.id }}">
+                            {% endif %}
+                            <label class="form-check-label" for="shipperCheck-{{ user.id }}">
+                                Shipper
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4 col-md-2 d-flex align-items-center">
+                    <button class="btn btn-outline-secondary w-100" type="button"
+                        onclick="updateAccount('{{ user.id }}')">Save</button>
+                </div>
+            </div>
+        </form>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% include "partials/footer.html" %}
