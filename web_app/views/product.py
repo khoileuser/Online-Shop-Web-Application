@@ -243,16 +243,24 @@ def view_product(request, product_id):
     else:
         context['reviews'] = []
 
+    # get average rating
+    if reviews != []:
+        context['avg_rating'] = ceil(
+            sum(review['rating'] for review in reviews)/len(reviews))
+
+    context['reviews_count'] = len(reviews)
+
     # check if user can review
     context['allow_review'] = False
     if request.user != "guest":
         if request.user.account_type == "C":
             orders = Order.objects.filter(owner=request.user)
             for order in orders:
-                products = [
-                    cart_product.product for cart_product in order.products.all()]
-                if product in products:
-                    context['allow_review'] = True
+                if order.status == "D":
+                    products = [
+                        cart_product.product for cart_product in order.products.all()]
+                    if product in products:
+                        context['allow_review'] = True
 
     if product.owner == request.user:
         template = loader.get_template("product/vendor-product.html")

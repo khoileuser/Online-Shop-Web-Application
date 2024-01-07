@@ -125,9 +125,9 @@
                     </div>
                 </div>
 
-                <h3 class="name mt-4">{{ name }}</h3>
+                <h3 class="name mt-2">{{ name }}</h3>
 
-                <div class="row mt-5">
+                <div class="row mt-4">
                     <div class="col">
                         <h2 class="price">${{ price }}</h2>
                     </div>
@@ -136,8 +136,31 @@
                     </div>
                 </div>
 
+                <div class="row mt-2">
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <h4 class="pd-rating">
+                            {% if avg_rating == 1 %}
+                            ★
+                            {% elif avg_rating == 2 %}
+                            ★★
+                            {% elif avg_rating == 3 %}
+                            ★★★
+                            {% elif avg_rating == 4 %}
+                            ★★★★
+                            {% elif avg_rating == 5 %}
+                            ★★★★★
+                            {% else %}
+                            No rating
+                            {% endif %}
+                        </h4>
+                    </div>
+                    <div class="col d-flex align-items-center justify-content-center">
+                        <h4 class="pd-total-rating">{{ reviews_count }} ratings</h4>
+                    </div>
+                </div>
+
                 {% if type != "V" %}
-                <div class="row mt-5 pd-action">
+                <div class="row mt-4 pd-action">
                     <div class="col-3 pt-1 text-end">
                         <span class="quantity-text">Quantity: </span>
                     </div>
@@ -186,7 +209,7 @@
                     </div>
 
                     <div class="col-12">
-                        <div class="row buttons mt-5">
+                        <div class="row buttons mt-4 d-flex justify-content-center">
                             <div class="col-5 col-md-5">
                                 {% if stock == 0 %}
                                 <button type="button" class="btn btn-outline-secondary add-cart-btn anm-btn w-100"
