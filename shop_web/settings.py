@@ -26,9 +26,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^ho#pd^h433x-2t1lhue_xhz1pi)x+j3$iz4t8hi%2+$$0394u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    '192.168.2.155',
+    'shophub.k-cf.cloud'
+]
 
 
 # Application definition
