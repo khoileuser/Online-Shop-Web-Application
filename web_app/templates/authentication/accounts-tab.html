@@ -1,0 +1,106 @@
+{% load static %}
+
+<form class="update-form-{{ user.id }}" action="/account/update/{{ user.id }}" method="POST">
+    <div class="user-row row rounded shadow-sm p-4 mb-4">
+        <div class="col-2 avatar d-flex align-items-center">
+            {% if user.avatar %}
+            <img class="avatar-img img-fluid rounded-circle" src="{% static 'images/avatar/' %}{{ user.avatar }}"
+                alt="user-image">
+            {% else %}
+            <img class="avatar-img img-fluid rounded-circle" src="{% static 'images/avatar/default.jpg' %}"
+                alt="user-image">
+            {% endif %}
+        </div>
+
+        <div class="col-10 col-md-4 info">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingUsername-{{ user.id }}"
+                    name="username-{{ user.id }}" value="{{ user.username }}" placeholder="Username">
+                <label for="floatingUsername-{{ user.id }}">Username</label>
+            </div>
+
+            <div class="form-floating mt-2">
+                <input type="password" class="form-control" id="floatingPassword-{{ user.id }}"
+                    name="password-{{ user.id }}" placeholder="Password">
+                <label for="floatingPassword-{{ user.id }}">Password</label>
+            </div>
+        </div>
+
+        <div class="col-8 col-md-4 d-flex justify-content-center">
+            <div class="d-flex flex-column gap-2">
+                <div class="account-type-label">
+                    Account Type:
+                </div>
+                <div class="col form-check gap-2">
+                    {% if user.account_type == "V" %}
+                    <input class="form-check-input" type="radio" value="vendor" name="accounttype-{{ user.id }}"
+                        id="vendorCheck-{{ user.id }}" checked>
+                    {% else %}
+                    <input class="form-check-input" type="radio" value="vendor" name="accounttype-{{ user.id }}"
+                        id="vendorCheck-{{ user.id }}">
+                    {% endif %}
+                    <label class="form-check-label" for="vendorCheck-{{ user.id }}">
+                        Vendor
+                    </label>
+                </div>
+                <div class="col form-check gap-2">
+                    {% if user.account_type == "C" %}
+                    <input class="form-check-input" type="radio" value="customer" name="accounttype-{{ user.id }}"
+                        id="customerCheck-{{ user.id }}" checked>
+                    {% else %}
+                    <input class="form-check-input" type="radio" value="customer" name="accounttype-{{ user.id }}"
+                        id="customerCheck-{{ user.id }}">
+                    {% endif %}
+                    <label class="form-check-label" for="customerCheck-{{ user.id }}">
+                        Customer
+                    </label>
+                </div>
+                <div class="col form-check gap-2">
+                    {% if user.account_type == "S" %}
+                    <input class="form-check-input" type="radio" value="shipper" name="accounttype-{{ user.id }}"
+                        id="shipperCheck-{{ user.id }}" checked>
+                    {% else %}
+                    <input class="form-check-input" type="radio" value="shipper" name="accounttype-{{ user.id }}"
+                        id="shipperCheck-{{ user.id }}">
+                    {% endif %}
+                    <label class="form-check-label" for="shipperCheck-{{ user.id }}">
+                        Shipper
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4 col-md-2 d-flex flex-column align-items-center justify-content-center gap-2">
+            <button class="btn btn-outline-secondary w-100" type="button"
+                onclick="updateAccount('{{ user.id }}')">Save</button>
+
+            <div class="modal fade add-card-modal" id="deleteAccount-{{ user.id }}" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="deleteAccountLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <form action="/account/delete/{{ user.id }}" method="POST">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="deleteAccountLabel">
+                                    Do you want to delete this account?
+                                </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Name: {{ user.name }}</p>
+                                <p>Username: {{ user.username }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary w-25"
+                                    data-bs-dismiss="modal">Cancel</button>
+                                <button class="btn btn-danger w-25" type="submit">Delete</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <button class="btn btn-danger w-100" type="button" data-bs-toggle="modal"
+                data-bs-target="#deleteAccount-{{ user.id }}">Delete</button>
+        </div>
+    </div>
+</form>

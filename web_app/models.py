@@ -105,6 +105,7 @@ class Order(models.Model):
         ("C", "Canceled")
     ]
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    date = models.DateTimeField(auto_now=True)
     products = models.ManyToManyField(CartProduct)
     address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
     card = models.ForeignKey(Card, on_delete=models.SET_NULL, null=True)

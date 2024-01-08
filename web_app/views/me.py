@@ -80,6 +80,7 @@ def delete_accout(request):
     cards = request.user.cards.all()
     for card in cards:
         card.delete()
+
     addresses = request.user.addresses.all()
     for address in addresses:
         address.delete()

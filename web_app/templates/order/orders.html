@@ -36,11 +36,15 @@
         {% for order in orders %}
         <div class="order-container mb-4 rounded shadow-sm">
             <div class="order-id border-bottom p-3">
-                <a href="/order/{{ order.id }}" class="text-decoration-none text-reset">
+                <a href="/order/{{ order.id }}" class="text-decoration-none text-reset d-flex justify-content-between">
                     <span>
                         <i class="bi bi-receipt"></i>
                         Order ID: {{ order.id }}
                         <i class="bi bi-chevron-right"></i>
+                    </span>
+
+                    <span class="order-date">
+                        Placed: {{ order.date }}
                     </span>
                 </a>
             </div>

@@ -264,3 +264,40 @@ def update_account(request, account_id):
         return redirect("/accounts")
     else:
         return HttpResponse("You are not an admin.")
+
+
+@csrf_exempt
+def delete_accout(request, account_id):
+    """
+    The `delete_account` function deletes a user's account along with their associated cards, addresses,
+    products in their cart, and session data, and then redirects to the homepage.
+
+    :param request: The `request` parameter is an object that represents the HTTP request made by the
+    user. It contains information about the request, such as the user making the request, the session
+    data, and any data sent in the request body or query parameters
+    :param account_id: The `account_id` parameter is the ID of the user whose account is being deleted
+    :return: a redirect to the accounts ("/accounts").
+    """
+    if request.method == "POST" and request.user.account_type == "A":
+        try:
+            user = User.objects.get(id=account_id)
+        except:
+            return HttpResponse("User not found.")
+
+        cards = user.cards.all()
+        for card in cards:
+            card.delete()
+
+        addresses = user.addresses.all()
+        for address in addresses:
+            address.delete()
+
+        cart = Cart.objects.get(owner=user)
+        for product in cart.products.all():
+            product.delete()
+
+        user.delete()
+
+        return redirect("/accounts")
+    else:
+        return HttpResponse("You are not an admin.")

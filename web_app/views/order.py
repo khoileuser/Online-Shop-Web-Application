@@ -3,6 +3,7 @@ from django.template import loader
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
+from django.db.models import Case, When, Value, IntegerField
 
 from web_app.models import Cart, Product, Order, Address, Card
 from web_app.data import *
@@ -412,6 +413,8 @@ def view_order(request, order_id):
         "username": request.user.username,
         "cart_quantity": request.user.cart_quantity,
         "type": request.user.account_type,
+        "id": order.id,
+        "date": order.date.strftime("%B %d, %Y"),
         "products_by_vendor": products_by_vendor,
         "total_price": order.total_price,
         "status": order.status,
@@ -452,6 +455,17 @@ def view_orders(request):
     elif request.user.account_type == "S":
         _orders = Order.objects.all().order_by('id')
 
+    _orders = _orders.annotate(
+        status_order=Case(
+            When(status='A', then=Value(1)),
+            When(status='G', then=Value(2)),
+            When(status='D', then=Value(3)),
+            When(status='C', then=Value(4)),
+            default=Value(5),
+            output_field=IntegerField(),
+        )
+    ).order_by('status_order')
+
     orders = []
     for order in _orders:
         vendors = get_vendors(order.products.all().order_by('id'))
@@ -460,6 +474,7 @@ def view_orders(request):
 
         orders.append({
             "id": order.id,
+            "date": order.date.strftime("%B %d, %Y"),
             "total_price": order.total_price,
             "status": order.status,
             "products_by_vendor": products_by_vendor,

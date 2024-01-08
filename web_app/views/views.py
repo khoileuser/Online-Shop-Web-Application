@@ -3,8 +3,6 @@ from django.template import loader
 
 from web_app.models import Product
 
-import random
-
 
 def index(request):
     if request.user != "guest":
@@ -64,7 +62,7 @@ def terms(request):
             "type": None
         }
 
-    template = loader.get_template("common/about.html")
+    template = loader.get_template("common/terms.html")
     return HttpResponse(template.render(context, request))
 
 
@@ -82,10 +80,9 @@ def privacy(request):
             "type": None
         }
 
-    template = loader.get_template("common/about.html")
+    template = loader.get_template("common/privacy.html")
     return HttpResponse(template.render(context, request))
 
 
 def execute(request):
-    product = Product.objects.all().filter(stock=0)
-    print(product)
+    return HttpResponse("execute")

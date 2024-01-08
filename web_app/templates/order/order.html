@@ -18,7 +18,7 @@
             <h5 class="d-inline-block m-0">Active</h5>
         </div>
     </div>
-    {% elif order.status == "G" %}
+    {% elif status == "G" %}
     <div class="rounded shadow-sm p-3 bg-success text-light d-flex flex-row justify-content-between">
         <div class="d-flex align-items-center">
             <span>Your oder is being delivered</span>
@@ -28,7 +28,7 @@
             <h5 class="d-inline-block m-0">Delivering</h5>
         </div>
     </div>
-    {% elif order.status == "D" %}
+    {% elif status == "D" %}
     <div class="rounded shadow-sm p-3 bg-info text-black d-flex flex-row justify-content-between">
         <div class="d-flex align-items-center">
             <span>Your oder has been delivered</span>
@@ -38,7 +38,7 @@
             <h5 class="d-inline-block m-0">Delivered</h5>
         </div>
     </div>
-    {% elif order.status == "C" %}
+    {% elif status == "C" %}
     <div class="rounded shadow-sm p-3 bg-danger text-light d-flex flex-row justify-content-between">
         <div class="d-flex align-items-center">
             <span>Your oder has been cancaled</span>
@@ -49,6 +49,19 @@
         </div>
     </div>
     {% endif %}
+
+    <div class="row child-container rounded shadow-sm p-4 mt-4">
+        <div class="col d-flex justify-content-between">
+            <span>
+                <i class="bi bi-receipt"></i>
+                Order ID: {{ id }}
+            </span>
+
+            <span class="order-date">
+                Placed: {{ date }}
+            </span>
+        </div>
+    </div>
 
     <!-- Address -->
     <div class="row child-container rounded shadow-sm p-4 mt-4">
