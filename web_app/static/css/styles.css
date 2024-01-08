@@ -50,6 +50,49 @@ body {
     z-index: 999999;
 }
 
+.error-container {
+    height: 80vh;
+
+    .error-title {
+        font-size: 190px;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        animation: pulse 2s infinite;
+    }
+
+    .error-text {
+        font-size: 1.125rem;
+    }
+
+    .animate-blink {
+        animation: blink 1s infinite;
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
 .breadcrumb {
     color: var(--text-sub-header);
 
