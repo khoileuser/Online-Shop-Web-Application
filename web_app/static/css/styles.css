@@ -310,6 +310,94 @@ body {
             width: 100%;
         }
     }
+
+    .categories-section {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+
+        .card {
+            width: 90%;
+
+            .card-img {
+                height: 10vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            img {
+                max-height: 100%;
+                max-width: 100%;
+                object-fit: contain;
+            }
+
+            .card-body {
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    }
+
+    .view-more-btn {
+        line-height: 0;
+        padding: 20px 40px;
+        transition: all 0.5s;
+        color: white;
+        background: rgba(58, 65, 110, 1);
+        border-color: rgba(58, 65, 110, 1);
+        box-shadow: 0px 5px 30px rgba(21, 24, 41, 1);
+        text-decoration: none;
+    }
+
+    .view-more-btn span {
+        font-family: "Nunito", sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        letter-spacing: 1px;
+    }
+
+    .view-more-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        transition: transform 0.25s ease;
+        text-decoration: none;
+    }
+
+    .card:hover {
+        transform: translateY(-5px) scale(1.01);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (min-width: 1400px) {
+        .hero-section {
+            margin-top: 25px !important;
+        }
+
+        .category-section {
+            margin-top: 75px !important;
+        }
+
+        .view-more-section {
+            margin-top: 75px !important;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            margin-top: 0 !important;
+        }
+
+
+    }
 }
 
 .home-products {

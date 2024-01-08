@@ -28,7 +28,61 @@ def index(request):
     context['new_arrival2'] = list(products.values())[12:15]
     context['new_arrival3'] = list(products.values())[15:18]
 
-    template = loader.get_template("index.html")
+    template = loader.get_template("common/index.html")
+    return HttpResponse(template.render(context, request))
+
+
+def about(request):
+    if request.user != "guest":
+        context = {
+            "username": request.user.username,
+            "cart_quantity": request.user.cart_quantity,
+            "type": request.user.account_type
+        }
+    else:
+        context = {
+            "username": None,
+            "cart_quantity": None,
+            "type": None
+        }
+
+    template = loader.get_template("common/about.html")
+    return HttpResponse(template.render(context, request))
+
+
+def terms(request):
+    if request.user != "guest":
+        context = {
+            "username": request.user.username,
+            "cart_quantity": request.user.cart_quantity,
+            "type": request.user.account_type
+        }
+    else:
+        context = {
+            "username": None,
+            "cart_quantity": None,
+            "type": None
+        }
+
+    template = loader.get_template("common/about.html")
+    return HttpResponse(template.render(context, request))
+
+
+def privacy(request):
+    if request.user != "guest":
+        context = {
+            "username": request.user.username,
+            "cart_quantity": request.user.cart_quantity,
+            "type": request.user.account_type
+        }
+    else:
+        context = {
+            "username": None,
+            "cart_quantity": None,
+            "type": None
+        }
+
+    template = loader.get_template("common/about.html")
     return HttpResponse(template.render(context, request))
 
 

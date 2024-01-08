@@ -1,0 +1,33 @@
+{% load static %}
+
+{% include "partials/header.html" %}
+
+<!-- hero -->
+<section class="hero d-flex align-items-center"
+    style="background-image: url({% static 'images/hero-bg.png' %}); background-size: cover;">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 d-flex flex-column justify-content-center">
+                <h1 data-aos="fade-up">Shop with Confidence</h1>
+                <h2 data-aos="fade-up" data-aos-delay="400">We offer high-quality products, secure payments, and
+                    fast shipping.</h2>
+                <div data-aos="fade-up" data-aos-delay="600">
+                    <div class="text-center text-lg-start">
+                        <a href="/products"
+                            class="btn-start-buying scrollto d-inline-flex align-items-center justify-content-center align-self-center rounded">
+                            <span>Start Buying</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 hero-img" data-aos="zoom-out" data-aos-delay="200">
+                <img src="{% static 'images/hero-img.png' %}" alt="hero-img">
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% include "partials/footer.html" %}
