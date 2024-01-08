@@ -1120,6 +1120,12 @@ function toggleReview(input) {
     }
 }
 
+/**
+ * The `placeOrderBtn` function is responsible for handling the click event on a button, triggering an
+ * animation and sending a form data to a server.
+ * @param button - The `button` parameter is the HTML button element that triggers the place order
+ * action.
+ */
 function placeOrderBtn(button) {
     var box = button.querySelector('.box');
     var truck = button.querySelector('.truck');
@@ -1235,6 +1241,13 @@ function placeOrderBtn(button) {
     });
 }
 
+/**
+ * The function `updateAccount` validates the username and password input fields and submits the form
+ * if the inputs are valid.
+ * @param user_id - The user_id parameter is the unique identifier for the user account that needs to
+ * be updated.
+ * @returns nothing (undefined) if the username or password does not meet the specified criteria.
+ */
 function updateAccount(user_id) {
     const username = document.getElementById('floatingUsername-' + user_id);
     if (username.value.length < 4 || username.value.length > 25 || ! /^[a-zA-Z0-9]+$/.test(username.value)) {
@@ -1254,6 +1267,7 @@ function updateAccount(user_id) {
 }
 
 
+/* Executed when the window loads. It checks the current URL and performs different actions based on the URL. */
 window.onload = function () {
     if (window.location.href.includes('filter=price')) {
         var paramString = window.location.href.split('?')[1];
