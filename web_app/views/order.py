@@ -514,6 +514,7 @@ def set_order_status(request, order_id, status):
     if status not in ["G", "D", "C"]:
         return HttpResponse('Invalid status')
 
+    # update product stock if order is cancelled
     if status == "C":
         for cart_product in order.products.all():
             cart_product.product.stock += cart_product.quantity
