@@ -36,7 +36,8 @@
                         <li class="nav-item search-top">
                             <div class="d-flex gap-2">
                                 <input class="form-control border-dark search-input" type="search" placeholder="Search"
-                                    aria-label="Search" onkeypress="handleKeyPress(event, 'search')">
+                                    aria-label="Search" onsearch="clearSearch(event)"
+                                    onkeypress="handleKeyPress(event, 'search')">
                                 <button class="btn border border-dark anm-btn search-btn" type="submit"
                                     onclick="submitSearch()">Search</button>
                             </div>
@@ -52,7 +53,7 @@
                                 <ul class="dropdown-menu dropdown-menu-center p-0">
                                     <div class="d-flex gap-2">
                                         <input class="form-control border-dark search-input" type="search"
-                                            placeholder="Search" aria-label="Search"
+                                            placeholder="Search" aria-label="Search" onsearch="clearSearch(event)"
                                             onkeypress="handleKeyPress(event, 'search')">
                                         <button class="btn border border-dark anm-btn search-btn" type="submit"
                                             onclick="submitSearch()">Search</button>

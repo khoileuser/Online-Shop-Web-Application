@@ -34,11 +34,13 @@
 
                     <ul class="nav nav-pills">
                         <li class="nav-item search-top">
-                            <form class="d-flex gap-2" role="search">
-                                <input class="form-control border-dark" type="search" placeholder="Search"
-                                    aria-label="Search">
-                                <button class="btn border border-dark" type="submit">Search</button>
-                            </form>
+                            <div class="d-flex gap-2" role="search">
+                                <input class="form-control border-dark search-input" type="search" placeholder="Search"
+                                    aria-label="Search" onsearch="clearSearch(event)"
+                                    onkeypress="handleKeyPress(event, 'search')">
+                                <button class="btn border border-dark" type="submit"
+                                    onclick="submitSearch()">Search</button>
+                            </div>
                         </li>
 
                         <li class="nav-item search-mobile">
@@ -49,11 +51,13 @@
                                 </a>
 
                                 <ul class="dropdown-menu dropdown-menu-center p-0">
-                                    <form class="d-flex gap-2" role="search">
-                                        <input class="form-control border-dark" type="search" placeholder="Search"
-                                            aria-label="Search">
-                                        <button class="btn border border-dark" type="submit">Search</button>
-                                    </form>
+                                    <div class="d-flex gap-2" role="search">
+                                        <input class="form-control border-dark search-input" type="search"
+                                            placeholder="Search" aria-label="Search" onsearch="clearSearch(event)"
+                                            onkeypress="handleKeyPress(event, 'search')">
+                                        <button class="btn border border-dark" type="submit"
+                                            onclick="submitSearch()">Search</button>
+                                    </div>
                                 </ul>
                             </div>
                         </li>
