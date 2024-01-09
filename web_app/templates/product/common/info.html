@@ -1,0 +1,58 @@
+<div class="row d-flex justify-content-between" data-aos="fade-up">
+    <div class="col">
+        <nav class="breadcrumb">
+            <a href="/products" class="breadcrumbs-item">Products</a>
+            <a href="/products/?filter={{ category }}" class="breadcrumbs-item is-active">
+                {{ category }}</a>
+        </nav>
+    </div>
+    <div class="col d-flex justify-content-end">
+        {% if is_wishlist %}
+        <form method="POST" action="/wishlist/remove/{{ product_id }}">
+            <button type="submit" class="btn btn-danger">
+                <i class="bi bi-heart-fill"></i>
+            </button>
+        </form>
+        {% else %}
+        <form method="POST" action="/wishlist/add/{{ product_id }}">
+            <button type="submit" class="btn btn-outline-secondary">
+                <i class="bi bi-heart"></i>
+            </button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+
+<h3 class="name mt-4" data-aos="fade-up" data-aos-delay="200">{{ name }}</h3>
+
+<div class="row mt-4" data-aos="fade-up" data-aos-delay="200">
+    <div class="col">
+        <h2 class="price">${{ price }}</h2>
+    </div>
+    <div class="col d-flex align-items-center justify-content-center">
+        <h4><span class="pd-stock-{{ product_id }}">{{ stock }}</span> left</h4>
+    </div>
+</div>
+
+<div class="row mt-4" data-aos="fade-up" data-aos-delay="400">
+    <div class="col d-flex align-items-center justify-content-center">
+        <h4 class="pd-rating">
+            {% if avg_rating == 1 %}
+            ★
+            {% elif avg_rating == 2 %}
+            ★★
+            {% elif avg_rating == 3 %}
+            ★★★
+            {% elif avg_rating == 4 %}
+            ★★★★
+            {% elif avg_rating == 5 %}
+            ★★★★★
+            {% else %}
+            No rating
+            {% endif %}
+        </h4>
+    </div>
+    <div class="col d-flex align-items-center justify-content-center">
+        <h4 class="pd-total-rating">{{ reviews_count }} ratings</h4>
+    </div>
+</div>

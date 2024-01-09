@@ -9,7 +9,7 @@
 
     <div class="container hero-container">
         <div class="row mt-5 hero-section">
-            <div class="col-12 col-lg-8 d-flex justify-content-center align-items-center">
+            <div class="col-12 col-lg-8 d-flex justify-content-center align-items-center" data-aos="fade-up">
 
                 <div id="carouselBanners" class="carousel slide w-100 h-100" data-bs-ride="carousel">
                     <div class="carousel-indicators">
@@ -89,13 +89,13 @@
 
             <div class="col-4 d-none d-lg-block">
                 <div class="row h-100 d-flex justify-content-between">
-                    <div class="col-12">
+                    <div class="col-12" data-aos="fade-up" data-aos-delay="200">
                         <a href="/products">
                             <img src="{% static 'images/banners/415010907_1088388495848823_2418918667842539252_n.png' %}"
                                 alt="hero-img" class="img-fluid rounded">
                         </a>
                     </div>
-                    <div class="col-12 mt-1 d-flex justify-content-end">
+                    <div class="col-12 mt-1 d-flex justify-content-end" data-aos="fade-up" data-aos-delay="400">
                         {% if type %}
                         <a href="/products">
                             <img src="{% static 'images/banners/417369823_397174279413059_7603578192054044694_n.png' %}"
@@ -113,7 +113,7 @@
 
         </div>
 
-        <div class="row mt-3 category-section">
+        <div class="row mt-3 category-section" data-aos="fade-up" data-aos-delay="600">
             <div class="col-6 col-md-4 col-lg-2 categories-section">
                 <div class="card p-2">
                     <a class="text-decoration-none text-reset" href="/products/?filter=Watches">
@@ -264,7 +264,7 @@
             </div>
         </div>
 
-        <div class="row view-more-section mt-4 pb-5 text-center">
+        <div class="row view-more-section mt-4 pb-5 text-center" data-aos="fade-up" data-aos-delay="200">
             <div class="col">
                 <a href="/products" class="btn btn-primary view-more-btn">
                     <span>View More</span>
@@ -278,7 +278,7 @@
 
 <!-- carousel-->
 <div class="container home-products mt-5 mb-5">
-    <div class="row mb-5">
+    <div class="row mb-5" data-aos="fade-up">
         <div class="col-6">
             <h3 class="mb-3">Trending</h3>
         </div>
@@ -374,7 +374,7 @@
         </div>
     </div>
 
-    <div class="row mb-5">
+    <div class="row mb-5" data-aos="fade-up">
         <div class="col-6">
             <h3 class="mb-3">New Arrival</h3>
         </div>
@@ -470,7 +470,7 @@
         </div>
     </div>
 
-    <div class="text-center">
+    <div class="text-center" data-aos="fade-up">
         <a href="/products" class="btn btn-primary view-more-btn">
             <span>View More</span>
         </a>

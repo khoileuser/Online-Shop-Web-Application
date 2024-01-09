@@ -10,7 +10,7 @@
     <div class="row">
 
         <div class="Navigation-Bar col-4 col-md-3 col-lg-2 d-flex flex-column align-items-center">
-            <nav class="breadcrumb">
+            <nav class="breadcrumb" data-aos="fade-up">
                 {% if active_filter %}
                 <a href="/products" class="breadcrumbs-item">Products</a>
                 <a class="breadcrumbs-item is-active">Categories</a>
@@ -20,7 +20,7 @@
                 {% endif %}
             </nav>
 
-            <nav class="mt-1">
+            <nav class="mt-1" data-aos="fade-up" data-aos-delay="200">
                 <ul class="nav-list">
                     <li class="nav-list-styling">
                         <label for="min-price" class="form-label">Min price: </label>
@@ -74,7 +74,7 @@
             </nav>
         </div>
 
-        <div class="Product-Listing-Cards col-8 col-md-9 col-lg-10">
+        <div class="Product-Listing-Cards col-8 col-md-9 col-lg-10" data-aos="fade-up">
             <div class="row d-flex justify-content-center">
                 {% if products %}
                 {% for product in products %}
@@ -92,7 +92,7 @@
                 </div>
                 {% endfor %}
                 {% else %}
-                <div class="col-12 no-products rounded shadow-sm text-center">
+                <div class="col-12 no-products rounded shadow-sm text-center" data-aos="fade-up">
                     <h3>No products found</h3>
                 </div>
                 {% endif %}
