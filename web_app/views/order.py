@@ -513,6 +513,12 @@ def set_order_status(request, order_id, status):
     order = Order.objects.get(id=order_id)
     if status not in ["G", "D", "C"]:
         return HttpResponse('Invalid status')
+
+    if status == "C":
+        for cart_product in order.products.all():
+            cart_product.product.stock += cart_product.quantity
+            cart_product.product.save()
+
     order.status = status
     order.save()
 
