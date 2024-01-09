@@ -130,7 +130,7 @@
                             {% endif %}
                         </div>
 
-                        {% if type == 'S' %}
+                        {% if type == 'S' and order.status != "D" and order.status != "C" %}
                         <div class="set-order-status display-shipper">
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle" type="button"

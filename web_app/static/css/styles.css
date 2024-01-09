@@ -270,6 +270,10 @@ body {
     }
 }
 
+.about-page {
+    height: 100vh;
+}
+
 .hero {
     width: 100%;
     background-size: cover;

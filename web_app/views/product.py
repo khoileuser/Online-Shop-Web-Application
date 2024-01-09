@@ -254,13 +254,21 @@ def view_product(request, product_id):
     context['allow_review'] = False
     if request.user != "guest":
         if request.user.account_type == "C":
+            this_customer_reviews = 0
+            for review in query_reviews:
+                if review.author == request.user:
+                    this_customer_reviews += 1
+
             orders = Order.objects.filter(owner=request.user)
+            ordered_quantity = 0
             for order in orders:
                 if order.status == "D":
-                    products = [
-                        cart_product.product for cart_product in order.products.all()]
-                    if product in products:
-                        context['allow_review'] = True
+                    for cart_product in order.products.all():
+                        if cart_product.product == product:
+                            ordered_quantity += cart_product.quantity
+
+            if this_customer_reviews < ordered_quantity:
+                context['allow_review'] = True
 
     if product.owner == request.user:
         template = loader.get_template("product/vendor-product.html")
