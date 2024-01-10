@@ -93,6 +93,10 @@ body {
     }
 }
 
+.info-container {
+    background-color: white;
+}
+
 .breadcrumb {
     color: var(--text-sub-header);
 
