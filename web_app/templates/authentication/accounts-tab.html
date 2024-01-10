@@ -12,7 +12,9 @@
             {% endif %}
         </div>
 
-        <div class="col-10 col-md-4 info">
+        <div class="col d-none d-md-block"></div>
+
+        <div class="col-10 col-md-4 info d-flex flex-column justify-content-center">
             <div class="form-floating">
                 <input type="text" class="form-control" id="floatingUsername-{{ user.id }}"
                     name="username-{{ user.id }}" value="{{ user.username }}" placeholder="Username">
@@ -26,7 +28,7 @@
             </div>
         </div>
 
-        <div class="col-8 col-md-4 d-flex justify-content-center">
+        <div class="col-8 col-md-3 d-flex justify-content-center">
             <div class="d-flex flex-column gap-2">
                 <div class="account-type-label">
                     Account Type:
