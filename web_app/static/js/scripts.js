@@ -1229,10 +1229,13 @@ function placeOrderBtn(button) {
                         gsap.to(button, {
                             '--progress': 1,
                             duration: 2.4,
-                            ease: "power2.in"
+                            ease: "power2.in",
+                            onComplete() {
+                                setTimeout(function () {
+                                    resolve();
+                                }, 1250);
+                            }
                         });
-
-                        resolve()
                     }
                 });
 
