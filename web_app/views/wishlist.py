@@ -22,25 +22,41 @@ def view_wishlist(request, username):
 
     context = {}
 
-    try:
-        if username == request.user.username:
-            user = request.user
-            context = {
-                "username": user.username,
-                "cart_quantity": user.cart_quantity,
-                "type": user.account_type,
-                "is_owner": True,
-                "owner_name": user.name,
-                "share": user.share_wishlist
-            }
-    except:
-        user = User.objects.get(username=username)
+    if request.user == "guest":
+        try:
+            user = User.objects.get(username=username)
+        except:
+            return HttpResponse("User not found")
         if user.share_wishlist == False:
             return HttpResponse("This wishlist is not being shared")
         context = {
             "username": None,
             "cart_quantity": None,
             "type": None,
+            "is_owner": False,
+            "owner_name": user.name
+        }
+    elif username == request.user.username:
+        user = request.user
+        context = {
+            "username": user.username,
+            "cart_quantity": user.cart_quantity,
+            "type": user.account_type,
+            "is_owner": True,
+            "owner_name": user.name,
+            "share": user.share_wishlist
+        }
+    else:
+        try:
+            user = User.objects.get(username=username)
+        except:
+            return HttpResponse("User not found")
+        if user.share_wishlist == False:
+            return HttpResponse("This wishlist is not being shared")
+        context = {
+            "username": request.user.username,
+            "cart_quantity": request.user.cart_quantity,
+            "type": request.user.account_type,
             "is_owner": False,
             "owner_name": user.name
         }

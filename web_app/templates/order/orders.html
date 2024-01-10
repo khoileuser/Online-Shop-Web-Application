@@ -7,7 +7,7 @@
 <div class="dummy"></div>
 
 <div class="container orders-page mt-4 mb-4">
-    <div class="alert alert-info heading mb-4 d-flex flex-row justify-content-between" role="alert">
+    <div class="alert alert-info heading mb-4 d-flex flex-row justify-content-between" role="alert" data-aos="fade-up">
         <div class="d-flex justify-content-center">
             {% if type == 'C' %}
             <h5 class="m-0">My Orders</h5>
@@ -27,14 +27,14 @@
     </div>
 
     {% if orders|length == 0 %}
-    <div class="row no-order text-center shadow-sm rounded">
+    <div class="row no-order text-center shadow-sm rounded" data-aos="fade-up">
         <h2>There is no order to display.</h2>
     </div>
 
     {% else %}
     <div class="row display-orders">
         {% for order in orders %}
-        <div class="order-container mb-4 rounded shadow-sm">
+        <div class="order-container mb-4 rounded shadow-sm" data-aos="fade-up">
             <div class="order-id border-bottom p-3">
                 <a href="/order/{{ order.id }}" class="text-decoration-none text-reset d-flex justify-content-between">
                     <span>
@@ -130,7 +130,7 @@
                             {% endif %}
                         </div>
 
-                        {% if type == 'S' %}
+                        {% if type == 'S' and order.status != "D" and order.status != "C" %}
                         <div class="set-order-status display-shipper">
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle" type="button"

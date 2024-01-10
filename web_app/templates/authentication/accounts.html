@@ -6,8 +6,8 @@
 
 <div class="container accounts-page d-flex flex-wrap align-items-center justify-content-center gap-3">
     <!-- Customer -->
-    <input type="radio" class="tab-radio" id="tab1" name="account-tabs" checked>
-    <label for="tab1" class="tab-label btn rounded">Customer</label>
+    <input type="radio" class="tab-radio" id="tab1" name="account-tabs" data-aos="fade-up" checked>
+    <label for="tab1" class="tab-label btn rounded" data-aos="fade-up">Customer</label>
     <div class="container-fluid tab-content customer-tab">
         {% for user in users %}
         {% if user.account_type == "C" %}
@@ -17,8 +17,8 @@
     </div>
 
     <!-- Vendor -->
-    <input type="radio" class="tab-radio" id="tab2" name="account-tabs">
-    <label for="tab2" class="tab-label btn rounded">Vendor</label>
+    <input type="radio" class="tab-radio" id="tab2" name="account-tabs" data-aos="fade-up">
+    <label for="tab2" class="tab-label btn rounded" data-aos="fade-up">Vendor</label>
     <div class="container-fluid tab-content vendor-tab">
         {% for user in users %}
         {% if user.account_type == "V" %}
@@ -28,8 +28,8 @@
     </div>
 
     <!-- Shipper -->
-    <input type="radio" class="tab-radio" id="tab3" name="account-tabs">
-    <label for="tab3" class="tab-label btn rounded">Shipper</label>
+    <input type="radio" class="tab-radio" id="tab3" name="account-tabs" data-aos="fade-up">
+    <label for="tab3" class="tab-label btn rounded" data-aos="fade-up">Shipper</label>
     <div class="container-fluid tab-content shipper-tab">
         {% for user in users %}
         {% if user.account_type == "S" %}

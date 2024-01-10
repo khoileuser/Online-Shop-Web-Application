@@ -1,7 +1,7 @@
 {% load static %}
 
 <form class="update-form-{{ user.id }}" action="/account/update/{{ user.id }}" method="POST">
-    <div class="user-row row rounded shadow-sm p-4 mb-4">
+    <div class="user-row row rounded shadow-sm p-4 mb-4" data-aos="fade-up" data-aos-delay="200">
         <div class="col-2 avatar d-flex align-items-center">
             {% if user.avatar %}
             <img class="avatar-img img-fluid rounded-circle" src="{% static 'images/avatar/' %}{{ user.avatar }}"

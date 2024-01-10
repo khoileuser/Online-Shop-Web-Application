@@ -25,68 +25,14 @@
 <div class="container product-container rounded shadow-sm">
     <div class="single-product">
         <div class="row">
-            <div class="col-12 col-md-6">
-                <div class="large-img d-flex justify-content-center">
-                    <img src="{% static 'images/products/' %}{{ images.0 }}" class="large-image img-fluid"
-                        alt="large-img">
-                </div>
-                <div id="slider-container" class="extra-img row gap-1 mt-5 slider-container flex-nowrap">
-                    {% for image in images %}
-                    <div class="col-auto slider-image">
-                        <div class="small-img d-flex justify-content-center">
-                            <img src="{% static 'images/products/' %}{{ image }}" class="img-fluid slider-image-img"
-                                alt="small-img" onclick="changeLargeImg(this)">
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
+
+            {% include "product/common/images.html" %}
+
             <div class="col-12 col-md-6 pd-info-right">
-                <div class="row d-flex justify-content-between">
-                    <div class="col">
-                        <nav class="breadcrumb">
-                            <a href="/products" class="breadcrumbs-item">Products</a>
-                            <a href="/products/?filter={{ category }}" class="breadcrumbs-item is-active">
-                                {{ category }}</a>
-                        </nav>
-                    </div>
-                </div>
 
-                <h3 class="name mt-2">{{ name }}</h3>
+                {% include "product/common/info.html" %}
 
-                <div class="row mt-4">
-                    <div class="col">
-                        <h2 class="price">${{ price }}</h2>
-                    </div>
-                    <div class="col d-flex align-items-center justify-content-center">
-                        <h4>Stock: <span class="pd-stock-{{ product_id }}">{{ stock }}</span></h4>
-                    </div>
-                </div>
-
-                <div class="row mt-2">
-                    <div class="col d-flex align-items-center justify-content-center">
-                        <h4 class="pd-rating">
-                            {% if avg_rating == 1 %}
-                            ★
-                            {% elif avg_rating == 2 %}
-                            ★★
-                            {% elif avg_rating == 3 %}
-                            ★★★
-                            {% elif avg_rating == 4 %}
-                            ★★★★
-                            {% elif avg_rating == 5 %}
-                            ★★★★★
-                            {% else %}
-                            No rating
-                            {% endif %}
-                        </h4>
-                    </div>
-                    <div class="col d-flex align-items-center justify-content-center">
-                        <h4 class="pd-total-rating">{{ reviews_count }} ratings</h4>
-                    </div>
-                </div>
-
-                <div class="row mt-4 pd-action">
+                <div class="row mt-4 pd-action" data-aos="fade-up" data-aos-delay="600">
                     <div class="col-12">
                         <div class="row buttons mt-4 d-flex justify-content-center">
                             <div class="col-5 col-md-5">
@@ -108,10 +54,8 @@
             </div>
         </div>
 
-        <div class="row product-description mt-5">
-            <h3>Product Description</h3>
-            <p>{{ description|linebreaks }}</p>
-        </div>
+        {% include "product/common/description.html" %}
+
     </div>
 </div>
 

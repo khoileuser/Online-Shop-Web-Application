@@ -30,13 +30,13 @@
 
 <div class="container me-container d-flex flex-wrap align-items-center justify-content-center gap-3">
     <!-- Profile -->
-    <input type="radio" class="tab-radio" id="tab1" name="me-tabs" checked>
-    <label for="tab1" class="tab-label btn rounded">Profile</label>
+    <input type="radio" class="tab-radio" id="tab1" name="me-tabs" data-aos="fade-up" checked>
+    <label for="tab1" class="tab-label btn rounded" data-aos="fade-up">Profile</label>
     <div class="container-fluid rounded shadow-sm p-5 tab-content info-tab">
         <div class="row">
             <div class="col-1 d-none d-lg-block"></div>
 
-            <div class="user-info col-8 col-lg-6 mt-2">
+            <div class="user-info col-8 col-lg-6 mt-2" data-aos="fade-up" data-aos-delay="200">
                 <div class="private-info">
                     <div class="row p-2">
                         <div class="col-4 text-end pt-1">Name</div>
@@ -110,7 +110,8 @@
 
             <div class="col-1 d-none d-lg-block"></div>
 
-            <div class="avatar col-4 col-lg-3 d-flex flex-column justify-content-center align-items-center">
+            <div class="avatar col-4 col-lg-3 d-flex flex-column justify-content-center align-items-center"
+                data-aos="fade-up" data-aos-delay="200">
                 <div class="image">
                     {% if avatar %}
                     <img class="avatar-img img-fluid rounded-circle" src="{% static 'images/avatar/' %}{{ avatar }}"
@@ -141,8 +142,8 @@
     </div>
 
     <!-- Addresses -->
-    <input type="radio" class="tab-radio" id="tab2" name="me-tabs">
-    <label for="tab2" class="tab-label btn rounded">Addresses</label>
+    <input type="radio" class="tab-radio" id="tab2" name="me-tabs" data-aos="fade-up">
+    <label for="tab2" class="tab-label btn rounded" data-aos="fade-up">Addresses</label>
     <div class="container-fluid rounded shadow-sm tab-content address-tab">
         {% if addresses %}
         {% for address in addresses %}
@@ -217,8 +218,8 @@
     </div>
 
     <!-- Billing -->
-    <input type="radio" class="tab-radio" id="tab3" name="me-tabs">
-    <label for="tab3" class="tab-label btn rounded">Billing</label>
+    <input type="radio" class="tab-radio" id="tab3" name="me-tabs" data-aos="fade-up">
+    <label for="tab3" class="tab-label btn rounded" data-aos="fade-up">Billing</label>
     <div class="container-fluid rounded shadow-sm tab-content billing-tab">
         {% if cards %}
         {% for card in cards %}

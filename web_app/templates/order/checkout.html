@@ -162,7 +162,7 @@
 </div>
 
 <div class="container checkout-page">
-    <div class="row child-container rounded shadow-sm p-4">
+    <div class="row child-container rounded shadow-sm p-4" data-aos="fade-up">
         <div class="text-center">
             <h3>Checkout</h3>
         </div>
@@ -230,7 +230,7 @@
 
     <!-- Product -->
     {% for vendor in products_by_vendor %}
-    <div class="row rounded cart-container mt-4 shadow-sm">
+    <div class="row rounded cart-container mt-4 shadow-sm" data-aos="fade-up">
         <div class="vendorname border-bottom p-3">
             <a href="/products/vendor/{{ vendor.vendor.username }}" class="text-decoration-none text-reset">
                 <span class="text">
@@ -293,7 +293,7 @@
     </div>
     {% endfor %}
 
-    <div class="row child-container rounded shadow-sm mt-4 p-4">
+    <div class="row child-container rounded shadow-sm mt-4 p-4" data-aos="fade-up">
         <!-- Payment Methods -->
         <div class="methods">
             <h4>Payment method</h4>
