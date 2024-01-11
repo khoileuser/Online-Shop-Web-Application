@@ -1513,6 +1513,20 @@ body {
         white-space: nowrap;
     }
 
+    @media (max-width: 991px) {
+        .change-card-btn-col {
+            justify-content: end !important;
+        }
+
+        .place-order-section {
+            margin-top: 20px;
+        }
+
+        .add-card-btn-col {
+            text-align: center !important;
+        }
+    }
+
     @media (max-width: 768px) {
         .place-order-section {
             margin-top: 20px;

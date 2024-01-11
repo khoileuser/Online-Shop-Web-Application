@@ -240,7 +240,7 @@
             <h4>Payment method</h4>
         </div>
         {% if card %}
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-lg-8">
             <div class="row p-2">
                 <div class="col-8 col-lg-6">
                     <div class="row">
@@ -270,7 +270,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="col-4 col-lg-6 d-flex align-items-center justify-content-start">
+                <div class="col-4 col-lg-6 d-flex align-items-center justify-content-start change-card-btn-col">
                     <div>
                         <button type="button" class="btn btn-primary change-card-btn anm-btn" data-bs-toggle="modal"
                             data-bs-target="#changeCard">
@@ -281,7 +281,7 @@
             </div>
         </div>
         {% else %}
-        <div class="col-12 col-md-8 text-start">
+        <div class="col-12 col-lg-8 text-start add-card-btn-col">
             <button type="button" class="btn btn-primary m-3 mb-4 no-card-btn anm-btn" data-bs-toggle="modal"
                 data-bs-target="#addCard">
                 Add new card
@@ -290,7 +290,7 @@
         {% endif %}
 
         <div
-            class="place-order-section col-12 col-md-4 d-flex gap-4 flex-row justify-content-center align-items-center">
+            class="place-order-section col-12 col-lg-4 d-flex gap-4 flex-row justify-content-center align-items-center">
             <div class="checkout-total-price">
                 Total: $ {{ total_price }}
             </div>

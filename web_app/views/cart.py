@@ -97,7 +97,7 @@ def add_to_cart(request, product_id, quantity):
     if request.method != "POST":
         return HttpResponse("Invalid method")
     elif request.user == "guest":
-        return redirect("/signin")
+        return JsonResponse({'signin': True})
     elif request.user.account_type != "C":
         return HttpResponse('You are not a customer')
 
