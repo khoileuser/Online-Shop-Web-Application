@@ -291,6 +291,10 @@ body {
         color: white !important;
         border: none;
     }
+
+    .auth-btn {
+        white-space: nowrap;
+    }
 }
 
 .about-page {
