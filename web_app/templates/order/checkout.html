@@ -127,7 +127,8 @@
 </div>
 
 <div class="container checkout-page">
-    <div class="row child-container rounded shadow-sm p-4" data-aos="fade-up">
+    <div class="row child-container rounded shadow-sm p-4 d-flex justify-content-center align-items-center"
+        data-aos="fade-up">
         <div class="text-center">
             <h3>Checkout</h3>
         </div>
@@ -136,9 +137,10 @@
         <div class="text-center mt-2">
             <h4>Address</h4>
         </div>
+
         {% if address %}
-        <div class="col-12 mt-2 address-info d-flex justify-content-center align-items-center">
-            <div class="w-75">
+        <div class="col-12 col-xl-10 mt-2 address-info">
+            <div class="w-100">
 
                 {% include "common/address-info.html" %}
 
