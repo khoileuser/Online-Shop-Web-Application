@@ -108,7 +108,7 @@
 
             <div class="p-3">
                 <div class="row order-status">
-                    <div class="col d-flex align-items-center gap-3">
+                    <div class="col d-flex align-items-center gap-3 text-nowrap">
                         <div class="order-status">
                             <span class="status-label">Status:</span>
                             {% if order.status == "A" %}
@@ -175,7 +175,7 @@
                         {% endif %}
                     </div>
 
-                    <div class="col order-total-price d-flex justify-content-end text-nowrap">
+                    <div class="col order-total-price d-flex align-items-center justify-content-end text-nowrap">
                         Total: $ <span class="total-price">
                             {{ order.total_price }}
                         </span>
