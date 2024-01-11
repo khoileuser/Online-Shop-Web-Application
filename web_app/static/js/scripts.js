@@ -532,7 +532,6 @@ function selectAll() {
         if (checkoutMode == 'selected') {
             productIds.value = newProductIds;
         }
-        console.log(checkoutMode);
         if (pdCheckboxes.length != 0) {
             document.querySelector('.checkout-btn').removeAttribute("disabled");
             document.querySelector('.checkout-mode').value = checkoutMode;
