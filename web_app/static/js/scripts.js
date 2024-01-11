@@ -394,35 +394,34 @@ function addToCart(productid, getQuantity = false) {
     if (getQuantity) {
         _quantity = document.querySelector('.pd-quantity-input-box-' + productid).value;
     }
-    try {
-        var fetchPromise = fetch('/cart/add/' + productid + '/quantity/' + _quantity, {
-            method: 'POST'
-        });
 
-        var animationPromise = new Promise(function (resolve) {
-            var button = document.querySelector('.add-cart-btn');
-            button.classList.add("clicked");
-            setTimeout(function () {
-                button.classList.remove('clicked');
-            }, 2500);
-            resolve();
-        });
+    var fetchPromise = fetch('/cart/add/' + productid + '/quantity/' + _quantity, {
+        method: 'POST'
+    });
 
-        Promise.all([fetchPromise, animationPromise]).then(function (values) {
-            var response = values[0];
-            if (response.ok) {
-                response.json().then(function (data) {
-                    if (data.cart_plus) {
-                        var quantity = document.querySelector('.cart-count');
-                        quantity.innerHTML = parseInt(quantity.innerHTML.trim()) + 1;
-                    }
-                });
-            }
-        });
-    }
-    catch {
-        window.location.href = '/signin';
-    }
+    var animationPromise = new Promise(function (resolve) {
+        var button = document.querySelector('.add-cart-btn');
+        button.classList.add("clicked");
+        setTimeout(function () {
+            button.classList.remove('clicked');
+        }, 2500);
+        resolve();
+    });
+
+    Promise.all([fetchPromise, animationPromise]).then(function (values) {
+        var response = values[0];
+        if (response.ok) {
+            response.json().then(function (data) {
+                if (data.cart_plus) {
+                    var quantity = document.querySelector('.cart-count');
+                    quantity.innerHTML = parseInt(quantity.innerHTML.trim()) + 1;
+                }
+                else if (data.signin) {
+                    window.location.href = '/signin';
+                }
+            });
+        }
+    });
 }
 
 /**
@@ -533,6 +532,7 @@ function selectAll() {
         if (checkoutMode == 'selected') {
             productIds.value = newProductIds;
         }
+        console.log(checkoutMode);
         if (pdCheckboxes.length != 0) {
             document.querySelector('.checkout-btn').removeAttribute("disabled");
             document.querySelector('.checkout-mode').value = checkoutMode;
@@ -553,8 +553,13 @@ function checkOutCart() {
     const selectAllCheckbox = document.querySelector('.select-all');
     if (selectAllCheckbox.checked) {
         try {
-            document.querySelector('.out-of-stock-warning');
-            document.querySelector('.checkout-mode').value = 'selected';
+            var outOfStock = document.querySelector('.out-of-stock-warning');
+            if (outOfStock) {
+                document.querySelector('.checkout-mode').value = 'selected';
+            }
+            else {
+                document.querySelector('.checkout-mode').value = 'all';
+            }
         }
         catch {
             document.querySelector('.checkout-mode').value = 'all';
@@ -828,6 +833,17 @@ function editExpireDate(input) {
         else if (parseInt(input.value.charAt(4)) < 4) {
             input.value = input.value.slice(0, -1);
         }
+    }
+
+    const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+    if (regex.test(input.value)) {
+        document.querySelector('.add-card-btn').removeAttribute("disabled");
+        document.querySelector('.wrong-date-alert').classList.add("d-none");
+    }
+    else {
+        document.querySelector('.add-card-btn').setAttribute("disabled", "");
+        document.querySelector('.wrong-date-alert').classList.remove("d-none");
+
     }
 }
 

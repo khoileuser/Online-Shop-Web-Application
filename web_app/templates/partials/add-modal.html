@@ -166,7 +166,11 @@
                     </div>
 
                     <div class="row p-2">
-                        <div class="col-7">Expiration date</div>
+                        <div class="col-7">Expiration date
+                            <span class="d-none wrong-date-alert text-danger">
+                                <i> *Wrong format</i>
+                            </span>
+                        </div>
                         <div class="col-5">CVV/CVC</div>
 
                         <div class="col-7">
@@ -175,9 +179,9 @@
                         </div>
 
                         <div class="col-5">
-                            <input class="form-control" name="cvc" placeholder="Security code" maxlength="4"
-                                placeholder="Postal code" inputmode="numeric"
-                                oninput="this.value = this.value.replace(/\D+/g, '')" required>
+                            <input class="form-control" name="cvc" placeholder="Security code" pattern=".{3}"
+                                maxlength="3" inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')"
+                                required>
                         </div>
                     </div>
 
