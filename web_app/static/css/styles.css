@@ -711,6 +711,35 @@ body {
     a.active:hover {
         background-color: var(--hover-from-dark) !important;
     }
+
+    .signup-form,
+    .signin-form {
+        width: 50%;
+    }
+
+    @media (max-width: 991px) {
+
+        .signup-form,
+        .signin-form {
+            width: 75%;
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        .signup-form,
+        .signin-form {
+            width: 75%;
+        }
+    }
+
+    @media (max-width: 576px) {
+
+        .signup-form,
+        .signin-form {
+            width: 100%;
+        }
+    }
 }
 
 .product-container,
