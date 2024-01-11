@@ -1318,6 +1318,23 @@ body {
     .add-btn:hover:before {
         opacity: 1;
     }
+
+    @media (max-width: 991px) {
+
+        .address-btns,
+        .card-btns {
+            flex-direction: row !important;
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .address-info {
+            .col-8 {
+                margin-bottom: 10px;
+            }
+        }
+    }
 }
 
 .add-address-modal,
@@ -1353,6 +1370,7 @@ body {
 
         .cart-total-price {
             font-size: large;
+            white-space: nowrap;
         }
 
         .form-check {
@@ -1361,6 +1379,7 @@ body {
 
         .select-all-wrapper {
             margin-left: 12.5px;
+            white-space: nowrap;
         }
     }
 
@@ -1487,6 +1506,7 @@ body {
 
     .checkout-total-price {
         font-size: large;
+        white-space: nowrap;
     }
 
     @media (max-width: 768px) {
@@ -1836,6 +1856,7 @@ body {
 
     .order-total-price {
         font-size: large;
+        white-space: nowrap;
     }
 }
 
@@ -1843,7 +1864,7 @@ body {
     .order-container {
         background-color: white;
 
-        .image img {
+        .pd-img img {
             -o-object-fit: contain;
             object-fit: contain;
             height: 20vh;
@@ -1861,16 +1882,13 @@ body {
 }
 
 .listing-page {
-    .breadcrumb {
-        margin-left: 15px;
-    }
-
-    nav ul {
+    ul {
         list-style: none;
     }
 
     .nav-list-styling {
         margin-bottom: 10px;
+        white-space: nowrap;
     }
 
     .pd-card a {
@@ -1996,6 +2014,11 @@ body {
     .submit-btn:hover:before,
     .reset-btn:hover:before {
         opacity: 1;
+    }
+
+    .filter-mobile-ul {
+        width: 300px;
+        padding: 20px;
     }
 }
 

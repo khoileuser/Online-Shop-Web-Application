@@ -334,7 +334,7 @@ function editQuantity(productid, action, _quantity, noUpdate = false, limit = fa
             const calcQuantity = (parseInt(quantity.value) - parseInt(quantity.oldvalue));
             var action = 'add';
             updateQuantity = calcQuantity;
-            if (parseInt(quantity.value) >= parseInt(stock.innerHTML.trim())) {
+            if (parseInt(quantity.value) > parseInt(stock.innerHTML.trim())) {
                 quantity.value = stock.innerHTML.trim();
                 customAlert("You cannot add more than the available stock.", "alert-warning")
                 updateQuantity = parseInt(stock.innerHTML.trim()) - parseInt(quantity.oldvalue);
@@ -931,14 +931,8 @@ function editMaxPrice(input) {
  * The function `resetFilterPrice` resets the filter for product prices to the default values of 
  * minimum and  maximum.
  */
-function resetFilterPrice() {
-    document.querySelector('.min-price').value = "0";
-    document.querySelector(".min-price-txt").innerHTML = "$0";
-
-    var maxPriceFilter = document.querySelector('.max-price').max;
-    document.querySelector('.max-price').value = maxPriceFilter;
-    document.querySelector(".max-price-txt").innerHTML = "$" + maxPriceFilter;
-    filterProductPrice(0, 0);
+function resetFilter() {
+    window.location.href = '/products';
 }
 
 /**
@@ -965,10 +959,10 @@ function submitFilterPrice() {
  * @param event - The event parameter is an object that represents the event that occurred, in this
  * case, a key press event. It contains information about the event, such as the key that was pressed.
  */
-function handleKeyPress(event, input) {
+function handleKeyPress(event, input, mobile = false) {
     if (event.key === 'Enter') {
         if (input == 'search') {
-            submitSearch();
+            submitSearch(mobile);
         }
         else if (input == 'auth') {
             signIn();
@@ -980,8 +974,13 @@ function handleKeyPress(event, input) {
  * The function `submitSearch` redirects the user to a search page with the search query as a parameter
  * in the URL.
  */
-function submitSearch() {
-    var search = document.querySelector('.search-input');
+function submitSearch(mobile = false) {
+    if (mobile) {
+        var search = document.querySelector('.search-input-mobile');
+    }
+    else {
+        var search = document.querySelector('.search-input');
+    }
     if (search.value.trim() == "") {
         customAlert("Please enter a search query.", "alert-warning");
         return;
@@ -1294,7 +1293,6 @@ function updateAccount(user_id) {
     }
 
     var form = username.parentElement.parentElement.parentElement.parentElement;
-    console.log(form)
     form.submit();
 }
 
@@ -1354,6 +1352,6 @@ window.onload = function () {
 
         dropdownMenu.classList.remove('dropdown-menu-center');
         dropdownMenu.classList.add('dropdown-menu-start');
-        dropdownMenu.setAttribute("style", "width:300px");;
+        dropdownMenu.setAttribute("style", "width:300px");
     }
 }

@@ -33,10 +33,10 @@
     <input type="radio" class="tab-radio" id="tab1" name="me-tabs" data-aos="fade-up" checked>
     <label for="tab1" class="tab-label btn rounded" data-aos="fade-up">Profile</label>
     <div class="container-fluid rounded shadow-sm p-5 tab-content info-tab">
-        <div class="row">
+        <div class="row d-flex justify-content-center">
             <div class="col-1 d-none d-lg-block"></div>
 
-            <div class="user-info col-8 col-lg-6 mt-2" data-aos="fade-up" data-aos-delay="200">
+            <div class="user-info col-12 col-md-8 col-lg-6 mt-2" data-aos="fade-up" data-aos-delay="200">
                 <div class="private-info">
                     <div class="row p-2">
                         <div class="col-4 text-end pt-1">Name</div>
@@ -110,7 +110,7 @@
 
             <div class="col-1 d-none d-lg-block"></div>
 
-            <div class="avatar col-4 col-lg-3 d-flex flex-column justify-content-center align-items-center"
+            <div class="avatar col-6 col-md-4 col-lg-3 d-flex flex-column justify-content-center align-items-center"
                 data-aos="fade-up" data-aos-delay="200">
                 <div class="image">
                     {% if avatar %}
@@ -147,11 +147,11 @@
     <div class="container-fluid rounded shadow-sm tab-content address-tab">
         {% if addresses %}
         {% for address in addresses %}
-        <div class="row p-4 m-2 border-bottom">
-            <div class="col-8 col-md-9 col-lg-10">
+        <div class="row p-4 m-2 border-bottom d-flex justify-content-center">
+            <div class="col-12 col-lg-10 address-info">
                 <div class="row p-2">
-                    <div class="col-2 text-end pt-1">Phone number</div>
-                    <div class="col-4">
+                    <div class="col-4 col-md-2 text-end pt-1">Phone number</div>
+                    <div class="col-8 col-md-4">
                         {% if '+' not in address.phone_number_code %}
                         <input class="form-control" type="text"
                             value="(+{{ address.phone_number_code }}) {{ address.phone_number }}" readonly>
@@ -160,39 +160,41 @@
                             value="({{ address.phone_number_code }}) {{ address.phone_number }}" readonly>
                         {% endif %}
                     </div>
-                    <div class="col-2 text-end pt-1">Country</div>
-                    <div class="col-4">
+                    <div class="col-4 col-md-2 text-end pt-1">Country</div>
+                    <div class="col-8 col-md-4">
                         <input class="form-control" type="text" value="{{ address.country }}" readonly>
                     </div>
                 </div>
 
                 <div class="row p-2">
-                    <div class="col-2 text-end pt-1">Address</div>
-                    <div class="col-4">
+                    <div class="col-4 col-md-2 text-end pt-1">Address</div>
+                    <div class="col-8 col-md-4">
                         <input class="form-control" type="text" value="{{ address.address }}" readonly>
                     </div>
-                    <div class="col-2 text-end pt-1">City</div>
-                    <div class="col-4">
+                    <div class="col-4 col-md-2 text-end pt-1">City</div>
+                    <div class="col-8 col-md-4">
                         <input class="form-control" type="text" value="{{ address.city }}" readonly>
                     </div>
                 </div>
 
                 <div class="row p-2">
-                    <div class="col-2 text-end pt-1">State</div>
-                    <div class="col-4">
+                    <div class="col-4 col-md-2 text-end pt-1">State</div>
+                    <div class="col-8 col-md-4">
                         <input class="form-control" type="text" value="{{ address.state }}" readonly>
                     </div>
-                    <div class="col-2 text-end pt-1">Postal code</div>
-                    <div class="col-4">
+                    <div class="col-4 col-md-2 text-end pt-1">Postal code</div>
+                    <div class="col-8 col-md-4">
                         <input class="form-control" type="text" value="{{ address.postal_code }}" readonly>
                     </div>
                 </div>
             </div>
 
             <div
-                class="col-4 col-md-3 col-lg-2 text-center d-flex flex-column justify-content-center align-items-center gap-2">
+                class="address-btns col-4 col-md-3 col-lg-2 text-center d-flex flex-column justify-content-center align-items-center gap-2">
                 {% if address.is_default %}
-                <button class="btn btn-secondary w-75" disabled>Default</button>
+                <div class="w-100">
+                    <button class="btn btn-secondary w-75" disabled>Default</button>
+                </div>
                 {% else %}
                 <form class="w-100" method="POST" action="/me/address/set/default/{{ address.id }}">
                     <button class="btn btn-primary w-75 set-btn" type="submit">Set default</button>
@@ -224,14 +226,14 @@
         {% if cards %}
         {% for card in cards %}
         <div class="row p-4 m-2 border-bottom">
-            <div class="col-8 col-md-9 col-lg-10">
+            <div class="col-12 col-md-9 col-lg-10">
                 <div class="row p-2">
                     {% if card.card_type == "VISA" %}
-                    <div class="col-3 col-md-2 visa-logo rounded d-flex align-items-center justify-content-center">
+                    <div class="col-3 col-lg-2 visa-logo rounded d-flex align-items-center justify-content-center">
                         <img src="{% static 'images/Visa_Brandmark_Blue_RGB_2021.png' %}" class="img-fluid p-1"
                             alt="visa-logo">
                     </div>
-                    <div class="col-9 col-md-10 d-flex align-items-center">
+                    <div class="col-9 col-lg-10 d-flex align-items-center">
                         <div class="row">
                             <div class="col-12">Visa ending in {{ card.card_number }}</div>
                             <div class="col-12">Expires {{ card.expiration_date }}</div>
@@ -240,11 +242,11 @@
 
                     {% elif card.card_type == "MC" %}
                     <div
-                        class="col-3 col-md-2 mastercard-logo rounded d-flex align-items-center justify-content-center">
+                        class="col-3 col-lg-2 mastercard-logo rounded d-flex align-items-center justify-content-center">
                         <img src="{% static 'images/mc_symbol_opt_73_3x.png' %}" class="img-fluid"
                             alt="mastercard-logo">
                     </div>
-                    <div class="col-9 col-md-10 d-flex align-items-center">
+                    <div class="col-9 col-lg-10 d-flex align-items-center">
                         <div class="row">
                             <div class="col-12">Mastercard ending in {{ card.card_number }}</div>
                             <div class="col-12">Expires {{ card.expiration_date }}</div>
@@ -256,10 +258,11 @@
             </div>
 
             <div
-                class="col-4 col-md-3 col-lg-2 text-center d-flex flex-column justify-content-center align-items-center gap-2">
+                class="card-btns col-4 col-md-3 col-lg-2 text-center d-flex flex-column justify-content-center align-items-center gap-2">
                 {% if card.is_default %}
-                <button class="btn btn-secondary w-75" disabled>Default</button>
-                {% else %}
+                <div class="w-100">
+                    <button class="btn btn-secondary w-75" disabled>Default</button>
+                </div> {% else %}
                 <form class="w-100" method="POST" action="/me/card/set/default/{{ card.id }}">
                     <button class="btn btn-primary w-75 set-btn" type="submit">Set default</button>
                 </form>
