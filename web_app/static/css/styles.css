@@ -198,7 +198,7 @@ body {
 
         .material-icons {
             position: relative;
-            top: -7px;
+            top: -2px;
             z-index: 1;
             font-size: 24px;
             color: var(--text-header);
@@ -206,7 +206,7 @@ body {
 
         .count {
             position: absolute;
-            top: -7px;
+            top: -2px;
             right: -3px;
             z-index: 2;
             font-size: 11px;
@@ -225,12 +225,6 @@ body {
 
     .search-mobile {
         display: none;
-
-        form {
-            padding: 0;
-            margin: 0;
-            width: 300px;
-        }
     }
 
     @media (max-width: 991px) {
@@ -609,12 +603,6 @@ body {
 
         .search-mobile {
             display: none;
-
-            form {
-                padding: 0;
-                margin: 0;
-                width: 300px;
-            }
         }
     }
 

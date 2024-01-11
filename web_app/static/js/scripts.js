@@ -1347,4 +1347,13 @@ window.onload = function () {
             setInterval(autoSlide, 2500);
         }
     }
+
+    if (window.innerWidth < 576) {
+        var mobileSearch = document.querySelector('.search-mobile');
+        var dropdownMenu = mobileSearch.querySelector('.dropdown-menu');
+
+        dropdownMenu.classList.remove('dropdown-menu-center');
+        dropdownMenu.classList.add('dropdown-menu-start');
+        dropdownMenu.setAttribute("style", "width:300px");;
+    }
 }
