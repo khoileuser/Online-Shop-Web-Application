@@ -299,11 +299,6 @@ body {
 
 .about-page {
     height: 100vh;
-}
-
-.hero {
-    width: 100%;
-    background-size: cover;
 
     h1 {
         font-size: 48px;
@@ -349,10 +344,6 @@ body {
         text-align: right;
     }
 
-    @media (min-width: 1024px) {
-        background-attachment: fixed;
-    }
-
     @media (max-width: 991px) {
         height: auto;
         padding: 120px 0 60px 0;
@@ -383,6 +374,12 @@ body {
             width: 100%;
         }
     }
+}
+
+.hero {
+    width: 100%;
+    background-size: cover;
+    background-attachment: fixed;
 
     .categories-section {
         margin-top: 10px;
