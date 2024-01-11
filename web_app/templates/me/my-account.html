@@ -149,44 +149,9 @@
         {% for address in addresses %}
         <div class="row p-4 m-2 border-bottom d-flex justify-content-center">
             <div class="col-12 col-lg-10 address-info">
-                <div class="row p-2">
-                    <div class="col-4 col-md-2 text-end pt-1">Phone number</div>
-                    <div class="col-8 col-md-4">
-                        {% if '+' not in address.phone_number_code %}
-                        <input class="form-control" type="text"
-                            value="(+{{ address.phone_number_code }}) {{ address.phone_number }}" readonly>
-                        {% else %}
-                        <input class="form-control" type="text"
-                            value="({{ address.phone_number_code }}) {{ address.phone_number }}" readonly>
-                        {% endif %}
-                    </div>
-                    <div class="col-4 col-md-2 text-end pt-1">Country</div>
-                    <div class="col-8 col-md-4">
-                        <input class="form-control" type="text" value="{{ address.country }}" readonly>
-                    </div>
-                </div>
 
-                <div class="row p-2">
-                    <div class="col-4 col-md-2 text-end pt-1">Address</div>
-                    <div class="col-8 col-md-4">
-                        <input class="form-control" type="text" value="{{ address.address }}" readonly>
-                    </div>
-                    <div class="col-4 col-md-2 text-end pt-1">City</div>
-                    <div class="col-8 col-md-4">
-                        <input class="form-control" type="text" value="{{ address.city }}" readonly>
-                    </div>
-                </div>
+                {% include "common/address-info.html" %}
 
-                <div class="row p-2">
-                    <div class="col-4 col-md-2 text-end pt-1">State</div>
-                    <div class="col-8 col-md-4">
-                        <input class="form-control" type="text" value="{{ address.state }}" readonly>
-                    </div>
-                    <div class="col-4 col-md-2 text-end pt-1">Postal code</div>
-                    <div class="col-8 col-md-4">
-                        <input class="form-control" type="text" value="{{ address.postal_code }}" readonly>
-                    </div>
-                </div>
             </div>
 
             <div

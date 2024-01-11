@@ -356,17 +356,20 @@ function editQuantity(productid, action, _quantity, noUpdate = false, limit = fa
         const totalPrice = parseFloat(quantity.value) * pdPrice;
         document.querySelector('.pd-total-price-' + productid).innerHTML = totalPrice.toFixed(2);
 
-        var cartPrice = document.querySelector('.total-price');
-        if (action == 'add') {
-            cartPrice.innerHTML = (parseFloat(cartPrice.innerHTML.trim()) + updateQuantity * pdPrice).toFixed(2);
-        }
-        else if (action == 'remove') {
-            const calced = (parseFloat(cartPrice.innerHTML.trim()) - updateQuantity * pdPrice).toFixed(2);
-            if (calced <= 0 || calced == 'NaN') {
-                cartPrice.innerHTML = 0;
+        const pdCheckbox = document.querySelector('.pd-checkbox-' + productid);
+        if (pdCheckbox.checked) {
+            var cartPrice = document.querySelector('.total-price');
+            if (action == 'add') {
+                cartPrice.innerHTML = (parseFloat(cartPrice.innerHTML.trim()) + updateQuantity * pdPrice).toFixed(2);
             }
-            else {
-                cartPrice.innerHTML = calced;
+            else if (action == 'remove') {
+                const calced = (parseFloat(cartPrice.innerHTML.trim()) - updateQuantity * pdPrice).toFixed(2);
+                if (calced <= 0 || calced == 'NaN') {
+                    cartPrice.innerHTML = 0;
+                }
+                else {
+                    cartPrice.innerHTML = calced;
+                }
             }
         }
     }
