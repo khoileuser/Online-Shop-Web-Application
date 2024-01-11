@@ -2036,7 +2036,9 @@ body {
 
     .filter-mobile-ul {
         width: 300px;
+        max-height: 60vh;
         padding: 20px;
+        overflow-y: scroll !important;
     }
 }
 
