@@ -57,6 +57,7 @@ body {
         font-size: 190px;
         font-weight: bold;
         margin-bottom: 1rem;
+        -webkit-animation: pulse 2s infinite;
         animation: pulse 2s infinite;
     }
 
@@ -65,7 +66,20 @@ body {
     }
 
     .animate-blink {
+        -webkit-animation: blink 1s infinite;
         animation: blink 1s infinite;
+    }
+}
+
+@-webkit-keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
     }
 }
 
@@ -78,6 +92,18 @@ body {
 
     50% {
         opacity: 0.5;
+    }
+}
+
+@-webkit-keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
     }
 }
 
@@ -131,6 +157,7 @@ body {
     .breadcrumbs-item:before {
         background: white;
         bottom: 0;
+        -webkit-clip-path: polygon(50% 50%, -50% -50%, 0 100%);
         clip-path: polygon(50% 50%, -50% -50%, 0 100%);
         content: "";
         left: 100%;
@@ -171,7 +198,7 @@ body {
 
         .material-icons {
             position: relative;
-            top: -7px;
+            top: -2px;
             z-index: 1;
             font-size: 24px;
             color: var(--text-header);
@@ -179,7 +206,7 @@ body {
 
         .count {
             position: absolute;
-            top: -7px;
+            top: -2px;
             right: -3px;
             z-index: 2;
             font-size: 11px;
@@ -198,12 +225,6 @@ body {
 
     .search-mobile {
         display: none;
-
-        form {
-            padding: 0;
-            margin: 0;
-            width: 300px;
-        }
     }
 
     @media (max-width: 991px) {
@@ -220,8 +241,6 @@ body {
         border: none;
         right: auto;
         left: 50%;
-        -webkit-transform: translate(-50%, 0);
-        -o-transform: translate(-50%, 0);
         transform: translate(-50%, 0);
         width: 300px !important;
     }
@@ -379,6 +398,7 @@ body {
             img {
                 max-height: 100%;
                 max-width: 100%;
+                -o-object-fit: contain;
                 object-fit: contain;
             }
 
@@ -540,8 +560,6 @@ body {
         border: none;
         right: auto;
         left: 50%;
-        -webkit-transform: translate(-50%, 0);
-        -o-transform: translate(-50%, 0);
         transform: translate(-50%, 0);
     }
 
@@ -549,6 +567,7 @@ body {
         width: 100%;
         height: 100vh;
         scroll-behavior: smooth;
+        -ms-scroll-snap-type: y mandatory;
         scroll-snap-type: y mandatory;
         overflow: auto;
     }
@@ -572,6 +591,7 @@ body {
     }
 
     .auth-nav {
+        -webkit-backdrop-filter: saturate(200%) blur(30px);
         backdrop-filter: saturate(200%) blur(30px);
         background-color: rgba(255, 255, 255, 0.8);
         z-index: 1;
@@ -583,12 +603,6 @@ body {
 
         .search-mobile {
             display: none;
-
-            form {
-                padding: 0;
-                margin: 0;
-                width: 300px;
-            }
         }
     }
 
@@ -605,8 +619,6 @@ body {
     .oblique-r {
         overflow: hidden;
         transform-origin: bottom;
-        -ms-transform: skew(-10deg, 0deg);
-        -webkit-transform: skew(-10deg, 0deg);
         transform: skew(-10deg, 0deg);
         z-index: -1;
     }
@@ -614,8 +626,6 @@ body {
     .oblique-l {
         overflow: hidden;
         transform-origin: bottom;
-        -ms-transform: skew(10deg, 0deg);
-        -webkit-transform: skew(10deg, 0deg);
         transform: skew(10deg, 0deg);
         z-index: -1;
     }
@@ -623,6 +633,7 @@ body {
     .oblique-img {
         height: 100vh;
         width: 100%;
+        -o-object-fit: cover;
         object-fit: cover;
     }
 
@@ -716,6 +727,7 @@ body {
 
     .large-img img {
         border-radius: 0.25rem;
+        -o-object-fit: contain;
         object-fit: contain;
         height: 50vh;
         width: 50vw;
@@ -723,6 +735,7 @@ body {
 
     .small-img img {
         border-radius: 0.25rem;
+        -o-object-fit: contain;
         object-fit: contain;
         height: 10vh;
         width: 10vw;
@@ -962,19 +975,38 @@ body {
 }
 
 .add-cart-btn.clicked .bi-cart-fill {
+    -webkit-animation: cart 1.5s ease-in-out forwards;
     animation: cart 1.5s ease-in-out forwards;
 }
 
 .add-cart-btn.clicked .bi-box-seam-fill {
+    -webkit-animation: box 1.5s ease-in-out forwards;
     animation: box 1.5s ease-in-out forwards;
 }
 
 .add-cart-btn.clicked span.add-to-cart-text {
+    -webkit-animation: txt1 1.5s ease-in-out forwards;
     animation: txt1 1.5s ease-in-out forwards;
 }
 
 .add-cart-btn.clicked span.added {
+    -webkit-animation: txt2 1.5s ease-in-out forwards;
     animation: txt2 1.5s ease-in-out forwards;
+}
+
+@-webkit-keyframes cart {
+    0% {
+        left: -15%;
+    }
+
+    40%,
+    60% {
+        left: 50%;
+    }
+
+    100% {
+        left: 110%;
+    }
 }
 
 @keyframes cart {
@@ -989,6 +1021,24 @@ body {
 
     100% {
         left: 110%;
+    }
+}
+
+@-webkit-keyframes box {
+
+    0%,
+    40% {
+        top: -25%;
+    }
+
+    60% {
+        top: 40%;
+        left: 52%;
+    }
+
+    100% {
+        top: 40%;
+        left: 112%;
     }
 }
 
@@ -1010,6 +1060,17 @@ body {
     }
 }
 
+@-webkit-keyframes txt1 {
+    0% {
+        opacity: 1;
+    }
+
+    20%,
+    100% {
+        opacity: 0;
+    }
+}
+
 @keyframes txt1 {
     0% {
         opacity: 1;
@@ -1018,6 +1079,18 @@ body {
     20%,
     100% {
         opacity: 0;
+    }
+}
+
+@-webkit-keyframes txt2 {
+
+    0%,
+    80% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
     }
 }
 
@@ -1158,6 +1231,7 @@ body {
         left: 0;
         width: 100%;
         height: 100%;
+        -o-object-fit: cover;
         object-fit: cover;
     }
 
@@ -1231,6 +1305,7 @@ body {
         background-color: white;
 
         .image img {
+            -o-object-fit: contain;
             object-fit: contain;
             height: 20vh;
             width: 20vw;
@@ -1371,6 +1446,7 @@ body {
         background-color: white;
 
         .image img {
+            -o-object-fit: contain;
             object-fit: contain;
             height: 20vh;
             width: 20vw;
@@ -1719,6 +1795,7 @@ body {
         background-color: white;
 
         .image img {
+            -o-object-fit: contain;
             object-fit: contain;
             height: 20vh;
             width: 20vw;
@@ -1735,6 +1812,7 @@ body {
         background-color: white;
 
         .image img {
+            -o-object-fit: contain;
             object-fit: contain;
             height: 20vh;
             width: 20vw;
