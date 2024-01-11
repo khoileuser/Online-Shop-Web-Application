@@ -52,11 +52,11 @@
 
                                 <ul class="dropdown-menu dropdown-menu-center p-0">
                                     <div class="d-flex gap-2">
-                                        <input class="form-control border-dark search-input" type="search"
+                                        <input class="form-control border-dark search-input-mobile" type="search"
                                             placeholder="Search" aria-label="Search" onsearch="clearSearch(event)"
-                                            onkeypress="handleKeyPress(event, 'search')">
+                                            onkeypress="handleKeyPress(event, 'search', true)">
                                         <button class="btn border border-dark anm-btn search-btn" type="submit"
-                                            onclick="submitSearch()">Search</button>
+                                            onclick="submitSearch(true)">Search</button>
                                     </div>
                                 </ul>
 

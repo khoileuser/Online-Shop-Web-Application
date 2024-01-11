@@ -34,7 +34,7 @@ def get_vendors(cart_products, product_ids=None):
     return vendors
 
 
-def get_products_by_vendor(vendors, cart_products):
+def get_products_by_vendor(vendors, cart_products, product_ids=None):
     """
     The function `get_products_by_vendor` groups cart products by vendor and returns a dictionary with
     vendor information and their respective cart products.
@@ -50,22 +50,42 @@ def get_products_by_vendor(vendors, cart_products):
     """
     # group vendor
     products_by_vendor = []
-    for vendor in vendors:
-        # group products by vendor
-        _cart_products = []
-        for cart_product in cart_products:
-            if cart_product.product.owner == vendor:
-                product_dict = model_to_dict(cart_product)
-                product_dict['product'] = model_to_dict(cart_product.product)
-                _cart_products.append(product_dict)
-        products_by_vendor.append({
-            'vendor': {
-                "id": vendor.id,
-                "name": vendor.name,
-                "username": vendor.username
-            },
-            'cart_products': _cart_products,
-        })
+    if product_ids:
+        for vendor in vendors:
+            # group products by vendor
+            _cart_products = []
+            for cart_product in cart_products:
+                if cart_product.product.owner == vendor and cart_product.product.id in product_ids:
+                    product_dict = model_to_dict(cart_product)
+                    product_dict['product'] = model_to_dict(
+                        cart_product.product)
+                    _cart_products.append(product_dict)
+            products_by_vendor.append({
+                'vendor': {
+                    "id": vendor.id,
+                    "name": vendor.name,
+                    "username": vendor.username
+                },
+                'cart_products': _cart_products,
+            })
+    else:
+        for vendor in vendors:
+            # group products by vendor
+            _cart_products = []
+            for cart_product in cart_products:
+                if cart_product.product.owner == vendor:
+                    product_dict = model_to_dict(cart_product)
+                    product_dict['product'] = model_to_dict(
+                        cart_product.product)
+                    _cart_products.append(product_dict)
+            products_by_vendor.append({
+                'vendor': {
+                    "id": vendor.id,
+                    "name": vendor.name,
+                    "username": vendor.username
+                },
+                'cart_products': _cart_products,
+            })
     return products_by_vendor
 
 
@@ -124,7 +144,8 @@ def parse_checkout_context(request, mode):
         cart_products = Cart.objects.get(
             owner=request.user).products.all().order_by('id')
         vendors = get_vendors(cart_products, product_ids)
-        products_by_vendor = get_products_by_vendor(vendors, cart_products)
+        products_by_vendor = get_products_by_vendor(
+            vendors, cart_products, product_ids)
         total_price = calc_total_price(cart_products)
 
     # If mode is 'buy_now', calculate total price for the single product being bought now

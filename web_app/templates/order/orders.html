@@ -62,7 +62,8 @@
 
             <div class="p-3 border-bottom">
                 <div class="row pd-info">
-                    <div class="col-2 pd-img d-flex justify-content-center align-items-center mb-3">
+
+                    <div class="col-4 col-md-3 col-xl-2 pd-img d-flex justify-content-center align-items-center">
                         <a href="/product/{{ order.products_by_vendor.0.cart_products.0.product.id }}"
                             class="text-decoration-none text-reset">
                             <img class="img-fluid"
@@ -70,7 +71,8 @@
                                 alt="pd-img">
                         </a>
                     </div>
-                    <div class="col-8 col-md-6 pd-info d-flex flex-column justify-content-center">
+
+                    <div class="col pd-info d-flex flex-column justify-content-center">
                         <a href="/product/{{ order.products_by_vendor.0.cart_products.0.product.id }}"
                             class="text-decoration-none text-reset">
                             <span class="pd-name">
@@ -81,12 +83,14 @@
                             x{{ order.products_by_vendor.0.cart_products.0.quantity }}
                         </span>
                     </div>
-                    <div class="col-2 col-md-4 order-price d-flex justify-content-end align-items-center">
+
+                    <div class="col-2 order-price d-flex justify-content-end align-items-center">
                         $
                         <span class="pd-total-price-{{ cart_product.product.id }}">
                             {{order.products_by_vendor.0.cart_products.0.product.price|products_price:order.products_by_vendor.0.cart_products.0.quantity}}
                         </span>
                     </div>
+
                 </div>
             </div>
 

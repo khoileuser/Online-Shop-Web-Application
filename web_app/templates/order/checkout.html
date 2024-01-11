@@ -243,7 +243,7 @@
 
         {% for cart_product in vendor.cart_products %}
         <div class="row vendor-products p-3">
-            <div class="col pd-img d-flex justify-content-center align-items-center mb-3">
+            <div class="col-4 col-md-3 col-xl-2 pd-img d-flex justify-content-center align-items-center mb-3">
                 <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
                     <div class="image">
                         <img class="img-fluid" src="{% static 'images/products/' %}{{ cart_product.product.images.0 }}"
@@ -252,35 +252,42 @@
                 </a>
             </div>
 
-            <div class="col-8 col-md-9 pd-info d-flex align-items-center mb-3">
-                <div class="col pd-name text-start">
-                    <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
-                        {{ cart_product.product.name }}
-                    </a>
-                </div>
+            <div class="col pd-info d-flex align-items-center mb-3">
+                <div class="row w-100">
 
-                <div class="col pd-price text-center">
-                    $
-                    <span class="pd-price-{{ cart_product.product.id }}">
-                        {{ cart_product.product.price }}
-                    </span>
-                </div>
+                    <div class="col-12 col-md-6 pd-name d-flex align-items-center">
+                        <a href="/product/{{ cart_product.product.id }}" class="text-decoration-none text-reset">
+                            {{ cart_product.product.name }}
+                        </a>
+                    </div>
 
-                <div class="col-2 col-md-1 pd-quantity">
-                    <div class="pd-quantity-input">
-                        <div class="input-group">
-                            <input
-                                class="text-center form-control input-number pd-quantity-input-box-{{ cart_product.product.id }}"
-                                value="x{{ cart_product.quantity }}" disabled>
+                    <div class="col-4 col-lg-2 col-xl-3 pd-price d-flex justify-content-center align-items-center">
+                        $
+                        <span class="pd-price-{{ cart_product.product.id }}">
+                            {{ cart_product.product.price }}
+                        </span>
+                    </div>
+
+                    <div class="col d-block d-md-none"></div>
+
+                    <div
+                        class="col-5 col-sm-3 col-md-2 col-lg-2 col-xl-1 pd-quantity d-flex justify-content-center align-items-center">
+                        <div class="pd-quantity-input">
+                            <div class="input-group">
+                                <input
+                                    class="text-center form-control input-number pd-quantity-input-box-{{ cart_product.product.id }}"
+                                    value="x{{ cart_product.quantity }}" disabled>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col pd-total-price d-none d-lg-block text-center">
-                    $
-                    <span class="pd-total-price-{{ cart_product.product.id }}">
-                        {{ cart_product.product.price|products_price:cart_product.quantity }}
-                    </span>
+                    <div class="col pd-total-price d-none d-lg-flex justify-content-center align-items-center">
+                        $
+                        <span class="pd-total-price-{{ cart_product.product.id }}">
+                            {{ cart_product.product.price|products_price:cart_product.quantity }}
+                        </span>
+                    </div>
+
                 </div>
             </div>
 

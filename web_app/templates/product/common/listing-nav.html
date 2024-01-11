@@ -1,0 +1,57 @@
+<li class="breadcrumb">
+    {% if active_filter %}
+    <a href="/products" class="breadcrumbs-item">Products</a>
+    <a class="breadcrumbs-item is-active">Categories</a>
+    {% else %}
+    <a href="/products" class="breadcrumbs-item">Products</a>
+    <a class="breadcrumbs-item">Categories</a>
+    {% endif %}
+</li>
+
+<li>
+    <label for="min-price" class="form-label">Min price: </label>
+    {% if min_filter %}
+    <span class="min-price-txt">${{ min_filter }}</span>
+    <input type="range" class="form-range min-price" id="min-price" name="min-price" min="0" max="{{ min_price }}"
+        step="0.01" value="{{ min_filter }}" oninput="editMinPrice(this)">
+    {% else %}
+    <span class="min-price-txt">$0</span>
+    <input type="range" class="form-range min-price" id="min-price" name="min-price" min="0" max="{{ min_price }}"
+        step="0.01" value="0" oninput="editMinPrice(this)">
+    {% endif %}
+</li>
+
+<li>
+    <label for="max-price" class="form-label">Max price: </label>
+    {% if max_filter %}
+    <span class="max-price-txt">${{ max_filter }}</span>
+    <input type="range" class="form-range max-price" id="max-price" name="max-price" min="1" max="{{ max_price }}"
+        step="0.01" value="{{ max_filter }}" oninput="editMaxPrice(this)">
+    {% else %}
+    <span class="max-price-txt">${{ max_price }}</span>
+    <input type="range" class="form-range max-price" id="max-price" name="max-price" min="1" max="{{ max_price }}"
+        step="0.01" value="{{ max_price }}" oninput="editMaxPrice(this)">
+    {% endif %}
+</li>
+
+<li class="nav-list-styling mb-4">
+    <button class="btn btn-secondary reset-btn" onclick="resetFilter()">Reset</button>
+    {% if not min_filter or not active_filter %}
+    {% if not active_filter %}
+    <button class="btn btn-primary submit-btn" onclick="submitFilterPrice()">Submit</button>
+    {% endif %}
+    {% endif %}
+</li>
+
+{% for category in categories %}
+<li class="nav-list-styling">
+    {% if active_filter == category %}
+    <input class="form-check-input category-checkbox" type="checkbox" id="{{ category }}" name="filterCategory"
+        value="{{ category }}" onclick="filterCategory(this)" checked>
+    {% else %}
+    <input class="form-check-input category-checkbox" type="checkbox" id="{{ category }}" name="filterCategory"
+        value="{{ category }}" onclick="filterCategory(this)">
+    {% endif %}
+    <label class="form-check-label" for="{{ category }}">{{ category }}</label>
+</li>
+{% endfor %}
