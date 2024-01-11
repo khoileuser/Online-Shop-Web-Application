@@ -1327,12 +1327,16 @@ body {
             width: 100%;
         }
     }
+}
 
-    @media (max-width: 768px) {
-        .address-info {
-            .col-8 {
-                margin-bottom: 10px;
-            }
+@media (max-width: 991px) {
+    .address-info {
+        .col-8 {
+            margin-bottom: 10px;
+        }
+
+        .row {
+            padding: 0 !important;
         }
     }
 }
