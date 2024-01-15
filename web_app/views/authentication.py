@@ -34,6 +34,12 @@ def sign_in(request):
             user = User.objects.get(username=username)
             if check_password(password, user.password):
                 return_session(request, user)
+                if request.user.account_type == "A":
+                    return redirect("/accounts")
+                elif request.user.account_type == "S":
+                    return redirect("/orders")
+                elif request.user.account_type == "V":
+                    return redirect("/products/vendor/" + request.user.username)
                 return redirect("/")
             else:
                 return HttpResponse("Invalid credentials")
