@@ -23,7 +23,7 @@ urlpatterns = [
     path('my-account/', me.my_account),
     path('me/', me.my_account),
     path('me/update/<str:field>', me.update_account),
-    path('me/delete/', me.delete_accout),
+    path('me/delete/', me.delete_account),
     path('me/address/add/', me.address_add),
     path('me/address/set/default/<int:address_id>', me.address_set_default),
     path('me/address/remove/<int:address_id>', me.address_remove),

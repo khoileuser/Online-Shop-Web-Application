@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.contrib.auth.hashers import make_password
 from web_app.models import User, Cart, Product
 from django.test import RequestFactory
 from web_app.views import cart
@@ -10,9 +11,9 @@ class CartViewTests(TestCase):
 
         self.user = User.objects.create(
             name="Test User",
-            username='testuser',
-            password='testpassword',
-            account_type='C',
+            username="testuser",
+            password=make_password("testpassword"),
+            account_type="C",
             avatar=None,
             share_wishlist=False
         )
@@ -21,7 +22,7 @@ class CartViewTests(TestCase):
         self.vendor = User.objects.create(
             name="Test Vendor",
             username='testvendor',
-            password='testpassword',
+            password=make_password("testpassword"),
             account_type='V',
             avatar=None,
             share_wishlist=False
