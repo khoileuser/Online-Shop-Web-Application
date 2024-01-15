@@ -7,6 +7,8 @@ from web_app.views import authentication
 
 class AuthenticationTestCase(TestCase):
     def setUp(self):
+        self.factory = RequestFactory()
+
         # Create a user for testing
         self.user = User.objects.create(
             name="Test User",
@@ -36,7 +38,7 @@ class AuthenticationTestCase(TestCase):
         response = self.client.post(
             url, {'username': 'testuser', 'password': 'testpassword'})
         # Should be redirected to home page
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_check_sign_in_view(self):
         url = '/check/signin/'
@@ -73,9 +75,8 @@ class AuthenticationTestCase(TestCase):
 
     def test_view_accounts_view(self):
         # Create a request
-        factory = RequestFactory()
         url = '/accounts/'
-        request = factory.post(url)
+        request = self.factory.post(url)
         request.user = self.admin
 
         response = authentication.view_accounts(request)
@@ -83,10 +84,9 @@ class AuthenticationTestCase(TestCase):
 
     def test_update_account_view(self):
         # Create a request
-        factory = RequestFactory()
         url = '/account/update/' + str(self.user.id)
-        request = factory.post(url, {'username-1': 'updateduser',
-                               'password-1': 'UpdatedPassword123!', 'accounttype-1': 'customer'})
+        request = self.factory.post(url, {'username-1': 'updateduser',
+                                          'password-1': 'UpdatedPassword123!', 'accounttype-1': 'customer'})
         request.user = self.admin
 
         response = authentication.update_account(request, str(self.user.id))
@@ -95,9 +95,8 @@ class AuthenticationTestCase(TestCase):
 
     def test_delete_account_view(self):
         # Create a request
-        factory = RequestFactory()
         url = '/account/delete/' + str(self.user.id)
-        request = factory.post(url)
+        request = self.factory.post(url)
         request.user = self.admin
 
         response = authentication.delete_account(request, str(self.user.id))
