@@ -30,6 +30,16 @@
 
             <div class="col-12 col-md-6 pd-info-right">
 
+                <div class="row d-flex justify-content-between" data-aos="fade-up">
+                    <div class="col">
+                        <div class="breadcrumb">
+                            <a href="/products" class="breadcrumbs-item">Products</a>
+                            <a href="/products/?filter={{ category }}" class="breadcrumbs-item is-active">
+                                {{ category }}</a>
+                        </div>
+                    </div>
+                </div>
+
                 {% include "product/common/info.html" %}
 
                 <div class="row mt-4 pd-action" data-aos="fade-up" data-aos-delay="600">
