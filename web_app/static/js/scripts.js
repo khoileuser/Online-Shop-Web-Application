@@ -400,12 +400,17 @@ function addToCart(productid, getQuantity = false) {
     });
 
     var animationPromise = new Promise(function (resolve) {
-        var button = document.querySelector('.add-cart-btn');
-        button.classList.add("clicked");
-        setTimeout(function () {
-            button.classList.remove('clicked');
-        }, 2500);
-        resolve();
+        try {
+            var button = document.querySelector('.add-cart-btn');
+            button.classList.add("clicked");
+            setTimeout(function () {
+                button.classList.remove('clicked');
+            }, 2500);
+            resolve();
+        }
+        catch {
+            resolve();
+        }
     });
 
     Promise.all([fetchPromise, animationPromise]).then(function (values) {
