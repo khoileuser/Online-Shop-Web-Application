@@ -70,7 +70,7 @@ urlpatterns = [
     # admin
     path('accounts/', authentication.view_accounts),
     path('account/update/<int:account_id>', authentication.update_account),
-    path('account/delete/<int:account_id>', authentication.delete_accout),
+    path('account/delete/<int:account_id>', authentication.delete_account),
 
     # testing
     path('execute/', views.execute),
