@@ -929,7 +929,10 @@ function filterProductPrice(min, max) {
  */
 function editMinPrice(input) {
     var min = parseInt(input.value);
-    document.querySelector(".min-price-txt").innerHTML = "$" + min;
+    var txt = document.querySelectorAll(".min-price-txt");
+    txt.forEach(function updateTxt(txt) {
+        txt.innerHTML = "$" + min;
+    })
     filterProductPrice(min, parseInt(document.querySelector('.max-price').value))
 }
 
@@ -941,7 +944,10 @@ function editMinPrice(input) {
  */
 function editMaxPrice(input) {
     var max = parseInt(input.value);
-    document.querySelector(".max-price-txt").innerHTML = "$" + max;
+    var txt = document.querySelectorAll(".max-price-txt");
+    txt.forEach(function updateTxt(txt) {
+        txt.innerHTML = "$" + max;
+    })
     filterProductPrice(parseInt(document.querySelector('.min-price').value), max)
 }
 
@@ -1329,6 +1335,7 @@ window.onload = function () {
         var queryString = new URLSearchParams(paramString);
         var search = queryString.get('search');
         document.querySelector('.search-input').value = search;
+        document.querySelector('.search-input-mobile').value = search;
     }
     else if (window.location.href.includes('/checkout')) {
         var address = document.querySelector('.no-address-btn');

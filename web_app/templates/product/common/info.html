@@ -1,28 +1,3 @@
-<div class="row d-flex justify-content-between" data-aos="fade-up">
-    <div class="col">
-        <div class="breadcrumb">
-            <a href="/products" class="breadcrumbs-item">Products</a>
-            <a href="/products/?filter={{ category }}" class="breadcrumbs-item is-active">
-                {{ category }}</a>
-        </div>
-    </div>
-    <div class="col d-flex justify-content-end">
-        {% if is_wishlist %}
-        <form method="POST" action="/wishlist/remove/{{ product_id }}">
-            <button type="submit" class="btn btn-danger">
-                <i class="bi bi-heart-fill"></i>
-            </button>
-        </form>
-        {% else %}
-        <form method="POST" action="/wishlist/add/{{ product_id }}">
-            <button type="submit" class="btn btn-outline-secondary">
-                <i class="bi bi-heart"></i>
-            </button>
-        </form>
-        {% endif %}
-    </div>
-</div>
-
 <h3 class="name mt-4" data-aos="fade-up" data-aos-delay="200">{{ name }}</h3>
 
 <div class="row mt-4" data-aos="fade-up" data-aos-delay="200">
