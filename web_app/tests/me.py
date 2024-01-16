@@ -1,10 +1,11 @@
 from django.test import TestCase
-from django.contrib.auth.hashers import make_password, check_password
-from web_app.models import User, Cart
 from django.test import RequestFactory
+from django.contrib.auth.hashers import make_password, check_password
+
+from web_app.models import User, Cart
 from web_app.views import me
 
-import json
+from json import loads
 
 
 class MyAccountViewTests(TestCase):
@@ -85,7 +86,7 @@ class MyAccountViewTests(TestCase):
         request.user = self.user
         response = me.get_states(request, 'US')
         self.assertEqual(response.status_code, 200)
-        self.assertIn('California', json.loads(response.content))
+        self.assertIn('California', loads(response.content))
 
     def test_address_add_view(self):
         url = '/me/address/add/'

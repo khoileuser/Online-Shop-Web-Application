@@ -1,17 +1,20 @@
 from django.test import TestCase
-from django.contrib.auth.hashers import make_password
-from web_app.models import User, Cart, Product, Order, Address, Card
 from django.test import RequestFactory
+from django.contrib.auth.hashers import make_password
 from django.contrib.sessions.middleware import SessionMiddleware
 
+from web_app.models import User, Cart, Product
 from web_app.views.order import *
+
+from re import search
+from json import loads
 
 
 class CheckoutTestCase(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
 
-        # Create a user for testing
+        # Create users for testing
         self.user = User.objects.create(
             name="Test User",
             username="testuser",
@@ -21,7 +24,6 @@ class CheckoutTestCase(TestCase):
             share_wishlist=False
         )
 
-        # Create some sample data for testing
         self.vendor = User.objects.create(
             name="Test Vendor",
             username='testvendor',
@@ -30,6 +32,17 @@ class CheckoutTestCase(TestCase):
             avatar=None,
             share_wishlist=False
         )
+
+        self.shipper = User.objects.create(
+            name="Test Shipper",
+            username='testshipper',
+            password=make_password("testpassword"),
+            account_type='S',
+            avatar=None,
+            share_wishlist=False
+        )
+
+        # Create some sample data for testing
         self.product = Product.objects.create(owner=self.vendor, name="Product", description="Description", price=1.00, stock=1, images=[
             "https://i.imgur.com/6VBx3io.png"], category="Category")
 
@@ -70,7 +83,7 @@ class CheckoutTestCase(TestCase):
         self.assertEqual(context['mode'], 'all')
         self.assertEqual(context['total_price'], 2.0)
 
-    def test_checkout_view(self):
+    def test_checkout_get_view(self):
         # Test checkout view
         url = '/checkout/'
         request = self.factory.get(url, {'mode': 'all'})
@@ -84,3 +97,63 @@ class CheckoutTestCase(TestCase):
         response = checkout(request)
         self.assertEqual(response.status_code, 200)
         self.assertIn('Checkout', response.content.decode())
+
+    def test_place_order_all(self):
+        request = self.factory.post('/place_order/', {'mode': 'all'})
+        request.user = self.user
+
+        # Add session to the request
+        middleware = SessionMiddleware(lambda req: None)
+        middleware.process_request(request)
+        request.session.save()
+
+        # Add context to the session
+        request.session['context'] = {
+            'address': {'id': self.address.id},
+            'card': {'id': self.card.id},
+            'mode': 'all'
+        }
+
+        response = place_order(request)
+        self.assertEqual(response.status_code, 200)
+
+        # Decode the bytes to a string and parse it as JSON
+        data = loads(response.content.decode())
+
+        # Check if the redirected URL matches the expected pattern
+        match = search(r'^/order/\d+/?$', data['redirectUrl'])
+        self.assertIsNotNone(
+            match, "Redirected URL does not match expected pattern")
+
+    def test_order_view(self):
+        order = Order.objects.create(owner=self.user, status='A', address=self.address,
+                                     card=self.card, total_price=2.0)
+        order.products.set(self.cart.products.all())
+        url = '/order/' + str(order.id) + '/'
+        request = self.factory.get(url)
+        request.user = self.user
+        response = view_order(request, order.id)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Active')
+
+    def test_orders_view(self):
+        order = Order.objects.create(owner=self.user, status='A', address=self.address,
+                                     card=self.card, total_price=2.0)
+        order.products.set(self.cart.products.all())
+        url = '/orders/'
+        request = self.factory.get(url)
+        request.user = self.user
+        response = view_orders(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Orders')
+
+    def test_orders_shipper_view(self):
+        order = Order.objects.create(owner=self.user, status='A', address=self.address,
+                                     card=self.card, total_price=2.0)
+        order.products.set(self.cart.products.all())
+        url = '/orders/'
+        request = self.factory.get(url)
+        request.user = self.shipper
+        response = view_orders(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Set status')

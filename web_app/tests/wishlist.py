@@ -1,7 +1,8 @@
 from django.test import TestCase
-from django.contrib.auth.hashers import make_password
-from web_app.models import User, Cart, Product
 from django.test import RequestFactory
+from django.contrib.auth.hashers import make_password
+
+from web_app.models import User, Cart, Product
 from web_app.views import wishlist
 
 
