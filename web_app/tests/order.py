@@ -44,13 +44,13 @@ class CheckoutTestCase(TestCase):
 
         # Create some sample data for testing
         self.product = Product.objects.create(owner=self.vendor, name="Product", description="Description", price=1.00, stock=1, images=[
-            "https://i.imgur.com/6VBx3io.png"], category="Category")
+                                              "https://i.imgur.com/6VBx3io.png"], category="Category")
 
         self.cart = Cart.objects.create(owner=self.user)
         self.cart_product = self.cart.products.create(
             product=self.product, quantity=2)
-        self.address = self.user.addresses.create(phone_number_code='+1', phone_number='555-1234', address='123 Main St',
-                                                  city='City', state='CA', postal_code='12345', country='USA', is_default=False)
+        self.address = self.user.addresses.create(phone_number_code='+1', phone_number='555-1234',
+                                                  address='123 Main St', city='City', state='CA', postal_code='12345', country='USA', is_default=False)
         self.card = self.user.cards.create(card_number='4111111111111111', cardholder_name='Test User',
                                            expiration_date='12/23', card_type='Visa', cvc='123', is_default=False)
 
@@ -126,8 +126,8 @@ class CheckoutTestCase(TestCase):
             match, "Redirected URL does not match expected pattern")
 
     def test_order_view(self):
-        order = Order.objects.create(owner=self.user, status='A', address=self.address,
-                                     card=self.card, total_price=2.0)
+        order = Order.objects.create(
+            owner=self.user, status='A', address=self.address, card=self.card, total_price=2.0)
         order.products.set(self.cart.products.all())
         url = '/order/' + str(order.id) + '/'
         request = self.factory.get(url)
@@ -137,8 +137,8 @@ class CheckoutTestCase(TestCase):
         self.assertContains(response, 'Active')
 
     def test_orders_view(self):
-        order = Order.objects.create(owner=self.user, status='A', address=self.address,
-                                     card=self.card, total_price=2.0)
+        order = Order.objects.create(
+            owner=self.user, status='A', address=self.address, card=self.card, total_price=2.0)
         order.products.set(self.cart.products.all())
         url = '/orders/'
         request = self.factory.get(url)
@@ -148,8 +148,8 @@ class CheckoutTestCase(TestCase):
         self.assertContains(response, 'Orders')
 
     def test_orders_shipper_view(self):
-        order = Order.objects.create(owner=self.user, status='A', address=self.address,
-                                     card=self.card, total_price=2.0)
+        order = Order.objects.create(
+            owner=self.user, status='A', address=self.address, card=self.card, total_price=2.0)
         order.products.set(self.cart.products.all())
         url = '/orders/'
         request = self.factory.get(url)
