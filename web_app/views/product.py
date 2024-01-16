@@ -431,7 +431,11 @@ def update_product(request, product_id):
                 images.append(request.POST["preview-img-"+str(i)])
 
         if images == []:
-            rmtree(getcwd() + '/web_app/static/images/products/' + str(product.id))
+            try:
+                rmtree(getcwd() + '/web_app/static/images/products/' +
+                       str(product.id))
+            except FileNotFoundError:
+                pass
         else:
             for image in listdir(getcwd() + '/web_app/static/images/products/' + str(product.id)):
                 if str(product.id) + '/' + image not in images:
@@ -470,7 +474,10 @@ def delete_product(request, product_id):
 
     product = Product.objects.get(id=product_id)
     if product.owner == request.user:
-        rmtree(getcwd() + '/web_app/static/images/products/' + str(product.id))
+        try:
+            rmtree(getcwd() + '/web_app/static/images/products/' + str(product.id))
+        except FileNotFoundError:
+            pass
         product.delete()
     else:
         return HttpResponse('You are not the owner of this product')

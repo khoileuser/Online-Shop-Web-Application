@@ -61,7 +61,7 @@ def my_account(request):
 
 
 @csrf_exempt
-def delete_accout(request):
+def delete_account(request):
     """
     The `delete_account` function deletes a user's account along with their associated cards, addresses,
     products in their cart, and session data, and then redirects to the homepage.
