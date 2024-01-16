@@ -3,3 +3,4 @@ fuzzywuzzy
 psycopg2-binary
 python-dotenv
 thefuzz
+django-minify-html

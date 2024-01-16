@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'web_app'
+    'web_app',
+    "django_minify_html"
 ]
 
 MIDDLEWARE = [
@@ -51,7 +52,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'web_app.middlewares.Authentication'
+    'web_app.middlewares.Authentication',
+    "django_minify_html.middleware.MinifyHtmlMiddleware"
 ]
 
 ROOT_URLCONF = 'shop_web.urls'
