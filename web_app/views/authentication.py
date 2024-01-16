@@ -125,6 +125,12 @@ def sign_up(request):
         Cart.objects.create(owner=user)
 
         return_session(request, user)
+        if user.account_type == "A":
+            return redirect("/accounts")
+        elif user.account_type == "S":
+            return redirect("/orders")
+        elif user.account_type == "V":
+            return redirect("/products/vendor/" + user.username)
         return redirect("/")
 
 

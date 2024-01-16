@@ -84,7 +84,6 @@ WSGI_APPLICATION = 'shop_web.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# comment the unused databases
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

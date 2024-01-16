@@ -77,11 +77,17 @@ def listing(request):
             "type": None
         }
 
+    template = loader.get_template("product/listing.html")
+
     # get all products and categories
     _products = Product.objects
+    products_list = _products.all().order_by('?')
+    if products_list.count() == 0:
+        context['max_price'] = 0
+        context['min_price'] = 0
+        return HttpResponse(template.render(context, request))
     categories = _products.values_list('category', flat=True).distinct()
     context['categories'] = categories
-    products_list = _products.all().order_by('?')
 
     if request.GET.get('search') and request.GET.get('filter'):
         # If the filter is 'price'
@@ -132,7 +138,6 @@ def listing(request):
     context['max_price'] = ceil(max_price)
     context['min_price'] = ceil(max_price-1)
 
-    template = loader.get_template("product/listing.html")
     return HttpResponse(template.render(context, request))
 
 
