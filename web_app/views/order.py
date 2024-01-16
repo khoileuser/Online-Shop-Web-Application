@@ -211,7 +211,6 @@ def checkout(request):
 
     if request.method == "POST":
         mode = request.POST['mode']
-        print(mode)
         context = parse_checkout_context(request, mode)
         request.session['context'] = context
     elif request.method == "GET":
