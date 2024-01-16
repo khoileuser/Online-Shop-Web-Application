@@ -71,8 +71,13 @@
             </div>
             <div class="col-4">
                 <div class="form-floating">
+                    {% if categories %}
                     <input name="pd-new-category" type="text" class="form-control pd-category" id="pd-category"
                         placeholder="Product category" disabled>
+                    {% else %}
+                    <input name="pd-new-category" type="text" class="form-control pd-category" id="pd-category"
+                        placeholder="Product category">
+                    {% endif %}
                     <label for="pd-category">Create new category</label>
                 </div>
             </div>

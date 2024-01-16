@@ -1,5 +1,4 @@
 Django==4.2.8
-fuzzywuzzy
 psycopg2-binary
 python-dotenv
 thefuzz
